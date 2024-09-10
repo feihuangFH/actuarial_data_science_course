@@ -8,7 +8,7 @@
 
 <meta name="author" content="Fei Huang, UNSW">
 
-<title>Lab: Data Visualisation – Actuarial Data Science Applications</title>
+<title>Lab: Data Visualisation – Actuarial Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -142,7 +176,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="../../">Actuarial Data Science Applications</a> 
+      <a href="../../">Actuarial Data Science</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -307,6 +341,23 @@ window.Quarto = {
 <li><p>install.packages(“xts”),</p></li>
 <li><p>install.packages(“sp”).</p></li>
 </ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Before you install CASdatasets, make sure you have already installed these packages:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("zoo")</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("xts")</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("sp")</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("CASdatasets", repos = "http://cas.uqam.ca/pub/", type="source")</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(CASdatasets)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#?CASdatasets # Description of this dataset.</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(freMTPL2freq) <span class="co"># import a dataset we want</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(freMTPL2sev) </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(freMTPL2freq) <span class="co"># The database is attached to the R search path. This means that the database is searched by R when evaluating a variable, so objects in the database can be accessed by simply giving their names.</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(freMTPL2sev)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>freMTPL2freq<span class="sc">$</span>ClaimNb <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(freMTPL2freq<span class="sc">$</span>ClaimNb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>Now the datasets called <code>freMTPL2freq</code> and <code>freMTPL2sev</code> are imported successfully. Have a look at this dataset first. In the two datasets <code>freMTPL2freq</code>, <code>freMTPL2sev</code>, risk features are collected for 677,991 motor third-part liability policies (observed mostly on one year). In addition, we have claim numbers by policy as well as the corresponding claim amounts. <code>freMTPL2freq</code> contains the risk features and the claim number while <code>freMTPL2sev</code> contains the claim amount and the corresponding policy ID.</p>
 <p><code>freMTPL2freq</code> contains 12 columns:</p>
 <ul>
@@ -333,6 +384,16 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="task-1-how-to-know-the-relationship-between-claim-frequency-and-driver-age">Task 1: How to know the relationship between claim frequency and driver age?</h3>
 <p>First, we create a figure using the codes from this week’s lecture slide.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> freMTPL2freq) <span class="sc">+</span> <span class="co"># the dataset</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">x =</span> DrivAge) <span class="sc">+</span> <span class="co"># the x position</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">y =</span> ClaimNb) <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">color =</span> ClaimNb)<span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># the y position</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>() <span class="sc">+</span> <span class="co"># the point geometric shape</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust axis titles' font size</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(<span class="at">axis.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>,<span class="at">face=</span><span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -346,6 +407,10 @@ window.Quarto = {
 <p>In practice, the frequency of most policy is 0. When you create plots in this way, you can see a bunch of data points at bottom level (0). And the number of observations is large (678013), which makes it difficult to recognize the pattern from so many points…</p>
 <p>What I will do is plot the average <code>ClaimNb</code> for each <code>DriveAge</code>. This requires some code you haven’t learned in lecture, but it is really helpful in this case.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>freMTPL2freq <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(DrivAge) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">AveClaimNb=</span><span class="fu">mean</span>(<span class="fu">as.double</span>(ClaimNb))) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>DrivAge, <span class="at">y=</span>AveClaimNb)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -358,6 +423,10 @@ window.Quarto = {
 <p>From Figure @ref(fig:aveclaimnb), now we clearly see a pattern! It tells us younger ages less than 25 and older ages around 80 are more likely to make a claim. So, is this the true story?</p>
 <p>In general insurance, it’s common to calculate <span class="math display">\text{Claim Rate}_{age}=\cfrac{\sum_i\text{ClaimNb}_{age,i}}{\sum_i \text{Exposure}_{age,i}}</span>, where <span class="math inline">i</span> represents the <span class="math inline">i</span>th policyholder at this <span class="math inline">age</span>. Claim Rate tells us the number of claim per exposure (year), which removes the effect of different exposures. Now let’s see the relationship between Claim Rate and <code>DriveAge</code>.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>freMTPL2freq <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(DrivAge) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">claim_rate=</span><span class="fu">sum</span>(<span class="fu">as.double</span>(ClaimNb))<span class="sc">/</span><span class="fu">sum</span>(Exposure)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>DrivAge, <span class="at">y=</span>claim_rate)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -370,6 +439,11 @@ window.Quarto = {
 <p>From Figure @ref(fig:aveclaimrate), we can tell that younger ages become more dangerous while older ages are more safe.</p>
 <p>Here is another informative figure called Violin plot. What do you learn from this plot?</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Violin plot DrivAge vs number of claims:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>freMTPL2freq <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ClaimNb<span class="sc">&lt;</span><span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ClaimNb=</span><span class="fu">as.factor</span>(ClaimNb)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(ClaimNb, DrivAge)) <span class="sc">+</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">fill =</span> ClaimNb))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -384,6 +458,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="task-2-how-to-know-the-relationship-between-claim-frequency-and-the-area">Task 2: How to know the relationship between claim frequency and the area?</h3>
 <p>Task 2 is a little bit different with Task 1 because the type of <code>Aera</code> is factor and the type of <code>DrivAge</code> is integer.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(freMTPL2freq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   678013 obs. of  12 variables:
  $ IDpol     : num  1 3 5 10 11 13 15 17 18 21 ...
@@ -402,6 +477,11 @@ window.Quarto = {
 </div>
 <p>First, we try the code in Task 1. Though we can get some information from Figure @ref(fig:crarea), it’s not straightforward.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>freMTPL2freq <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Area) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">claim_rate=</span><span class="fu">sum</span>(<span class="fu">as.double</span>(ClaimNb))<span class="sc">/</span><span class="fu">sum</span>(Exposure)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Area, <span class="at">y=</span>claim_rate)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>()<span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.2</span>)) <span class="co"># set the axis limits</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -413,6 +493,17 @@ window.Quarto = {
 </div>
 <p>A better choice in this case is to use histogram (bar plot) for categorical variable. Now it’s clear to compare the Claim Rates in different areas.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>freMTPL2freq <span class="sc">%&gt;%</span> <span class="co"># data piped into</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">group_by</span>(Area) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(<span class="at">claim_rate=</span><span class="fu">sum</span>(<span class="fu">as.double</span>(ClaimNb))<span class="sc">/</span><span class="fu">sum</span>(Exposure)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="co"># initiating plot</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">x =</span> Area) <span class="sc">+</span> <span class="co">#categorical variable</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">y =</span> claim_rate) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_col</span>() <span class="sc">+</span> <span class="co">#Use `geom_col` to creat a column geometry</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">color =</span> Area) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">fill =</span> Area) <span class="sc">+</span> <span class="co"># new aes 'fill'</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">aes</span>(<span class="at">linetype =</span> Area)<span class="sc">+</span> <span class="co">#new aes 'linetype'</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.2</span>)) <span class="co"># set the axis limits</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
