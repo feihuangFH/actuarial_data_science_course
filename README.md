@@ -11,7 +11,6 @@ to see the website.
 LICENSE
 --------
 
-This repo contains references from other open books which are subject to their specific
-license. All the materials by me are subject to the
-[Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/legalcode.en)
-license (see the LICENSE file in this repo).
+This repository includes references from other open books, each subject to their respective licenses. 
+All materials created by me are licensed under the [Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/legalcode.en)
+license. For more details, please refer to the LICENSE file included in this repository.
