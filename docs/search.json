@@ -1076,7 +1076,7 @@
     "href": "index.html#chapters",
     "title": "Actuarial Data Science",
     "section": "Chapters",
-    "text": "Chapters\n\nChapter 1: Introduction\n\n1.1: Introduction to Actuarial Data Science (slides)\n\nChapter 2: Exploratory Data Analysis (EDA)\n\n2.1: Data Visualisation (slides, zip)\n2.2: Data Manipulation and Transformation (slides, zip)\n2.3: Importing, Quality Check and Cleansing (slides, zip)",
+    "text": "Chapters\n\nChapter 1: Introduction\n\n1.1: Introduction to Actuarial Data Science (slides)\n\nChapter 2: Exploratory Data Analysis (EDA)\n\n2.1: Data Visualisation (slides) \n2.2: Data Manipulation and Transformation (slides) \n2.3: Importing, Quality Check and Cleansing (slides)",
     "crumbs": [
       "Home"
     ]
@@ -1086,7 +1086,7 @@
     "href": "index.html#labs",
     "title": "Actuarial Data Science",
     "section": "Labs",
-    "text": "Labs\n\nLab: R Markdown Introduction (pdf, zip)\nLab: Data Visualisation (pdf, zip)\nLab: Data Manipulation and Cleaning (pdf, zip)",
+    "text": "Labs\n\nLab: R Markdown Introduction (pdf) \nLab: Data Visualisation (pdf) \nLab: Data Manipulation and Cleaning (pdf)",
     "crumbs": [
       "Home"
     ]
