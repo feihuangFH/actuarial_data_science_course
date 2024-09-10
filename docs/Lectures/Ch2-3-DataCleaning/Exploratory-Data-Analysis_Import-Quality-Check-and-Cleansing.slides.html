@@ -10,8 +10,8 @@
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.5.57">
 
-  <meta name="author" content="Fei Huang, UNSW">
-  <title>Actuarial Data Science Applications – 2.3 Importing, Quality Check and Cleansing</title>
+  <meta name="author" content="Fei Huang, UNSW Sydney">
+  <title>Actuarial Data Science – 2.3 Importing, Quality Check and Cleansing</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -396,12 +396,12 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">2.3 Importing, Quality Check and Cleansing</h1>
-  <p class="subtitle">Actuarial Data Science Applications (ACTL4305/5305)</p>
+  <p class="subtitle">Actuarial Data Science Online Textbook</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Fei Huang, UNSW 
+Fei Huang, UNSW Sydney 
 </div>
 </div>
 </div>
@@ -562,24 +562,24 @@ Fei Huang, UNSW
 <span id="cb7-5"><a></a><span class="co"># Extract by name</span></span>
 <span id="cb7-6"><a></a>df<span class="sc">$</span>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.15286430 0.09037548 0.23062017 0.49392290 0.90194813</code></pre>
+<pre><code>[1] 0.5603771 0.7288496 0.4594416 0.3568941 0.5793466</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a>df[[<span class="st">"x"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.15286430 0.09037548 0.23062017 0.49392290 0.90194813</code></pre>
+<pre><code>[1] 0.5603771 0.7288496 0.4594416 0.3568941 0.5793466</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="co"># Extract by position</span></span>
 <span id="cb11-2"><a></a>df[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.15286430 0.09037548 0.23062017 0.49392290 0.90194813</code></pre>
+<pre><code>[1] 0.5603771 0.7288496 0.4594416 0.3568941 0.5793466</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a>df <span class="sc">%&gt;%</span> .<span class="sc">$</span>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.15286430 0.09037548 0.23062017 0.49392290 0.90194813</code></pre>
+<pre><code>[1] 0.5603771 0.7288496 0.4594416 0.3568941 0.5793466</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a>df <span class="sc">%&gt;%</span> .[[<span class="st">"x"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.15286430 0.09037548 0.23062017 0.49392290 0.90194813</code></pre>
+<pre><code>[1] 0.5603771 0.7288496 0.4594416 0.3568941 0.5793466</code></pre>
 </div>
 </div>
 </section></section>

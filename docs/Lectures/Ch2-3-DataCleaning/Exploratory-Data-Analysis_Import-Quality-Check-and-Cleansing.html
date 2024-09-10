@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Fei Huang, UNSW">
+<meta name="author" content="Fei Huang, UNSW Sydney">
 
-<title>2.3 Importing, Quality Check and Cleansing – Actuarial Data Science Applications</title>
+<title>2.3 Importing, Quality Check and Cleansing – Actuarial Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -133,7 +133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="../../">Actuarial Data Science Applications</a> 
+      <a href="../../">Actuarial Data Science</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -308,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lectures/Ch2-1-DataVisualisation/Lecture-1-2-Data-Visualisation.html">Chapter 2 - Exploratory Data Analysis</a></li><li class="breadcrumb-item"><a href="../../Lectures/Ch2-3-DataCleaning/Exploratory-Data-Analysis_Import-Quality-Check-and-Cleansing.html">2.3 Importing, Quality Check and Cleansing</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">2.3 Importing, Quality Check and Cleansing</h1>
-<p class="subtitle lead">Actuarial Data Science Applications (ACTL4305/5305)</p>
+<p class="subtitle lead">Actuarial Data Science Online Textbook</p>
 </div>
 
 
@@ -318,7 +318,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Fei Huang, UNSW </p>
+             <p>Fei Huang, UNSW Sydney </p>
           </div>
   </div>
     
@@ -486,24 +486,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract by name</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.58564825 0.85247184 0.81810951 0.28079734 0.07148708</code></pre>
+<pre><code>[1] 0.73516989 0.03066636 0.03909845 0.69382542 0.60253210</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">"x"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.58564825 0.85247184 0.81810951 0.28079734 0.07148708</code></pre>
+<pre><code>[1] 0.73516989 0.03066636 0.03909845 0.69382542 0.60253210</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract by position</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.58564825 0.85247184 0.81810951 0.28079734 0.07148708</code></pre>
+<pre><code>[1] 0.73516989 0.03066636 0.03909845 0.69382542 0.60253210</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> .<span class="sc">$</span>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.58564825 0.85247184 0.81810951 0.28079734 0.07148708</code></pre>
+<pre><code>[1] 0.73516989 0.03066636 0.03909845 0.69382542 0.60253210</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> .[[<span class="st">"x"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.58564825 0.85247184 0.81810951 0.28079734 0.07148708</code></pre>
+<pre><code>[1] 0.73516989 0.03066636 0.03909845 0.69382542 0.60253210</code></pre>
 </div>
 </div>
 </section>
