@@ -21,7 +21,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -31,7 +51,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../Labs/Ch1-RMarkdown/R_Markdown_Introduction.html" rel="next">
+<link href="../../Lectures/Ch2-Question/State the Question.html" rel="next">
 <link href="../../index.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -130,18 +150,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">1.1 Introduction to Actuarial Data Science</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Labs/Ch1-RMarkdown/R_Markdown_Introduction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab: R Markdown Introduction</span></a>
-  </div>
-</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Chapter 2 - Exploratory Data Analysis</span></a>
+ <span class="menu-text">Chapter 2 - State the Question</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -149,39 +163,88 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lectures/Ch2-1-DataVisualisation/Lecture-1-2-Data-Visualisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2.1 Data Visualisation</span></a>
+  <a href="../../Lectures/Ch2-Question/State the Question.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2.1 State the Question</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lectures/Ch2-2-DataManipulation/Exploratory Data Analysis_Manipulation and Transformation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2.2 Data Manipulation and Transformation</span></a>
+  <a href="../../Lectures/Ch2-Question/Slides-Introduction and Question.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Slides: Introduction to Actuarial Data Science and State the Question</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lectures/Ch2-3-DataCleaning/Exploratory-Data-Analysis_Import-Quality-Check-and-Cleansing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2.3 Importing, Quality Check and Cleansing</span></a>
+  <a href="../../Labs/Lab1-Quarto/Lab-R_Markdown_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab: R Markdown Introduction</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 3 - Exploratory Data Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-EDA/Ch3-1-DataVisualisation/Slides-Data-Visualisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Slides: Data Visualisation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Labs/Ch2-1-DataVisualisation/Data_Visualisation.html" class="sidebar-item-text sidebar-link">
+  <a href="../../Lectures/Ch3-EDA/Ch3-2-DataManipulation/Slides-Data Manipulation and Transformation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Slides: Data Manipulation and Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-EDA/Ch3-3-DataCleaning/Slides-Import-Quality-Check-and-Cleansing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Slides: Importing, Quality Check and Cleansing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Labs/Lab2-EDA/Lab2-1-DataVisualisation/Lab-Data_Visualisation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab: Data Visualisation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Labs/Ch2-2-DataManipulation/Data Manipulation_and_Transformation_Solution.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab: Data Manipulation and Transformation</span></a>
+  <a href="../../Labs/Lab2-EDA/Lab2-2-DataManipulation/Lab-Data Manipulation_and_Cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab: Data Manipulation and Cleaning</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Chapter 3 - Modeling</span></span>
+ <span class="menu-text">Chapter 4 - Models</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 5 - Interpretations</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 6 - Communication</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 7 - Deployment</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 8 - Ethics</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 9 - Conclusion</span></span>
   </li>
     </ul>
     </div>
@@ -193,32 +256,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#activity-getting-to-know-you" id="toc-activity-getting-to-know-you" class="nav-link active" data-scroll-target="#activity-getting-to-know-you">Activity: Getting to know you</a></li>
-  <li><a href="#course-introduction" id="toc-course-introduction" class="nav-link" data-scroll-target="#course-introduction">Course Introduction</a></li>
-  <li><a href="#anticipated-achievements" id="toc-anticipated-achievements" class="nav-link" data-scroll-target="#anticipated-achievements">Anticipated achievements</a></li>
-  <li><a href="#reading-list-for-this-lecture" id="toc-reading-list-for-this-lecture" class="nav-link" data-scroll-target="#reading-list-for-this-lecture">Reading List for this lecture</a></li>
-  <li><a href="#learning-objectives-for-this-lecture" id="toc-learning-objectives-for-this-lecture" class="nav-link" data-scroll-target="#learning-objectives-for-this-lecture">Learning Objectives for this lecture</a></li>
-  <li><a href="#aims-of-this-course" id="toc-aims-of-this-course" class="nav-link" data-scroll-target="#aims-of-this-course">Aims of this course</a></li>
-  <li><a href="#from-data-to-value" id="toc-from-data-to-value" class="nav-link" data-scroll-target="#from-data-to-value">From Data to Value</a></li>
-  <li><a href="#interdisciplinary-area" id="toc-interdisciplinary-area" class="nav-link" data-scroll-target="#interdisciplinary-area">Interdisciplinary Area</a></li>
-  <li><a href="#data-analysis-is-an-art" id="toc-data-analysis-is-an-art" class="nav-link" data-scroll-target="#data-analysis-is-an-art">Data Analysis is an Art</a></li>
-  <li><a href="#the-actuarial-control-cycle" id="toc-the-actuarial-control-cycle" class="nav-link" data-scroll-target="#the-actuarial-control-cycle">The Actuarial Control Cycle</a></li>
-  <li><a href="#data-analysis-cycle" id="toc-data-analysis-cycle" class="nav-link" data-scroll-target="#data-analysis-cycle">Data Analysis Cycle</a></li>
-  <li><a href="#the-5-steps-of-the-data-analysis-cycle-dac" id="toc-the-5-steps-of-the-data-analysis-cycle-dac" class="nav-link" data-scroll-target="#the-5-steps-of-the-data-analysis-cycle-dac">The 5 steps of the data analysis cycle (DAC)</a></li>
-  <li><a href="#the-epicycle-for-each-step" id="toc-the-epicycle-for-each-step" class="nav-link" data-scroll-target="#the-epicycle-for-each-step">The epicycle for each step</a></li>
-  <li><a href="#applying-the-epicycle-to-stating-and-refining-your-question-step-1" id="toc-applying-the-epicycle-to-stating-and-refining-your-question-step-1" class="nav-link" data-scroll-target="#applying-the-epicycle-to-stating-and-refining-your-question-step-1">Applying the Epicycle to Stating and Refining Your Question (Step 1)</a></li>
-  <li><a href="#activity" id="toc-activity" class="nav-link" data-scroll-target="#activity">Activity</a></li>
-  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions">Questions:</a></li>
-  <li><a href="#questions-continued" id="toc-questions-continued" class="nav-link" data-scroll-target="#questions-continued">Questions (continued):</a></li>
-  <li><a href="#what-is-the-question" id="toc-what-is-the-question" class="nav-link" data-scroll-target="#what-is-the-question">What is the Question?</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
-  <li><a href="#activity-1" id="toc-activity-1" class="nav-link" data-scroll-target="#activity-1">Activity</a></li>
-  <li><a href="#characteristics-of-a-good-question" id="toc-characteristics-of-a-good-question" class="nav-link" data-scroll-target="#characteristics-of-a-good-question">Characteristics of a Good Question</a></li>
-  <li><a href="#translating-a-question-into-a-data-problem" id="toc-translating-a-question-into-a-data-problem" class="nav-link" data-scroll-target="#translating-a-question-into-a-data-problem">Translating a Question into a Data Problem</a></li>
-  <li><a href="#business-environment" id="toc-business-environment" class="nav-link" data-scroll-target="#business-environment">Business Environment</a></li>
-  <li><a href="#activity-2" id="toc-activity-2" class="nav-link" data-scroll-target="#activity-2">Activity</a></li>
+  <li><a href="#data-analysis-cycle-dac" id="toc-data-analysis-cycle-dac" class="nav-link active" data-scroll-target="#data-analysis-cycle-dac">Data Analysis Cycle (DAC)</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Introduction to Actuarial Data Science.slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Introduction-to-Actuarial-Data-Science.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -249,297 +289,55 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><img src="plot/Fei_Huang.jpeg" class="img-fluid" style="width:60.0%"></p>
-<p><a href="https://www.unsw.edu.au/staff/fei-huang">Dr.&nbsp;Fei Huang</a><br>
-Lecturer-in-charge<br>
-School of Risk and Actuarial Studies<br>
-E: feihuang@unsw.edu.au</p>
-<ul>
-<li>BSc (Math), MPhil (Act. Sci.), PhD (Act. Sci.), SFHEA</li>
-<li>Research: Ethical AI and Data Science for Insurance</li>
-<li>Teaching: Actuarial Data Science, Statistical Machine Learning, Data Visualisation and Communication</li>
-<li>Engagement: Industry, Government, Actuarial Professional Bodies</li>
-</ul>
-<section id="activity-getting-to-know-you" class="level3">
-<h3 class="anchored" data-anchor-id="activity-getting-to-know-you">Activity: Getting to know you</h3>
-<ul>
-<li>Self introduction</li>
-<li>Which industry are you working in (plan to work in)?</li>
-<li>What do you want to get most out of this course?</li>
-</ul>
-</section>
-<section id="course-introduction" class="level3">
-<h3 class="anchored" data-anchor-id="course-introduction">Course Introduction</h3>
-<ul>
-<li>Moodle introduction</li>
-<li>Learning recommendations</li>
-<li>Relationship with ACTL3142/5110 and other courses –&gt;</li>
-</ul>
-</section>
-<section id="anticipated-achievements" class="level3">
-<h3 class="anchored" data-anchor-id="anticipated-achievements">Anticipated achievements</h3>
-<ul>
-<li>Data Science Actuary with problem-solving skills
-<ul>
-<li>An end-to-end process to solve industry challenges</li>
-<li>Enhanced understanding and application of data science techniques in a real-world context</li>
-<li>Communication skills</li>
-<li>Working in groups</li>
-</ul></li>
-</ul>
-</section>
-<section id="reading-list-for-this-lecture" class="level3">
-<h3 class="anchored" data-anchor-id="reading-list-for-this-lecture">Reading List for this lecture</h3>
-<ul>
-<li><a href="https://bookdown.org/rdpeng/artofdatascience/">The Art of Data Science</a>, Chapters 1, 2 and 3.</li>
-</ul>
-</section>
-<section id="learning-objectives-for-this-lecture" class="level3">
-<h3 class="anchored" data-anchor-id="learning-objectives-for-this-lecture">Learning Objectives for this lecture</h3>
-<ul>
-<li>Understand the process to do data analysis, which is a specific application of the Actuarial Control Cycle</li>
-<li>Explain the key iterative steps involved in a data analytics project</li>
-<li>Understand and explain the different types of questions<br>
-</li>
-<li>Apply the process to do data analysis in a business setting</li>
-</ul>
-</section>
-<section id="aims-of-this-course" class="level3">
-<h3 class="anchored" data-anchor-id="aims-of-this-course">Aims of this course</h3>
+<p>With the rise of AI and Big Data, every firm has effectively become a data-driven enterprise. Whether it’s supermarkets, hairdressers, restaurants, or dentists, businesses of all types are collecting data on customer behavior and engagement. We are living in a data-driven era, where data has become one of the most valuable assets for any business. However, possessing data alone doesn’t automatically translate into insights or business value. It is crucial to apply the right data science techniques to extract meaningful insights and effectively communicate those findings to stakeholders.</p>
+<p>There are many textbooks available today that teach data science, statistical methods, and machine learning techniques. So, what does this textbook offer that’s different? While many excellent data science textbooks exist, they often focus on individual techniques or models without addressing the entire problem-solving process in a business setting. In contrast, this textbook aims to equip readers with the skills to solve data problems in real-world business environments. We guide you through the complete process: from asking the right questions and performing exploratory data analysis, to modeling, interpreting results, communicating findings, and considering ethical implications.</p>
+<p>This aim of this textbook is consistent with that of the Australian Actuaries Institue for their Part II Data Science Principles sysllabus.</p>
 <blockquote class="blockquote">
-<p>“<a href="https://www.actuaries.asn.au/Library/Education/2023/DSPsyllabus2023.pdf">Data Science Principles</a> – aims to extend students’ knowledge of modern analytical tools and techniques beyond those introduced in the Foundation Program subjects and to teach students how to apply this knowledge in real-life business settings”</p>
-</blockquote>
-<blockquote class="blockquote">
+“<a href="https://www.actuaries.asn.au/Library/Education/2023/DSPsyllabus2023.pdf">Data Science Principles</a> – aims to extend students’ knowledge of modern analytical tools and techniques beyond those introduced in the Foundation Program subjects and to teach students how to apply this knowledge in real-life business settings”
 <footer>
 — Actuaries Institute
 </footer>
 </blockquote>
-</section>
-<section id="from-data-to-value" class="level3">
-<h3 class="anchored" data-anchor-id="from-data-to-value">From Data to Value</h3>
-<ul>
-<li><p>Why choose this course?</p>
-<ul>
-<li>With the development of internet, databases, internet of things (IOT) etc., data is everywhere.</li>
-<li>Data can be very valuable but it is only valuable if you can analyse and utilize it properly.</li>
-<li>“Insurance is about using statistics to price risk, which is why data, properly collected and used, can transform the core of the product” – Lemonade CEO Daniel Schreiber</li>
-<li>Actuarial Data Analytics: integrating data science to actuarial studies.</li>
-</ul></li>
-<li><p>The goal of data analytics: ‘Data’ ==&gt; ‘Value’</p></li>
-<li><p>This course will cover the whole process of data anlaytics and its actuarial/business applications</p></li>
-</ul>
-</section>
-<section id="interdisciplinary-area" class="level3">
-<h3 class="anchored" data-anchor-id="interdisciplinary-area">Interdisciplinary Area</h3>
-<ul>
-<li>An interdisciplinary covering many different kinds of knowledge.
-<ul>
-<li>Statistics</li>
-<li>Machine Learning</li>
-<li>Database</li>
-<li>Optimization</li>
-<li>Algorithm and Programming</li>
-<li>Domain knowledge</li>
-<li>…</li>
-</ul></li>
-<li>This course mainly focuses on statistical machine learning and its actuarial applications.</li>
-</ul>
-</section>
-<section id="data-analysis-is-an-art" class="level3">
-<h3 class="anchored" data-anchor-id="data-analysis-is-an-art">Data Analysis is an Art</h3>
-<ul>
-<li>Data analysis is an <em>art</em>. It is not something yet that we can teach to a computer.</li>
-<li>Data analysts have many tools at their disposal, from linear regression to classification trees and even deep learning, and these tools have all been carefully taught to computers.</li>
-<li>But ultimately, a data analyst must find a way to assemble all of the tools and apply them to data to answer a relevant question—a question of interest to people.</li>
-</ul>
-</section>
-<section id="the-actuarial-control-cycle" class="level3">
-<h3 class="anchored" data-anchor-id="the-actuarial-control-cycle">The Actuarial Control Cycle</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="plot/Control_cycle.png" class="img-fluid figure-img" style="width:60.0%"></p>
-<figcaption>Actuarial Control Cycle<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></figcaption>
+<p>Data science is an interdisciplinary subject that covers many different subjects, including but not limited to Statistics, Machine Learning, Database,Optimization, Algorithm and Programming, Domain knowledge in a business setting. This book mainly focuses on applying the data analysis cycle with tatistical machine learning techniques to tackle actuarial applications, called Actuarial Data Science. The techniques and concepts introduced in this book can be widely applied to other business problems. So this book can also be used as a textbook to solve general business data problems.</p>
+<p>It is easy to argue that Data Science is a science and engineering related subject with many quantitative tools. However, it is important to bear in mind that Data Scinece is also an <em>art</em> <span class="citation" data-cites="peng2015art">(<a href="#ref-peng2015art" role="doc-biblioref">Peng and Matsui 2015</a>)</span>. It is not something yet that we can teach to a computer. Although there are many data analysis tools, from linear regression to classification trees and even deep learning, and these tools have all been coded as software packages, however, a data scientist must make lots of judgement calls during the problem solving process, select a set of tools for each specific data problem, and communicate the results in an appropriate format to stakeholders. Those judgements and communications are not able to be delivered by a computer, at least for now.</p>
+<section id="data-analysis-cycle-dac" class="level3">
+<h3 class="anchored" data-anchor-id="data-analysis-cycle-dac">Data Analysis Cycle (DAC)</h3>
+<p>Actuaries apply Actuarial Control Cycle (ACC) as shown in figure <a href="#fig-acc" class="quarto-xref">Figure&nbsp;1</a> for problem solving. <a href="#fig-acc" class="quarto-xref">Figure&nbsp;1</a> is taken from <span class="citation" data-cites="bellis2003understanding">Bellis et al. (<a href="#ref-bellis2003understanding" role="doc-biblioref">2003</a>)</span>.</p>
+<div id="fig-acc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-acc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="plot/Control_cycle.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-acc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Actuarial Control Cycle
+</figcaption>
 </figure>
 </div>
-</section>
-<section id="data-analysis-cycle" class="level3">
-<h3 class="anchored" data-anchor-id="data-analysis-cycle">Data Analysis Cycle</h3>
-<ul>
-<li>Data analysis is a highly iterative and non-linear process, better reflected by a series of epicycles.</li>
-<li>The data analysis process is a specific application of the Actuarial Control Cycle and we call it Data Analysis Cycle (DAC).</li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="plot/Epicycles.png" class="img-fluid figure-img" style="width:40.0%"></p>
-<figcaption>Source: The Art of Data Science</figcaption>
-</figure>
-</div>
-</section>
-<section id="the-5-steps-of-the-data-analysis-cycle-dac" class="level3">
-<h3 class="anchored" data-anchor-id="the-5-steps-of-the-data-analysis-cycle-dac">The 5 steps of the data analysis cycle (DAC)</h3>
+<p>Similarly, we develop Data Analysis Cycle (DAC) to solve data problems. Data analysis is a highly iterative and non-linear process including six key steps. The data analysis process is a specific application of the Actuarial Control Cycle and we call it Data Analysis Cycle (DAC).</p>
+<p>The six steps of DAC is listed below:</p>
 <ol type="1">
-<li>Stating and refining the question</li>
-<li>Exploring the data</li>
-<li>Building formal statistical models</li>
-<li>Interpreting the results</li>
-<li>Communicating the results</li>
+<li>State the question</li>
+<li>Explore the data</li>
+<li>Build the models</li>
+<li>Interpret the results</li>
+<li>Communicate the results</li>
+<li>Deploy the model</li>
 </ol>
+<p>Throughout the process, we always need to consider ethics and professionalism. These six steps are all built on deep understanding of the business context.</p>
+<p>In the following chapters we illustrate how to apply the Data Analysis Cycle (DAC) to solve real-world business problems.</p>
+
+
+
 </section>
-<section id="the-epicycle-for-each-step" class="level3">
-<h3 class="anchored" data-anchor-id="the-epicycle-for-each-step">The epicycle for each step</h3>
-<ul>
-<li>Setting Expectations,</li>
-<li>Collecting information (data), comparing the data to your expectations, and if the expectations don’t match,</li>
-<li>Revising your expectations or fixing the data so your data and your expectations match.</li>
-</ul>
-</section>
-<section id="applying-the-epicycle-to-stating-and-refining-your-question-step-1" class="level3">
-<h3 class="anchored" data-anchor-id="applying-the-epicycle-to-stating-and-refining-your-question-step-1">Applying the Epicycle to Stating and Refining Your Question (Step 1)</h3>
-<p>You can now use the information about the types of questions and characteristics of good questions as a guide to refining your question. To accomplish this, you can iterate through the 3 steps of:</p>
-<ul>
-<li><p>Establishing your expectations about the question</p></li>
-<li><p>Gathering information about your question</p></li>
-<li><p>Determining if your expectations match the information you gathered, and then refining your question (or expectations) if your expectations did not match the information you gathered</p></li>
-</ul>
-</section>
-<section id="activity" class="level3">
-<h3 class="anchored" data-anchor-id="activity">Activity</h3>
-<ul>
-<li>Please form into groups and get to know each other.</li>
-<li>Please select one data science problem (based on your own experience) for your group.</li>
-<li>Please follow the epicycle analysis to state and refine your question (Step 1 of the Data Analysis Cycle).</li>
-<li>Please summarise the key points and share them on the Teams channel.</li>
-</ul>
-</section>
-<section id="questions" class="level3">
-<h3 class="anchored" data-anchor-id="questions">Questions<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</h3>
-<ul>
-<li><strong>Descriptive</strong>: summarize the measurements in a single data set without further interpretation.
-<ul>
-<li>Example: Australian Census</li>
-</ul></li>
-<li><strong>Exploratory</strong>: builds on a descriptive analysis by searching for discoveries, trends, correlations, or relationships between the measurements to generate ideas or hypotheses.
-<ul>
-<li>Example: the four-star planetary system Tatooine was discovered when amateur astronomers explored public astronomical data from the Kepler telescope.</li>
-</ul></li>
-<li><strong>Inferential</strong>: quantifies whether an observed pattern will likely hold beyond the data set in hand. This is the most common statistical analysis in the formal scientific literature
-<ul>
-<li>Example: a study of whether air pollution correlates with life expectancy at the state level in the United States</li>
-</ul></li>
-</ul>
-</section>
-<section id="questions-continued" class="level3">
-<h3 class="anchored" data-anchor-id="questions-continued">Questions (continued):</h3>
-<ul>
-<li><strong>Predictive</strong>: uses a subset of measurements (the features) to predict another measurement (the outcome) on a single person or unit.
-<ul>
-<li>Example: web sites use polling data to predict how people will vote in an election.</li>
-</ul></li>
-<li><strong>Causal</strong>: asks about whether changing one factor will change another factor, on average, in a population.
-<ul>
-<li>Example: decades of data show a clear causal relationship between smoking and cancer.</li>
-</ul></li>
-<li><strong>Mechanistic</strong> seeks to show that changing one measurement always and exclusively leads to a specific, deterministic behavior in another.
-<ul>
-<li>Example: data analysis has shown how wing design changes air flow over a wing, leading to decreased drag. Outside of engineering, mechanistic data analysis is extremely challenging and rarely achievable.</li>
-</ul></li>
-</ul>
-</section>
-<section id="what-is-the-question" class="level3">
-<h3 class="anchored" data-anchor-id="what-is-the-question">What is the Question?</h3>
-<blockquote class="blockquote">
-<p>“We have found that the most frequent failure in data analysis is mistaking the type of question being considered.”</p>
-</blockquote>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="plot/question.png" class="img-fluid figure-img" style="width:60.0%"></p>
-<figcaption>What is the question?<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></figcaption>
-</figure>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-bellis2003understanding" class="csl-entry" role="listitem">
+Bellis, Clare, Richard Lyon, Stuart A Klugman, and John Shepherd. 2003. <em>Understanding Actuarial Management: The Actuarial Control Cycle</em>. The Institute of Actuaries of Australia; the Society of Actuaries.
 </div>
-</section>
-<section id="example" class="level3">
-<h3 class="anchored" data-anchor-id="example">Example</h3>
-<ul>
-<li>Is it causal?
-<ul>
-<li>Example: analyses of the relationship between cellphones and brain cancer (<a href="https://fivethirtyeight.com/features/cellphones-do-not-give-you-brain-cancer/">link</a>)</li>
-</ul></li>
-</ul>
-</section>
-<section id="activity-1" class="level3">
-<h3 class="anchored" data-anchor-id="activity-1">Activity</h3>
-<ul>
-<li>Please specify the question type your team has specified in the previous activity</li>
-<li>Plesae share the refined question and the question type by replying to your previous post in the Teams channel.</li>
-<li>Please challenge your questions:
-<ul>
-<li>Why is this an important question? Who cares about this question?</li>
-<li>Has this question been already answered?</li>
-<li>Is this question answerable?</li>
-<li>Is this question too broad? Can we make it more specific?</li>
-</ul></li>
-<li>What makes a good question?</li>
-</ul>
-</section>
-<section id="characteristics-of-a-good-question" class="level3">
-<h3 class="anchored" data-anchor-id="characteristics-of-a-good-question">Characteristics of a Good Question</h3>
-<ol type="1">
-<li>The question should be of interest to your audience, the identity of which will depend on the context and environment in which you are working with data</li>
-<li>You should also check that the question has not already been answered.</li>
-<li>The question should also stem from a plausible framework</li>
-<li>The question, should also, of course, be answerable.</li>
-<li>Specificity is also an important characteristic of a good question.</li>
-</ol>
-</section>
-<section id="translating-a-question-into-a-data-problem" class="level3 scrollable">
-<h3 class="scrollable anchored" data-anchor-id="translating-a-question-into-a-data-problem">Translating a Question into a Data Problem<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></h3>
-<ul>
-<li>Every question must be operationalized as a data analysis that leads to a result.</li>
-<li>Think through what the results of the data analysis would look like and how they might be interpreted.</li>
-<li>What sorts of questions don’t lead to interpretable answers?
-<ul>
-<li>A question that uses inappropriate data – make sure that the data available to answer your question provide reasonably specific measures of the factors required to answer your question,</li>
-<li>a factor that you were not necessarily considering in your question is related to both your exposure of interest and your outcome of interest,</li>
-<li>the result is not interpretable because the underlying way in which the data were collected lead to a biased result,</li>
-<li>selection bias, which occurs when the data your are analyzing were collected in such a way to inflate the proportion of people who have both characteristics above what exists in the general population.</li>
-</ul></li>
-</ul>
-</section>
-<section id="business-environment" class="level3">
-<h3 class="anchored" data-anchor-id="business-environment">Business Environment</h3>
-<ul>
-<li>Objectives</li>
-<li>Constraints</li>
-<li>Operating environment
-<ul>
-<li>competitors</li>
-<li>consumers</li>
-<li>management issues</li>
-</ul></li>
-</ul>
-</section>
-<section id="activity-2" class="level3">
-<h3 class="anchored" data-anchor-id="activity-2">Activity</h3>
-<p>Assume you are an actuary working for a consulting firm. In your company, there are now two teams (Team A and Team B) working on different projects.</p>
-<p>Team A works on forecasting the demand for a grocery retailer. This project needs to estimate the demand so the rest of the supply chain knows the amount of products to send to stores. Once the demand is predicted, the supply chain can work out how much to order, when and where to send it. Over-forecasting leads to waste. Under-forecasting leads to lost sales. Prediction accuracy is the most important consideration for this project.</p>
-<p>Team B works on predicting the claims for a motor insurer, specifically for their comprehensive insurance product. This project needs to predict the number of claims and the amount of claims next year so as to set appropriate premiums for prospective policy holders. Over-estimating claims will make their premiums non-competitive and under-estimating claims could lead to losses. The interpretability and ease of implementation of the model is more important than prediction accuracy. However, the model should be reasonably predictive.</p>
-<ul>
-<li>Question: List the Objectives, Operation Environment, and Constratins for each of the cases.</li>
-</ul>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>Reference: Understanding Actuarial Management: the actuarial control cycle<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><a href="https://science.sciencemag.org/content/347/6228/1314">Reference: Leek and Peng (2015)</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Reference: <a href="https://science.sciencemag.org/content/347/6228/1314">Leek and Peng (2015)</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Read Chapter 3.4 of The Art of Data Science for more detailed explanation<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+<div id="ref-peng2015art" class="csl-entry" role="listitem">
+Peng, Roger D, and Elizabeth Matsui. 2015. <em>The Art of Data Science: A Guide for Anyone Who Works with Data</em>. Skybrude Consulting, LLC.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -967,8 +765,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../Labs/Ch1-RMarkdown/R_Markdown_Introduction.html" class="pagination-link" aria-label="Lab: R Markdown Introduction">
-        <span class="nav-page-text">Lab: R Markdown Introduction</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../Lectures/Ch2-Question/State the Question.html" class="pagination-link" aria-label="2.1 State the Question">
+        <span class="nav-page-text">2.1 State the Question</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
