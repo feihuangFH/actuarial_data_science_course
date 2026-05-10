@@ -61,5 +61,85 @@
     "title": "Lab: GLM",
     "section": "Appendix",
     "text": "Appendix\n\nChi-square Goodness-of-Fit Test for Frequency Data\nWhen an analyst attempts to fit a statistical model to observed data, they may wonder how well the model reflects the data. In particular, how close are the observed values to those expected under the fitted model?\nOne statistical test that addresses this issue is the chi-square goodness-of-fit test; see Chi-Square Goodness of Fit Test for further details.\n\n\\chi^2 =\n\\sum\n\\frac{\n(\\text{observed} - \\text{expected})^2\n}{\n\\text{expected}\n}\n\nChi-square goodness-of-fit statistics can be used to compare different models. If the computed test statistic is large, then the observed and expected values are not close, suggesting that the model may provide a poor fit to the data."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Actuarial Data Science",
+    "section": "",
+    "text": "This is an Open Learning Resource for Actuarial Data Science. It covers an end-to-end problem solving process with data science techniques to tackle various data problems in a business context.\n\n\n\n\n\n\nStart here\n\n\n\nUse the left sidebar to open any chapter, or jump to Lectures and Labs below; the Actuarial Datathon section comes next and explains how the industry challenge maps to these chapters. Each list item links to the HTML notes; many rows also include PDF or slide downloads.\nTeaching in Tune — AI-assisted songs that turn course ideas (GLMs, shrinkage, random forests, and more) into memorable tracks — is in the sidebar as Teaching in Tune, or jump straight to the music section for track notes and an embedded SoundCloud player on this page.\n\n\n\n\n\n\n\nChapter 1: Introduction\n\nIntroduction to Actuarial Data Science (pdf) (slides)\n\nChapter 2: Problem Statement\n\nProblem Statement (slides)\n\nChapter 3: Data\n\nData Visualisation (slides) \nData Manipulation and Transformation (slides) \nData Collection and Cleaning (slides) \n\nChapter 4: (Predictive and Inferential) Modelling\n\nModelling and Shrinkage Techniques (slides)\nGLM (slides)\nRandom Forest (slides)\nGradient Boosting Machine (slides)\nNeural_Networks (slides)\n\nChapter 5: Evaluation\n\nEvaluation (slides)\n\nChapter 6: Communication\n\nCommunication (slides)\n\nChapter 7: Ethics\n\nEthics (slides)\n\n\n\n\n\n\n\nChapter 1 & 2: Introduction & Problem Statement\n\nLab: R Markdown Introduction (pdf) \n\nChapter 3: Data\n\nLab: Data Visualisation (pdf) \nLab: Data Manipulation and Cleaning (pdf) \n\nChapter 4: Modelling\n\nLab: Modelling and Shrinkage Techniques (pdf)\nLab: GLM (pdf)\nLab: RandomForest (pdf)\nLab: GradientBoostingMachine (pdf)\nLab: NeuralNetworks (pdf)\n\nChapter 5: Evaluation\n\nLab: Evaluation (pdf)",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#overview",
+    "href": "index.html#overview",
+    "title": "Actuarial Data Science",
+    "section": "",
+    "text": "This is an Open Learning Resource for Actuarial Data Science. It covers an end-to-end problem solving process with data science techniques to tackle various data problems in a business context.\n\n\n\n\n\n\nStart here\n\n\n\nUse the left sidebar to open any chapter, or jump to Lectures and Labs below; the Actuarial Datathon section comes next and explains how the industry challenge maps to these chapters. Each list item links to the HTML notes; many rows also include PDF or slide downloads.\nTeaching in Tune — AI-assisted songs that turn course ideas (GLMs, shrinkage, random forests, and more) into memorable tracks — is in the sidebar as Teaching in Tune, or jump straight to the music section for track notes and an embedded SoundCloud player on this page.\n\n\n\n\n\n\n\nChapter 1: Introduction\n\nIntroduction to Actuarial Data Science (pdf) (slides)\n\nChapter 2: Problem Statement\n\nProblem Statement (slides)\n\nChapter 3: Data\n\nData Visualisation (slides) \nData Manipulation and Transformation (slides) \nData Collection and Cleaning (slides) \n\nChapter 4: (Predictive and Inferential) Modelling\n\nModelling and Shrinkage Techniques (slides)\nGLM (slides)\nRandom Forest (slides)\nGradient Boosting Machine (slides)\nNeural_Networks (slides)\n\nChapter 5: Evaluation\n\nEvaluation (slides)\n\nChapter 6: Communication\n\nCommunication (slides)\n\nChapter 7: Ethics\n\nEthics (slides)\n\n\n\n\n\n\n\nChapter 1 & 2: Introduction & Problem Statement\n\nLab: R Markdown Introduction (pdf) \n\nChapter 3: Data\n\nLab: Data Visualisation (pdf) \nLab: Data Manipulation and Cleaning (pdf) \n\nChapter 4: Modelling\n\nLab: Modelling and Shrinkage Techniques (pdf)\nLab: GLM (pdf)\nLab: RandomForest (pdf)\nLab: GradientBoostingMachine (pdf)\nLab: NeuralNetworks (pdf)\n\nChapter 5: Evaluation\n\nLab: Evaluation (pdf)",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#datathon",
+    "href": "index.html#datathon",
+    "title": "Actuarial Data Science",
+    "section": "Industry case competition: Actuarial Datathon",
+    "text": "Industry case competition: Actuarial Datathon\nThe Actuarial Datathon is an industry case competition embedded in the UNSW course Actuarial Data Science Applications (ACTL4305 / ACTL5305), which sits on the Actuaries Institute Part II Data Science Principles pathway. It is designed so that a single, coherent business challenge runs through the term while several partners contribute different lenses—data and domain context, consulting practice, and entrepreneurship.\nIndustry partners have included insurers (providing business context and data for industry case challenges), consulting firms (providng thought leadership and guest teaching on insurance data science in practice), and venture capital firms (providing entrepreneurial perspective and hosting of the final pitch). Together, this mirrors how real projects sit at the intersection of data science, communication, innovation, and commercial decision-making.\nHow it connects to this open resource. You can treat the Datathon as the “spine” of the end-to-end workflow the materials teach:\n\n\n\nCourse stage\nWhat students practise in the challenge\nWhere to study it here\n\n\n\n\nProblem framing & strategy\nDefining the pricing problem, constraints, and competitive setting\nProblem statement, Introduction\n\n\nData\nWorking with internal and external data, quality checks, features\nVisualisation, Manipulation, Cleaning\n\n\nModelling\nInterpretable risk pricing, segmentation, model choice\nModelling topics and specialised chapters (e.g. GLM, GBM)\n\n\nEvaluation\nComparing approaches and defending choices under uncertainty\nEvaluation\n\n\nCommunication & ethics\nStoryline for stakeholders, responsible use of models and data\nCommunication, Ethics\n\n\n\nIn the live course, teams often operate like start-ups: building models, testing strategies in a simulated market (many notional competitors and customers), and presenting to an industry panel.\nFurther reading and media.\nThe table below lists industry-integrated projects from ACTL4305/5305 (Actuarial Data Science Applications, 2020–present) and ACTL3142/5110(Statistical Machine Learning for Risk and Insurance Applications, 2021–2022), run through the Actuarial Datathon or Sandbox projects.\n\n\n\nCourse\nYear\nProject\nPartner(s)\nLinks\n\n\n\n\nACTL4305/5305\n2025\nDatathon: Travel insurance conversion — insights and growth opportunities\nFreely, Zurich Cover-More, Taylor Fry\nEvent video\n\n\nACTL4305/5305\n2024\nDatathon: Competing for pet insurance customers — a pricing competition\nFetch, AirTree, Finity\nEvent video · When Students Become Startups (Actuaries Digital)\n\n\nACTL4305/5305\n2023\nSandbox: Understanding bushfire event risk across Australia\nSuncorp\nEvent video\n\n\nACTL4305/5305\n2022\nSandbox: Multi-coverage claim modelling for insurance packaged products\nIAG\nEvent video\n\n\nACTL4305/5305\n2021\nSandbox: Pricing models for SME building insurance with high-cardinality features\nSuncorp\nEvent video\n\n\nACTL3142/5110\n2022\nSandbox: Predicting claims inflation for commercial auto insurance pricing\nIAG\nEvent video\n\n\n\n\n\n\n\n\n\nFor UNSW students\n\n\n\nBriefing packs, datasets, deadlines, and assessment weightings are published on your course Moodle page each term and may differ from earlier offerings. Use this textbook for methods; use Moodle for the authoritative task sheet.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#teaching-in-tune",
+    "href": "index.html#teaching-in-tune",
+    "title": "Actuarial Data Science",
+    "section": "AI-assisted music: Teaching in Tune",
+    "text": "AI-assisted music: Teaching in Tune\nTeaching in Tune on SoundCloud — Exploring AI-assisted learning through songs.\nPlay on this page (SoundCloud widget — use the controls below, or open the set on SoundCloud if the player does not load, e.g. due to browser privacy settings).\n\n\n\nTeaching in Tune is an AI-assisted playlist that turns quantitative ideas from machine learning into songs that are memorable, human, and fun to learn from. Tracks tie to ACTL4305/5305 (Actuarial Data Science Applications). Highlights include:\n\nFrom Data to Value — Course theme song. The core mission of actuarial data science: extracting value from data through careful analysis.\nLink It Right — an upbeat introduction to generalised linear models (GLMs).\nDon’t Overfit — a playful take on shrinkage (LASSO, ridge, elastic net) and the bias–variance trade-off.\nIn the Forest of Trees (Random Forest) — the random forest machine learning technique from the modelling topics in the course.\n\nHear the full playlist on SoundCloud: Teaching in Tune.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#about-the-author",
+    "href": "index.html#about-the-author",
+    "title": "Actuarial Data Science",
+    "section": "About the Author",
+    "text": "About the Author\n\n\n\n\n\nDr. Fei Huang\n\nSchool of Risk and Actuarial Studies, UNSW Business School\nEmail: feihuang@unsw.edu.au · Website: feihuang.org\n\nDr. Fei Huang is an Associate Professor (with tenure) in Risk and Actuarial Studies at UNSW Business School. She holds degrees from Xiamen University (BSc), the University of Hong Kong (MPhil), and the Australian National University (PhD). Her research sits at the intersection of responsible AI, insurance, and data-driven decision-making, with emphasis on insurance and retirement systems that stay fair, sustainable, and resilient amid technological and climate change. She draws on statistics, machine learning, economics, and actuarial science to develop approaches that are accurate, interpretable, and equitable.\nHer work has been recognised with awards including the Australian Business Deans Council Award for Innovation and Excellence in Research, the Dean’s Award for Distinction, the North American Actuarial Journal Best Paper Award, and the Actuaries Institute Volunteer of the Year Award, and is supported by competitive funding such as Australian Research Council Discovery Projects and the National Industry PhD Program. She is a columnist for Actuaries Digital, works with industry and government on topics from fair pricing to longevity and climate resilience, and has advised regulators internationally—including as an invited expert at the New York State Assembly public hearing on AI in insurance. At UNSW she teaches actuarial data science and responsible AI and has received multiple teaching excellence awards.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#license",
+    "href": "index.html#license",
+    "title": "Actuarial Data Science",
+    "section": "License",
+    "text": "License\nThis repository includes references from other open books, each subject to their respective licenses. All materials created by me are licensed under the Attribution 4.0 International (CC BY 4.0) license. For more details, please refer to the LICENSE file included in this repository.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-cite",
+    "href": "index.html#how-to-cite",
+    "title": "Actuarial Data Science",
+    "section": "How to cite",
+    "text": "How to cite\nIf you are using this textbook in your academic work, please find below an example for referencing it using the APA citation style.\nHuang, F. (2026). Actuarial Data Science - Open Learning Resource. https://datascience.feihuang.org (GitHub Pages mirror: https://feihuangfh.github.io/actuarial_data_science_course; source: https://github.com/feihuangFH/actuarial_data_science_course).",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#acknowledgement",
+    "href": "index.html#acknowledgement",
+    "title": "Actuarial Data Science",
+    "section": "Acknowledgement",
+    "text": "Acknowledgement\n\nThis online textbook is developed for teaching the course “Actuarial Data Science Applications” (coded as ACTL4305 and ACTL5305) at UNSW Sydney.\nI would like to express my gratitude to my tutors of the courses ACTL4305/5305, Yumo Dong, Xi Xin, and Salvatory Kessy, for their invaluable contributions in developing the lab materials. Special thanks to Xi Xin for his critical and comprehensive review of the materials.\nA special thanks to all the students who have taken this course from 2020 to the present, whose feedback and engagement have greatly enhanced the course over the years.\nI would also like to extend my appreciation to Dr. Patrick Laub for his assistance in building the course website using Quarto.\nThe development of this course content has been informed by several key references, including but not limited to the following book references, as well as other sources noted throughout the course materials:\n\nWickham, H., & Grolemund, G. (2016). R for data science: import, tidy, transform, visualize, and model data. O’Reilly Media, Inc.\nPeng, R. D., & Matsui, E. (2016). The Art of Data Science: A guide for anyone who works with Data. Skybrude consulting LLC.\nJames, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An introduction to statistical learning. New York: Springer (the Second Edition of this book published in 2021).\nHastie, T., Tibshirani, R., & Friedman, J. (2009). The elements of statistical learning: data mining, inference, and prediction. Springer Science & Business Media.",
+    "crumbs": [
+      "Home"
+    ]
   }
 ]
