@@ -2,7 +2,7 @@ Actuarial Data Science Online Textbook
 ===========
 
 This is the repo for the course *Actuarial Data Science Applications* developed by
-[Fei Huang](https://www.unsw.edu.au/staff/fei-huang) at UNSW Sydney.
+[Fei Huang](https://www.feihuang.org) at UNSW Sydney.
 
 Please open the site at **[datascience.feihuang.org](https://datascience.feihuang.org)** (GitHub Pages mirror: [feihuangfh.github.io/actuarial_data_science_course](https://feihuangfh.github.io/actuarial_data_science_course)).
 
