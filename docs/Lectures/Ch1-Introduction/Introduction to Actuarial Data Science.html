@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.4.557">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Fei Huang, UNSW Sydney">
 
-<title>1.1 Introduction to Actuarial Data Science – Actuarial Data Science</title>
+<title>Actuarial Data Science - Introduction to Actuarial Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -51,7 +51,7 @@ div.csl-indent {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../Lectures/Ch2-Question/State the Question.html" rel="next">
+<link href="../../Lectures/Ch1-Introduction/Lecture-Introduction.html" rel="next">
 <link href="../../index.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -90,7 +90,9 @@ div.csl-indent {
   }
 }</script>
 <link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+
 <script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
 
 
 </head>
@@ -101,13 +103,13 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html">Chapter 1 - Introduction</a></li><li class="breadcrumb-item"><a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html">1.1 Introduction to Actuarial Data Science</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html">Chapter 1 - Introduction</a></li><li class="breadcrumb-item"><a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html">Introduction to Actuarial Data Science</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -137,9 +139,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
  <span class="menu-text">Chapter 1 - Introduction</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -147,100 +149,158 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">1.1 Introduction to Actuarial Data Science</span></a>
+ <span class="menu-text">Introduction to Actuarial Data Science</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch1-Introduction/Lecture-Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Introduction to Actuarial Data Science</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Chapter 2 - State the Question</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Chapter 2 - Problem Statement</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lectures/Ch2-Question/State the Question.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2.1 State the Question</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Lectures/Ch2-Question/Slides-Introduction and Question.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Slides: Introduction to Actuarial Data Science and State the Question</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Labs/Lab1-Quarto/Lab-R_Markdown_Introduction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab: R Markdown Introduction</span></a>
+  <a href="../../Lectures/Ch2-Problem Statement/Lecture-Problem Statement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Problem Statement</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Chapter 3 - Exploratory Data Analysis</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Chapter 3 - Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lectures/Ch3-EDA/Ch3-1-DataVisualisation/Slides-Data-Visualisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Slides: Data Visualisation</span></a>
+  <a href="../../Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Visualisation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lectures/Ch3-EDA/Ch3-2-DataManipulation/Slides-Data Manipulation and Transformation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Slides: Data Manipulation and Transformation</span></a>
+  <a href="../../Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Manipulation and Transformation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lectures/Ch3-EDA/Ch3-3-DataCleaning/Slides-Import-Quality-Check-and-Cleansing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Slides: Importing, Quality Check and Cleansing</span></a>
+  <a href="../../Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Quality Check and Cleaning</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Chapter 4 - Modelling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Modelling and Shrinkage techniques</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Labs/Lab2-EDA/Lab2-1-DataVisualisation/Lab-Data_Visualisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab: Data Visualisation</span></a>
+  <a href="../../Lectures/Ch4-Modelling/GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: GLM</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Labs/Lab2-EDA/Lab2-2-DataManipulation/Lab-Data Manipulation_and_Cleaning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab: Data Manipulation and Cleaning</span></a>
+  <a href="../../Lectures/Ch4-Modelling/Random_Forests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Random Forests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Gradient Boosting Machine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Neural_Networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Neural Networks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Chapter 5 - Evaluations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Model Assessment and Selection</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Chapter 6 - Communication</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch6-Communication/Communication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Communication</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Chapter 4 - Models</span></span>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Chapter 5 - Interpretations</span></span>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Chapter 6 - Communication</span></span>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
  <span class="menu-text">Chapter 7 - Deployment</span></span>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Chapter 8 - Ethics</span></span>
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text">Chapter 8 - Ethics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch8-Ethics/Ethics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Ethics</span></a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -256,17 +316,19 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data-analysis-cycle-dac" id="toc-data-analysis-cycle-dac" class="nav-link active" data-scroll-target="#data-analysis-cycle-dac">Data Analysis Cycle (DAC)</a></li>
+  <li><a href="#data-science-lifecycle-dsl" id="toc-data-science-lifecycle-dsl" class="nav-link active" data-scroll-target="#data-science-lifecycle-dsl">Data Science Lifecycle (DSL)</a></li>
+  <li><a href="#roadmap" id="toc-roadmap" class="nav-link" data-scroll-target="#roadmap">Roadmap</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Introduction-to-Actuarial-Data-Science.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html">Chapter 1 - Introduction</a></li><li class="breadcrumb-item"><a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html">1.1 Introduction to Actuarial Data Science</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html">Chapter 1 - Introduction</a></li><li class="breadcrumb-item"><a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html">Introduction to Actuarial Data Science</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">1.1 Introduction to Actuarial Data Science</h1>
-<p class="subtitle lead">Actuarial Data Science Online Textbook</p>
+<h1 class="title">Introduction to Actuarial Data Science</h1>
+<p class="subtitle lead">Actuarial Data Science - Open Learning Resource</p>
 </div>
 
 
@@ -289,50 +351,74 @@ div.csl-indent {
 </header>
 
 
-<p>With the rise of AI and Big Data, every firm has effectively become a data-driven enterprise. Whether it’s supermarkets, hairdressers, restaurants, or dentists, businesses of all types are collecting data on customer behavior and engagement. We are living in a data-driven era, where data has become one of the most valuable assets for any business. However, possessing data alone doesn’t automatically translate into insights or business value. It is crucial to apply the right data science techniques to extract meaningful insights and effectively communicate those findings to stakeholders.</p>
-<p>There are many textbooks available today that teach data science, statistical methods, and machine learning techniques. So, what does this textbook offer that’s different? While many excellent data science textbooks exist, they often focus on individual techniques or models without addressing the entire problem-solving process in a business setting. In contrast, this textbook aims to equip readers with the skills to solve data problems in real-world business environments. We guide you through the complete process: from asking the right questions and performing exploratory data analysis, to modeling, interpreting results, communicating findings, and considering ethical implications.</p>
-<p>This aim of this textbook is consistent with that of the Australian Actuaries Institue for their Part II Data Science Principles sysllabus.</p>
+<p>With the rise of AI and big data, every firm has effectively become a data-driven enterprise. Whether it is supermarkets, hairdressers, restaurants, or dentists, businesses of all types are collecting data on customer behaviour and engagement. We are living in a data-driven era, where data has become one of the most valuable assets for businesses. However, possessing data alone does not automatically translate into insights or business value. It is crucial to apply appropriate data science techniques to extract meaningful insights and communicate those findings effectively to stakeholders.</p>
+<p>There are many textbooks available today that cover data science, statistical methods, and machine learning techniques. What does this Open Learning Resource (OLR) offer that is different? While many excellent data science textbooks exist, they often focus on individual techniques or models without addressing the entire problem-solving process in a business setting. In contrast, this OLR aims to equip readers with the skills to solve data problems in real-world business environments. It guides readers through the complete process: from asking the right questions and performing exploratory data analysis to modeling, interpreting results, communicating findings, and considering ethical implications.</p>
+<p>The aim of this learning material is aligned with the Australian Actuaries Institute’s Part II Data Science Principles syllabus.</p>
 <blockquote class="blockquote">
-“<a href="https://www.actuaries.asn.au/Library/Education/2023/DSPsyllabus2023.pdf">Data Science Principles</a> – aims to extend students’ knowledge of modern analytical tools and techniques beyond those introduced in the Foundation Program subjects and to teach students how to apply this knowledge in real-life business settings”
-<footer>
-— Actuaries Institute
-</footer>
+<p>“The Data Science Principles aim to extend students’ knowledge of modern analytical tools and techniques beyond those introduced in the Foundation Program subjects and to teach students how to apply this knowledge in real-life business settings”</p>
+<p>— Actuaries Institute, <em>Data Science Principles syllabus</em></p>
 </blockquote>
-<p>Data science is an interdisciplinary subject that covers many different subjects, including but not limited to Statistics, Machine Learning, Database,Optimization, Algorithm and Programming, Domain knowledge in a business setting. This book mainly focuses on applying the data analysis cycle with tatistical machine learning techniques to tackle actuarial applications, called Actuarial Data Science. The techniques and concepts introduced in this book can be widely applied to other business problems. So this book can also be used as a textbook to solve general business data problems.</p>
-<p>It is easy to argue that Data Science is a science and engineering related subject with many quantitative tools. However, it is important to bear in mind that Data Scinece is also an <em>art</em> <span class="citation" data-cites="peng2015art">(<a href="#ref-peng2015art" role="doc-biblioref">Peng and Matsui 2015</a>)</span>. It is not something yet that we can teach to a computer. Although there are many data analysis tools, from linear regression to classification trees and even deep learning, and these tools have all been coded as software packages, however, a data scientist must make lots of judgement calls during the problem solving process, select a set of tools for each specific data problem, and communicate the results in an appropriate format to stakeholders. Those judgements and communications are not able to be delivered by a computer, at least for now.</p>
-<section id="data-analysis-cycle-dac" class="level3">
-<h3 class="anchored" data-anchor-id="data-analysis-cycle-dac">Data Analysis Cycle (DAC)</h3>
-<p>Actuaries apply Actuarial Control Cycle (ACC) as shown in figure <a href="#fig-acc" class="quarto-xref">Figure&nbsp;1</a> for problem solving. <a href="#fig-acc" class="quarto-xref">Figure&nbsp;1</a> is taken from <span class="citation" data-cites="bellis2003understanding">Bellis et al. (<a href="#ref-bellis2003understanding" role="doc-biblioref">2003</a>)</span>.</p>
-<div id="fig-acc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<p>Data science is an interdisciplinary field that covers many areas of knowledge, including but not limited to statistics, machine learning, databases, optimization, algorithms, programming, and domain knowledge in a business setting. This book mainly focuses on applying the data analysis cycle with statistical machine learning techniques to address actuarial applications, referred to as Actuarial Data Science. The techniques and concepts introduced in this book can be applied more broadly to other business problems. Therefore, this book can also be used as a textbook for solving general business data problems.</p>
+<p>It is often argued that data science is a discipline rooted in science and engineering, with a vast arsenal of quantitative tools. However, it is important to recognise that data science is also an art <span class="citation" data-cites="peng2015art">(<a href="#ref-peng2015art" role="doc-biblioref">Peng and Matsui 2015</a>)</span>. While a wide range of analytical techniques—from linear regression to classification trees and deep learning—have been codified into software packages, the role of the data scientist extends far beyond selecting and running algorithms. Effective data science involves making numerous judgment calls throughout the problem-solving process: choosing appropriate tools for specific tasks, interpreting results, communicating findings clearly to stakeholders, and embedding ethical and regulatory considerations into each decision. These nuanced aspects of data science—judgment, interpretation, and communication—remain, at least for now, beyond the capabilities of machines.</p>
+<section id="data-science-lifecycle-dsl" class="level3">
+<h3 class="anchored" data-anchor-id="data-science-lifecycle-dsl">Data Science Lifecycle (DSL)</h3>
+<p>Actuaries apply the Actuarial Control Cycle (ACC), as shown in <a href="#fig-acc" class="quarto-xref">Figure&nbsp;1</a> for problem solving.<br>
+<a href="#fig-acc" class="quarto-xref">Figure&nbsp;1</a> is adapted from the Actuaries Institute, based on <span class="citation" data-cites="bellis2010understanding">Bellis et al. (<a href="#ref-bellis2010understanding" role="doc-biblioref">2010</a>)</span>.</p>
+<div id="fig-acc" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-acc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="plot/Control_cycle.png" class="img-fluid figure-img">
+<img src="plot/Control_cycle.png" class="img-fluid figure-img" style="width:70.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-acc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Actuarial Control Cycle
+Figure&nbsp;1: The Actuarial Control Cycle
 </figcaption>
 </figure>
 </div>
-<p>Similarly, we develop Data Analysis Cycle (DAC) to solve data problems. Data analysis is a highly iterative and non-linear process including six key steps. The data analysis process is a specific application of the Actuarial Control Cycle and we call it Data Analysis Cycle (DAC).</p>
-<p>The six steps of DAC is listed below:</p>
+<p>In a similar spirit, we introduce the Data Science Lifecycle (DSL) as a practical methodology for tackling data-driven problems. While rooted in the principles of the ACC, the DSL reflects the unique, iterative, and often non-linear nature of data analysis. It comprises six key steps and serves as a tailored application of the ACC to the context of data science, as shown in <a href="#fig-DSL" class="quarto-xref">Figure&nbsp;2</a>.</p>
+<div id="fig-DSL" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-DSL-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="plot/DSL.jpg" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-DSL-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Data Science Lifecycle
+</figcaption>
+</figure>
+</div>
+<p>The six steps of DSL are listed below:</p>
 <ol type="1">
-<li>State the question</li>
-<li>Explore the data</li>
-<li>Build the models</li>
-<li>Interpret the results</li>
-<li>Communicate the results</li>
-<li>Deploy the model</li>
+<li>Problem statement</li>
+<li>Data collection</li>
+<li>Exploratory data analysis</li>
+<li>Modelling</li>
+<li>Evaluation</li>
+<li>Deployment</li>
 </ol>
-<p>Throughout the process, we always need to consider ethics and professionalism. These six steps are all built on deep understanding of the business context.</p>
-<p>In the following chapters we illustrate how to apply the Data Analysis Cycle (DAC) to solve real-world business problems.</p>
+<p>Throughout the entire process, ethical considerations and professional conduct are essential and must be integrated into every step. Just as importantly, each step of the DSL is grounded in a deep understanding of the business context—without this, data science risks becoming disconnected from real-world impact.</p>
+<p>In the chapters that follow, we illustrate how to apply the DSL to address practical business challenges. In addition to the six steps, we also emphasize communication and ethics as core components that must be embedded into the lifecycle.</p>
+</section>
+<section id="roadmap" class="level3">
+<h3 class="anchored" data-anchor-id="roadmap">Roadmap</h3>
+<p>The chapters are organised as follows:</p>
+<p>Chapter 2 covers Step 1, focusing on how to ask the right question and frame it as a data science problem.</p>
+<p>Chapter 3 addresses Steps 2 and 3, including data collection and exploratory data analysis.</p>
+<p>Chapter 4 presents a range of modelling techniques, explaining when and how to apply them.</p>
+<p>Chapter 5 introduces a systematic evaluation toolbox for data-driven decision-making, with a particular focus on applications in the insurance sector.</p>
+<p>Chapter 6 explores effective communication strategies for engaging different stakeholders.</p>
+<p>Chapter 7 covers deployment considerations and how to incorporate a feedback loop back to Step 1.</p>
+<p>Chapter 8 introduces the Ethical Data Science (AI) Lifecycle (EDSL)—a framework for embedding ethical thinking across the entire DSL.</p>
+<p>Chapter 9 concludes the book with key takeaways and future directions.</p>
+</section>
+<section id="references" class="level3">
+
 
 
 
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-bellis2003understanding" class="csl-entry" role="listitem">
-Bellis, Clare, Richard Lyon, Stuart A Klugman, and John Shepherd. 2003. <em>Understanding Actuarial Management: The Actuarial Control Cycle</em>. The Institute of Actuaries of Australia; the Society of Actuaries.
+<div id="ref-bellis2010understanding" class="csl-entry" role="listitem">
+Bellis, Clare, Richard Lyon, Stuart A. Klugman, and John Shepherd, eds. 2010. <em>Understanding Actuarial Management: The Actuarial Control Cycle</em>. 2nd ed. Sydney, Australia: Institute of Actuaries of Australia; Society of Actuaries.
 </div>
 <div id="ref-peng2015art" class="csl-entry" role="listitem">
 Peng, Roger D, and Elizabeth Matsui. 2015. <em>The Art of Data Science: A Guide for Anyone Who Works with Data</em>. Skybrude Consulting, LLC.
@@ -373,7 +459,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -405,29 +502,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -435,7 +510,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -765,8 +840,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../Lectures/Ch2-Question/State the Question.html" class="pagination-link" aria-label="2.1 State the Question">
-        <span class="nav-page-text">2.1 State the Question</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../Lectures/Ch1-Introduction/Lecture-Introduction.html" class="pagination-link" aria-label="Lecture: Introduction to Actuarial Data Science">
+        <span class="nav-page-text">Lecture: Introduction to Actuarial Data Science</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

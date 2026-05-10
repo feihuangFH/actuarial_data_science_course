@@ -1,0 +1,66 @@
+/* =========================
+   Hide "continued" headings
+   ========================= */
+
+/* Hide headings in main content */
+h2.continued,
+h3.continued {
+  display: none;
+}
+
+/* Merge continued section into previous (remove gap) */
+section:has(> h2.continued),
+section:has(> h3.continued) {
+  display: contents;
+}
+
+/* =========================
+   Clean TOC (right sidebar)
+   ========================= */
+
+/* Hide TOC entries for continued sections */
+nav#TOC li:has(a[href*="continued"]) {
+  display: none;
+}
+
+/* Fallback (in case :has is not supported) */
+nav#TOC a[href*="continued"] {
+  display: none;
+}
+
+/* =========================
+   Reduce gap around continued lists
+   ========================= */
+
+section.level2 > ol,
+section.level3 > ol {
+  margin-bottom: 0.2rem;
+}
+
+section:has(> h2.continued) ol,
+section:has(> h3.continued) ol {
+  margin-top: -0.4rem !important;
+  margin-bottom: 0.2rem;
+}
+
+
+/* =========================
+   Button Link
+   ========================= */
+
+.button-link {
+  padding: 6px 12px;
+  background: #f0f0f0;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+
+/* =========================
+   Highlight Words in Blue
+   ========================= */
+
+.highlight {
+  color: blue;
+  font-weight: bold;
+}

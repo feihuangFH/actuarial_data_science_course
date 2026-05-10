@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.557">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Fei Huang, UNSW Sydney">
+
+<title>Actuarial Data Science - Lecture: Ethics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lectures/Ch6-Communication/Communication.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lectures/Ch8-Ethics/Ethics.html">Chapter 8 - Ethics</a></li><li class="breadcrumb-item"><a href="../../Lectures/Ch8-Ethics/Ethics.html">Lecture: Ethics</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Actuarial Data Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Chapter 1 - Introduction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Actuarial Data Science</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch1-Introduction/Lecture-Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Introduction to Actuarial Data Science</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Chapter 2 - Problem Statement</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch2-Problem Statement/Lecture-Problem Statement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Problem Statement</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Chapter 3 - Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Manipulation and Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Quality Check and Cleaning</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Chapter 4 - Modelling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Modelling and Shrinkage techniques</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: GLM</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Random_Forests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Random Forests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Gradient Boosting Machine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Neural_Networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Neural Networks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Chapter 5 - Evaluations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Model Assessment and Selection</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Chapter 6 - Communication</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch6-Communication/Communication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Communication</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 7 - Deployment</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text">Chapter 8 - Ethics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch8-Ethics/Ethics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lecture: Ethics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 9 - Conclusion</span></span>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#recommended-reading" id="toc-recommended-reading" class="nav-link active" data-scroll-target="#recommended-reading">Recommended Reading</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#revisiting-the-data-science-lifecycle" id="toc-revisiting-the-data-science-lifecycle" class="nav-link" data-scroll-target="#revisiting-the-data-science-lifecycle">Revisiting the Data Science Lifecycle</a></li>
+  <li><a href="#major-principles-of-ai-ethics" id="toc-major-principles-of-ai-ethics" class="nav-link" data-scroll-target="#major-principles-of-ai-ethics">Major Principles of AI Ethics</a></li>
+  <li><a href="#ethical-ai-lifecycle" id="toc-ethical-ai-lifecycle" class="nav-link" data-scroll-target="#ethical-ai-lifecycle">Ethical AI Lifecycle</a></li>
+  <li><a href="#regulatory-responses-to-ai-and-discrimination-in-insurance" id="toc-regulatory-responses-to-ai-and-discrimination-in-insurance" class="nav-link" data-scroll-target="#regulatory-responses-to-ai-and-discrimination-in-insurance">Regulatory Responses to AI and Discrimination in Insurance</a></li>
+  <li><a href="#guidance-on-ai-and-discrimination-in-insurance-australia" id="toc-guidance-on-ai-and-discrimination-in-insurance-australia" class="nav-link" data-scroll-target="#guidance-on-ai-and-discrimination-in-insurance-australia">Guidance on AI and Discrimination in Insurance (Australia)</a></li>
+  <li><a href="#from-bias-to-fairness" id="toc-from-bias-to-fairness" class="nav-link" data-scroll-target="#from-bias-to-fairness">From Bias to Fairness</a></li>
+  <li><a href="#topic-1-what-are-the-principles-to-assess-the-appropriateness-of-insurance-discrimination-differentiation" id="toc-topic-1-what-are-the-principles-to-assess-the-appropriateness-of-insurance-discrimination-differentiation" class="nav-link" data-scroll-target="#topic-1-what-are-the-principles-to-assess-the-appropriateness-of-insurance-discrimination-differentiation">Topic 1: What are the principles to assess the appropriateness of insurance discrimination (differentiation)?</a>
+  <ul class="collapse">
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#fairness-depends-on-context" id="toc-fairness-depends-on-context" class="nav-link" data-scroll-target="#fairness-depends-on-context">Fairness Depends on Context</a></li>
+  <li><a href="#insurance-as-a-social-good" id="toc-insurance-as-a-social-good" class="nav-link" data-scroll-target="#insurance-as-a-social-good">Insurance as a Social Good</a></li>
+  <li><a href="#insurance-as-an-economic-commodity" id="toc-insurance-as-an-economic-commodity" class="nav-link" data-scroll-target="#insurance-as-an-economic-commodity">Insurance as an Economic Commodity</a></li>
+  <li><a href="#balancing-social-justice-and-economic-efficiency" id="toc-balancing-social-justice-and-economic-efficiency" class="nav-link" data-scroll-target="#balancing-social-justice-and-economic-efficiency">Balancing Social Justice and Economic Efficiency</a></li>
+  <li><a href="#is-it-fair-to-use-that-rating-factor" id="toc-is-it-fair-to-use-that-rating-factor" class="nav-link" data-scroll-target="#is-it-fair-to-use-that-rating-factor">Is it fair to use that rating factor?</a></li>
+  <li><a href="#indirect-discrimination-a-grey-area-in-regulation" id="toc-indirect-discrimination-a-grey-area-in-regulation" class="nav-link" data-scroll-target="#indirect-discrimination-a-grey-area-in-regulation">Indirect Discrimination: A Grey Area in Regulation</a></li>
+  <li><a href="#how-to-mitigate-discrimination-and-achieve-fairness" id="toc-how-to-mitigate-discrimination-and-achieve-fairness" class="nav-link" data-scroll-target="#how-to-mitigate-discrimination-and-achieve-fairness">How to Mitigate Discrimination and Achieve Fairness?</a></li>
+  </ul></li>
+  <li><a href="#topic-2-how-to-evaluate-fairness-and-mitigate-indirect-discrimination-and-bias-in-the-context-of-ai-and-big-data" id="toc-topic-2-how-to-evaluate-fairness-and-mitigate-indirect-discrimination-and-bias-in-the-context-of-ai-and-big-data" class="nav-link" data-scroll-target="#topic-2-how-to-evaluate-fairness-and-mitigate-indirect-discrimination-and-bias-in-the-context-of-ai-and-big-data">Topic 2: How to evaluate fairness and mitigate indirect discrimination and bias in the context of AI and Big Data?</a>
+  <ul class="collapse">
+  <li><a href="#existing-regulations" id="toc-existing-regulations" class="nav-link" data-scroll-target="#existing-regulations">Existing Regulations</a></li>
+  <li><a href="#quantitative-fairness-criteria" id="toc-quantitative-fairness-criteria" class="nav-link" data-scroll-target="#quantitative-fairness-criteria">Quantitative Fairness Criteria</a></li>
+  <li><a href="#fairness-criteria-for-insurance-pricing" id="toc-fairness-criteria-for-insurance-pricing" class="nav-link" data-scroll-target="#fairness-criteria-for-insurance-pricing">Fairness Criteria for Insurance Pricing</a></li>
+  <li><a href="#fairness-criteria-individual-fairness" id="toc-fairness-criteria-individual-fairness" class="nav-link" data-scroll-target="#fairness-criteria-individual-fairness">Fairness Criteria – Individual Fairness</a></li>
+  <li><a href="#fairness-criteria-individual-fairness-continued" id="toc-fairness-criteria-individual-fairness-continued" class="nav-link" data-scroll-target="#fairness-criteria-individual-fairness-continued">Fairness Criteria – Individual Fairness (continued)</a></li>
+  <li><a href="#fairness-criteria-group-fairness" id="toc-fairness-criteria-group-fairness" class="nav-link" data-scroll-target="#fairness-criteria-group-fairness">Fairness Criteria – Group Fairness</a></li>
+  <li><a href="#fairness-criteria-group-fairness-continued" id="toc-fairness-criteria-group-fairness-continued" class="nav-link" data-scroll-target="#fairness-criteria-group-fairness-continued">Fairness Criteria – Group Fairness (continued)</a></li>
+  <li><a href="#regulations-fairness-criteria-and-models" id="toc-regulations-fairness-criteria-and-models" class="nav-link" data-scroll-target="#regulations-fairness-criteria-and-models">Regulations, Fairness Criteria, and Models</a></li>
+  <li><a href="#questions-to-tackle" id="toc-questions-to-tackle" class="nav-link" data-scroll-target="#questions-to-tackle">Questions to Tackle</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Ethics.slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lectures/Ch8-Ethics/Ethics.html">Chapter 8 - Ethics</a></li><li class="breadcrumb-item"><a href="../../Lectures/Ch8-Ethics/Ethics.html">Lecture: Ethics</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Lecture: Ethics</h1>
+<p class="subtitle lead">Actuarial Data Science - Open Learning Resource</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Fei Huang, UNSW Sydney </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="recommended-reading" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-reading">Recommended Reading</h3>
+<ul>
+<li><a href="https://www.tandfonline.com/doi/full/10.1080/10920277.2021.1951296">The Discriminating (Pricing) Actuary</a> <span class="citation" data-cites="frees2023discriminating">(<a href="#ref-frees2023discriminating" role="doc-biblioref">Frees and Huang 2023</a>)</span></li>
+<li><a href="https://www.tandfonline.com/doi/full/10.1080/10920277.2023.2190528">Antidiscrimination Insurance Pricing: Regulations, Fairness Criteria,and Models</a> <span class="citation" data-cites="xin2024antidiscrimination">(<a href="#ref-xin2024antidiscrimination" role="doc-biblioref">Xin and Huang 2024</a>)</span></li>
+</ul>
+</section>
+<section id="learning-objectives" class="level3">
+<h3 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h3>
+<p>Ethical considerations are central to modern actuarial and data science practice, especially in the context of AI and automated decision-making. In this lecture, we explore key ethical principles, their implications for insurance pricing, and how to balance fairness, regulation, and business objectives.</p>
+<ul>
+<li><p>Understand the key principles of AI ethics, including fairness, transparency, accountability, and privacy.</p></li>
+<li><p>Explain the role of discrimination and fairness in insurance, and distinguish between social and economic perspectives.</p></li>
+<li><p>Evaluate different approaches to mitigating bias and discrimination, including input-based and output-based methods.</p></li>
+<li><p>Describe common quantitative fairness criteria and discuss their applicability in actuarial contexts.</p></li>
+<li><p>Assess trade-offs between fairness, accuracy, and business objectives in real-world applications.</p></li>
+</ul>
+</section>
+<section id="revisiting-the-data-science-lifecycle" class="level3">
+<h3 class="anchored" data-anchor-id="revisiting-the-data-science-lifecycle">Revisiting the Data Science Lifecycle</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Q:</strong> What is the most frequent failure in data analysis?</p>
+<p><strong>A: Problem formulation</strong></p>
+<blockquote class="blockquote">
+<p>“The most frequent failure in data analysis is mistaking the type of question being considered.”</p>
+<p>— <span class="citation" data-cites="leek2015question">Leek and Peng (<a href="#ref-leek2015question" role="doc-biblioref">2015</a>)</span></p>
+</blockquote>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/DSL.jpg" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Data Science (AI) Lifecycle</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="major-principles-of-ai-ethics" class="level3">
+<h3 class="anchored" data-anchor-id="major-principles-of-ai-ethics">Major Principles of AI Ethics</h3>
+<ul>
+<li><p><strong>Fairness and non-discrimination:</strong> Mitigate both direct and indirect discrimination embedded in data or model design.</p></li>
+<li><p><strong>Transparency and explainability:</strong> Ensure decisions are interpretable not only to developers, but also to customers and regulators.</p></li>
+<li><p><strong>Accountability:</strong> Clarify who is responsible when AI systems make errors (e.g.&nbsp;actuaries, developers, or firms).</p></li>
+<li><p><strong>Privacy and data ethics:</strong> Address issues related to third-party data, telematics, and social media sources.</p></li>
+<li><p><strong>Contestability:</strong> Provide individuals with meaningful channels to challenge and appeal automated decisions</p></li>
+<li><p><strong>Stability and robustness:</strong> Ensure AI models remain reliable and perform as expected under real-world conditions.</p></li>
+</ul>
+</section>
+<section id="ethical-ai-lifecycle" class="level3">
+<h3 class="anchored" data-anchor-id="ethical-ai-lifecycle">Ethical AI Lifecycle</h3>
+<blockquote class="blockquote">
+<p>“The actuarial profession should lead, not follow, in building public trust in AI systems.”<br>
+— The Actuary, IFoA</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/ethical_lc.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Ethical AI Lifecycle.</figcaption>
+</figure>
+</div>
+</section>
+<section id="regulatory-responses-to-ai-and-discrimination-in-insurance" class="level3">
+<h3 class="anchored" data-anchor-id="regulatory-responses-to-ai-and-discrimination-in-insurance">Regulatory Responses to AI and Discrimination in Insurance</h3>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/colorado.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Colorado SB21-169.</figcaption>
+</figure>
+</div>
+<p><a href="https://doi.colorado.gov/for-consumers/sb21-169-protecting-consumers-from-unfair-discrimination-in-insurance-practices">Colorado SB21-169: Protecting Consumers from Unfair Discrimination in Insurance Practices</a></p>
+</div><div class="column" style="width:55%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/ny_letter.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>New York DFS Circular Letter.</figcaption>
+</figure>
+</div>
+<p><a href="https://www.dfs.ny.gov/industry-guidance/circular-letters/cl2024-07">New York DFS – Use of Artificial Intelligence Systems and External Consumer Data and Information Sources in Insurance Underwriting and Pricing</a></p>
+</div>
+</div>
+</section>
+<section id="guidance-on-ai-and-discrimination-in-insurance-australia" class="level3">
+<h3 class="anchored" data-anchor-id="guidance-on-ai-and-discrimination-in-insurance-australia">Guidance on AI and Discrimination in Insurance (Australia)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/ahrc_guidance.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption>Australian Human Rights Commission (AHRC)</figcaption>
+</figure>
+</div>
+<p><a href="https://humanrights.gov.au/resource-hub/by-resource-type/publications/technology-and-human-rights/guides/guidance-resource-ai-and-discrimination-insurance">Guidance Resource: AI and Discrimination in Insurance (AHRC)</a></p>
+</section>
+<section id="from-bias-to-fairness" class="level3">
+<h3 class="anchored" data-anchor-id="from-bias-to-fairness">From Bias to Fairness</h3>
+<p>How can bias related to protected attributes lead to unfair discrimination — and how can it be mitigated?</p>
+</section>
+<section id="topic-1-what-are-the-principles-to-assess-the-appropriateness-of-insurance-discrimination-differentiation" class="level2">
+<h2 class="anchored" data-anchor-id="topic-1-what-are-the-principles-to-assess-the-appropriateness-of-insurance-discrimination-differentiation">Topic 1: What are the principles to assess the appropriateness of insurance discrimination (differentiation)?</h2>
+<p>Adapted from <span class="citation" data-cites="frees2023discriminating">Frees and Huang (<a href="#ref-frees2023discriminating" role="doc-biblioref">2023</a>)</span>, <em>North American Actuarial Journal</em></p>
+<section id="background" class="level3">
+<h3 class="anchored" data-anchor-id="background">Background</h3>
+<ul>
+<li><p>Discrimination is widespread in society.</p></li>
+<li><p>Insurance pricing is interesting because the entire industry is based on discrimination.</p></li>
+<li><p>However, certain characteristics (e.g., ethnicity, religion, heritage) are typically prohibited.</p></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="callout callout-style-default callout-note callout-titled" title="Where does discrimination arise in insurance?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Where does discrimination arise in insurance?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Issuance, renewal, or cancellation<br>
+</li>
+<li>Coverage</li>
+<li>Underwriting and pricing<br>
+</li>
+<li>Marketing<br>
+</li>
+<li>Claims processing<br>
+</li>
+</ul>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/discrimination.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Discrimination is widespread (Source: <a href="https://www.cbia.com/news/hr-safety/eeoc-2020-discrimination-claims/">CBIA</a>).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="fairness-depends-on-context" class="level3">
+<h3 class="anchored" data-anchor-id="fairness-depends-on-context">Fairness Depends on Context</h3>
+<p>Is insurance a <strong>social good</strong> or an <strong>economic commodity</strong>?</p>
+<p>Is risk pooling based on <strong>subsidising solidarity</strong> or <strong>chance solidarity</strong>?</p>
+</section>
+<section id="insurance-as-a-social-good" class="level3">
+<h3 class="anchored" data-anchor-id="insurance-as-a-social-good">Insurance as a Social Good</h3>
+<ul>
+<li>Benefits the general public (e.g., clean air, clean water)</li>
+<li>Non-excludable</li>
+<li>Mandatory insurance shifts insurance toward a social good (social safety net)</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Examples">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Examples
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Health insurance is often viewed as a social good<br>
+</li>
+<li>Compulsory third-party auto insurance is a social good.</li>
+<li>Catastrophe insurance is treated as a social good by some jurisdiction.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="insurance-as-an-economic-commodity" class="level3">
+<h3 class="anchored" data-anchor-id="insurance-as-an-economic-commodity">Insurance as an Economic Commodity</h3>
+<ul>
+<li>Voluntary insurance shifts insurance toward an economic commodity.</li>
+<li>Market price depends on the forces of supply and demand</li>
+<li>“Free” market (limited regulation)<br>
+</li>
+<li>Risk classification is advocated to address adverse selection, moral hazard, and improve economic efficiency</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Examples">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Examples
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Life insurance is often viewed as a private (non-public) product, an economic commodity.</li>
+<li>Voluntary auto insurance is an economic commodity.</li>
+<li>Long-term care and disability insurance fall in between.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="balancing-social-justice-and-economic-efficiency" class="level3">
+<h3 class="anchored" data-anchor-id="balancing-social-justice-and-economic-efficiency">Balancing Social Justice and Economic Efficiency</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/social_econ.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>How to balance the social justice and economic efficiency?</figcaption>
+</figure>
+</div>
+</section>
+<section id="is-it-fair-to-use-that-rating-factor" class="level3">
+<h3 class="anchored" data-anchor-id="is-it-fair-to-use-that-rating-factor">Is it fair to use that rating factor?</h3>
+<ul>
+<li><p><strong>Control</strong>: e.g., ownership of a sports car; many sensitive attributes are uncontrollable (gender, race, ethnicity, nationality, etc.)</p></li>
+<li><p><strong>Mutability</strong>: Does the variable change over time (such as age) or stay fixed?</p></li>
+<li><p><strong>Causality</strong>: It is generally acceptable to use a variable if it is known to cause an insured event (e.g., cancer in life insurance).</p></li>
+<li><p><strong>Statistical Discrimination</strong>: A variable must have some predictive value of the underlying risk. A necessary, but not sufficient, condition.</p></li>
+<li><p><strong>Limiting or Reversing the Effects of Past Discrimination</strong>. e.g., discriminating based on skin color is more problematic than based on eye color.</p></li>
+<li><p><strong>Inhibiting Socially Valuable Behavior</strong>: e.g., whether to participate in genetic testing research when insurers make decisions based on genetic test results.</p></li>
+</ul>
+</section>
+<section id="indirect-discrimination-a-grey-area-in-regulation" class="level3">
+<h3 class="anchored" data-anchor-id="indirect-discrimination-a-grey-area-in-regulation">Indirect Discrimination: A Grey Area in Regulation</h3>
+<ul>
+<li><p>Direct discrimination is prohibited, but indirect discrimination using proxies or more complex and opaque algorithms is not clearly regulated or assessed.</p></li>
+<li><p>Do we have a clear definition of indirect discrimination?</p></li>
+<li><p>How do we assess and mitigate indirect discrimination?</p></li>
+</ul>
+</section>
+<section id="how-to-mitigate-discrimination-and-achieve-fairness" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-mitigate-discrimination-and-achieve-fairness">How to Mitigate Discrimination and Achieve Fairness?</h3>
+<ul>
+<li>Input-based approach:
+<ul>
+<li>Restricting the use of protected or proxy variables (<em>fairness through unawareness</em>)</li>
+<li>Specifying the feature importance for pricing (California regulations)</li>
+</ul></li>
+<li>Output-based approach:
+<ul>
+<li>Define quantitative fairness criteria
+<ul>
+<li>Protected attributes are not allowed (no direct discrimination)</li>
+<li>Protected attributes are allowed as rating factors</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="topic-2-how-to-evaluate-fairness-and-mitigate-indirect-discrimination-and-bias-in-the-context-of-ai-and-big-data" class="level2">
+<h2 class="anchored" data-anchor-id="topic-2-how-to-evaluate-fairness-and-mitigate-indirect-discrimination-and-bias-in-the-context-of-ai-and-big-data">Topic 2: How to evaluate fairness and mitigate indirect discrimination and bias in the context of AI and Big Data?</h2>
+<p>Adapted from <span class="citation" data-cites="xin2024antidiscrimination">Xin and Huang (<a href="#ref-xin2024antidiscrimination" role="doc-biblioref">2024</a>)</span>, <em>North American Actuarial Journal</em> (Best Paper Award)</p>
+<section id="existing-regulations" class="level3">
+<h3 class="anchored" data-anchor-id="existing-regulations">Existing Regulations</h3>
+<ul>
+<li>No regulation<br>
+</li>
+<li>Restriction on the use of a protected variable</li>
+<li>Prohibition on the use of a protected variable</li>
+<li>Restriction on the use of a proxy variable</li>
+<li>Prohibition on the use of a proxy variable<br>
+</li>
+<li>Disparate impact standard<br>
+</li>
+<li>Community rating<br>
+</li>
+<li>Affirmative action</li>
+</ul>
+</section>
+<section id="quantitative-fairness-criteria" class="level3">
+<h3 class="anchored" data-anchor-id="quantitative-fairness-criteria">Quantitative Fairness Criteria</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Association-based</strong>
+<ul>
+<li>Individual fairness</li>
+<li>Group fairness
+<ul>
+<li>Independence</li>
+<li>Separation</li>
+<li>Sufficiency (calibration)</li>
+</ul></li>
+</ul></li>
+<li><strong>Causality-based</strong>
+<ul>
+<li>Counterfactual fairness</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="callout callout-style-default callout-tip callout-titled" title="Questions to consider">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Questions to consider
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Are they suitable for the insurance context?</li>
+<li>Are they compatible with each other?</li>
+<li>Which one should be used?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<p><strong>Further reading:</strong> <span class="citation" data-cites="lindholm2022discrimination">Lindholm et al. (<a href="#ref-lindholm2022discrimination" role="doc-biblioref">2022</a>)</span>;<span class="citation" data-cites="baumann2023fairness">Baumann and Loi (<a href="#ref-baumann2023fairness" role="doc-biblioref">2023</a>)</span>; <span class="citation" data-cites="araiza2024discrimination">Araiza Iturria, Hardy, and Marriott (<a href="#ref-araiza2024discrimination" role="doc-biblioref">2024</a>)</span>; <span class="citation" data-cites="charpentier2024insurance">Charpentier (<a href="#ref-charpentier2024insurance" role="doc-biblioref">2024</a>)</span>; <span class="citation" data-cites="lindholm2024fair">Lindholm et al. (<a href="#ref-lindholm2024fair" role="doc-biblioref">2024</a>)</span>; <span class="citation" data-cites="xin2024antidiscrimination">Xin and Huang (<a href="#ref-xin2024antidiscrimination" role="doc-biblioref">2024</a>)</span>; <span class="citation" data-cites="cote2025fair">Côté, Côté, and Charpentier (<a href="#ref-cote2025fair" role="doc-biblioref">2025</a>)</span>; <a href="https://www.casact.org/biasandinsuranceresearch">CAS Research Paper Series</a>; SOA Research Paper Series</p>
+</section>
+<section id="fairness-criteria-for-insurance-pricing" class="level3">
+<h3 class="anchored" data-anchor-id="fairness-criteria-for-insurance-pricing">Fairness Criteria for Insurance Pricing</h3>
+<ul>
+<li><p>Let <span class="math inline">X_P</span> denote the protected attribute, which is a categorical variable and has only two groups <span class="math inline">X_P = \{a, b\}</span>.</p></li>
+<li><p>Let <span class="math inline">X_{NP}</span> denote other available (non-protected) attributes, and hence the feature space is <span class="math inline">X = \{X_P, X_{NP}\}</span>.</p></li>
+<li><p>Let <span class="math inline">\hat{Y}</span> denote the predictor or the decision outcome of interest, <span class="math inline">\hat{Y} \in \mathbb{R}</span>. In our context, <span class="math inline">\hat{Y}</span> is the premium charged by the insurer, and in this paper, we assume that <span class="math inline">\hat{Y}</span> is approximately equal to the pure premium and ignore any expenses or profit loadings.</p></li>
+<li><p>Let <span class="math inline">Y</span> denote the observed outcome of interest, <span class="math inline">Y \in \mathbb{R}</span>. Note that <span class="math inline">Y</span> is not known when the policy is issued, <span class="math inline">Y</span> is a measure of real claim experience observed by the insurer over a given period after policy issuance.</p></li>
+</ul>
+</section>
+<section id="fairness-criteria-individual-fairness" class="level3">
+<h3 class="anchored" data-anchor-id="fairness-criteria-individual-fairness">Fairness Criteria – Individual Fairness</h3>
+<p><strong>Definition 1. Fairness through Unawareness (FTU):</strong> Fairness is achieved if the protected attribute <span class="math inline">X_P</span> is not explicitly used in calculating the insurance premium <span class="math inline">\hat{Y}</span>.</p>
+<p><strong>Definition 2. Fairness through Awareness (FTA):</strong> A predictor <span class="math inline">\hat{Y}</span> satisfies fairness through awareness if it gives similar predictions to similar individuals <span class="citation" data-cites="dwork2012fairness kusner2017counterfactual">(<a href="#ref-dwork2012fairness" role="doc-biblioref">Dwork et al. 2012</a>; <a href="#ref-kusner2017counterfactual" role="doc-biblioref">Kusner et al. 2017</a>)</span>.</p>
+<p><strong>Definition 3. Counterfactual Fairness (CF):</strong> A predictor <span class="math inline">\hat{Y}</span> is counterfactually fair for an individual if “its prediction in the real world is the same as that in the counterfactual world where the individual had belonged to a different demographic group” <span class="citation" data-cites="kusner2017counterfactual wu2019counterfactual">(<a href="#ref-kusner2017counterfactual" role="doc-biblioref">Kusner et al. 2017</a>; <a href="#ref-wu2019counterfactual" role="doc-biblioref">Wu, Zhang, and Wu 2019</a>)</span> or, mathematically, given <span class="math inline">X = x</span> and <span class="math inline">X_P = a</span>, for all <span class="math inline">y</span> and for simplicity, <span class="math inline">X_P</span> has only two groups <span class="math inline">\{a, b\}</span>, a predictor <span class="math inline">\hat{Y}</span> is counterfactually fair if</p>
+<p><span class="math display">
+\mathbb{P}(\hat{Y}_{X_P \leftarrow b}(U) = y \mid X_{NP} = x, X_P = b) = \mathbb{P}(\hat{Y}_{X_P \leftarrow a}(U) = y \mid X_{NP} = x, X_P = b).
+</span></p>
+</section>
+<section id="fairness-criteria-individual-fairness-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="fairness-criteria-individual-fairness-continued">Fairness Criteria – Individual Fairness (continued)</h3>
+<p><strong>Definition 4. Controlling for the Protected Variable (CPV):</strong> As defined in definition 6 in <span class="citation" data-cites="lindholm2022discrimination">Lindholm et al. (<a href="#ref-lindholm2022discrimination" role="doc-biblioref">2022</a>)</span>, a <em>discrimination-free price</em> for <span class="math inline">Y</span> with respect to <span class="math inline">X_{NP}</span> is defined by</p>
+<p><span class="math display">
+h^*(X_{NP}) := \int_{x_P} \mathbb{E}[Y \mid X_{NP}, x_P] d\mathbb{P}^*(x_P),
+</span></p>
+<p>where <span class="math inline">\mathbb{P}^*(x_P)</span> is defined on the same range as <span class="math inline">\mathbb{P}(x_P)</span>.</p>
+</section>
+<section id="fairness-criteria-group-fairness" class="level3">
+<h3 class="anchored" data-anchor-id="fairness-criteria-group-fairness">Fairness Criteria – Group Fairness</h3>
+<p><strong>Definition 5. Demographic Parity (DP):</strong> A predictor <span class="math inline">\hat{Y}</span> satisfies demographic parity if</p>
+<p><span class="math display">
+\mathbb{P}(\hat{Y} \mid X_P = a) = \mathbb{P}(\hat{Y} \mid X_P = b).
+</span></p>
+<p><strong>Definition 6. Relaxed Demographic Parity (RDP):</strong> A predictor <span class="math inline">\hat{Y}</span> satisfies relaxed demographic parity or has no disparate impact if the following ratio is above certain threshold <span class="math inline">\tau</span> <span class="citation" data-cites="feldman2015certifying">(<a href="#ref-feldman2015certifying" role="doc-biblioref">Feldman et al. 2015</a>)</span>:</p>
+<p><span class="math display">
+\frac{\mathbb{P}(\hat{Y} = \hat{y} \mid X_P = b)}{\mathbb{P}(\hat{Y} = \hat{y} \mid X_P = a)} &gt; \tau.
+</span></p>
+</section>
+<section id="fairness-criteria-group-fairness-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="fairness-criteria-group-fairness-continued">Fairness Criteria – Group Fairness (continued)</h3>
+<p><strong>Definition 7. Conditional Demographic Parity (CDP):</strong> A predictor <span class="math inline">\hat{Y}</span> satisfies conditional demographic parity if</p>
+<p><span class="math display">
+\mathbb{P}(\hat{Y} \mid X_{NP_{\text{legit}}} = x_{NP_{\text{legit}}}, X_P = a) = \mathbb{P}(\hat{Y} \mid X_{NP_{\text{legit}}} = x_{NP_{\text{legit}}}, X_P = b),
+</span></p>
+<p>where <span class="math inline">X_{NP_{\text{legit}}}</span> denotes a subset of “legitimate” attributes within unprotected attributes in the feature space (<span class="math inline">X_{NP_{\text{legit}}} \subseteq X_{NP} \subset X</span>) that are permitted to affect the outcome of interest <span class="citation" data-cites="corbett2017algorithmic verma2018fairness">(<a href="#ref-corbett2017algorithmic" role="doc-biblioref">Corbett-Davies et al. 2017</a>; <a href="#ref-verma2018fairness" role="doc-biblioref">Verma and Rubin 2018</a>)</span>.</p>
+</section>
+<section id="regulations-fairness-criteria-and-models" class="level3">
+<h3 class="anchored" data-anchor-id="regulations-fairness-criteria-and-models">Regulations, Fairness Criteria, and Models</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/regulations_fairness_models.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Comparison between different regulations.</figcaption>
+</figure>
+</div>
+</section>
+<section id="questions-to-tackle" class="level3">
+<h3 class="anchored" data-anchor-id="questions-to-tackle">Questions to Tackle</h3>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="callout callout-style-default callout-note callout-titled" title="Which fairness notion to use?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Which fairness notion to use?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Proxy discrimination (omitted variable bias)</li>
+<li>Conditional demographic parity<br>
+</li>
+<li>Equalized odds (error rate parity)<br>
+</li>
+<li>Well-calibration<br>
+</li>
+</ul>
+</div>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="callout callout-style-default callout-tip callout-titled" title="How to achieve it?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+How to achieve it?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Fairness in cost prediction or market pricing?<br>
+</li>
+<li>Fairness in terms of prices or markups?<br>
+</li>
+<li>What if protected variables are unobserved?<br>
+</li>
+</ul>
+</div>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="callout callout-style-default callout-important callout-titled" title="What is the impact of fairness on stakeholders? ">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What is the impact of fairness on stakeholders?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Consumer welfare vs.&nbsp;firm profit<br>
+</li>
+<li>Welfare across different groups (e.g., males vs.&nbsp;females)<br>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="references" class="level3">
+
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-araiza2024discrimination" class="csl-entry" role="listitem">
+Araiza Iturria, Carlos Andrés, Mary Hardy, and Paul Marriott. 2024. <span>“A Discrimination-Free Premium Under a Causal Framework.”</span> <em>North American Actuarial Journal</em> 28 (4): 801–21.
+</div>
+<div id="ref-baumann2023fairness" class="csl-entry" role="listitem">
+Baumann, Joachim, and Michele Loi. 2023. <span>“Fairness and Risk: An Ethical Argument for a Group Fairness Definition Insurers Can Use.”</span> <em>Philosophy &amp; Technology</em> 36 (3): 45.
+</div>
+<div id="ref-charpentier2024insurance" class="csl-entry" role="listitem">
+Charpentier, Arthur. 2024. <em>Insurance, Biases, Discrimination and Fairness</em>. Springer.
+</div>
+<div id="ref-corbett2017algorithmic" class="csl-entry" role="listitem">
+Corbett-Davies, Sam, Emma Pierson, Avi Feller, Sharad Goel, and Aziz Huq. 2017. <span>“Algorithmic Decision Making and the Cost of Fairness.”</span> In <em>Proceedings of the 23rd Acm Sigkdd International Conference on Knowledge Discovery and Data Mining</em>, 797–806.
+</div>
+<div id="ref-cote2025fair" class="csl-entry" role="listitem">
+Côté, Olivier, Marie-Pier Côté, and Arthur Charpentier. 2025. <span>“A Fair Price to Pay: Exploiting Causal Graphs for Fairness in Insurance.”</span> <em>Journal of Risk and Insurance</em> 92 (1): 33–75.
+</div>
+<div id="ref-dwork2012fairness" class="csl-entry" role="listitem">
+Dwork, Cynthia, Moritz Hardt, Toniann Pitassi, Omer Reingold, and Richard Zemel. 2012. <span>“Fairness Through Awareness.”</span> In <em>Proceedings of the 3rd Innovations in Theoretical Computer Science Conference</em>, 214–26.
+</div>
+<div id="ref-feldman2015certifying" class="csl-entry" role="listitem">
+Feldman, Michael, Sorelle A Friedler, John Moeller, Carlos Scheidegger, and Suresh Venkatasubramanian. 2015. <span>“Certifying and Removing Disparate Impact.”</span> In <em>Proceedings of the 21th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</em>, 259–68.
+</div>
+<div id="ref-frees2023discriminating" class="csl-entry" role="listitem">
+Frees, Edward W, and Fei Huang. 2023. <span>“The Discriminating (Pricing) Actuary.”</span> <em>North American Actuarial Journal</em> 27 (1): 2–24.
+</div>
+<div id="ref-kusner2017counterfactual" class="csl-entry" role="listitem">
+Kusner, Matt J, Joshua Loftus, Chris Russell, and Ricardo Silva. 2017. <span>“Counterfactual Fairness.”</span> In <em>Advances in Neural Information Processing Systems</em>, 4066–76.
+</div>
+<div id="ref-leek2015question" class="csl-entry" role="listitem">
+Leek, Jeffery T, and Roger D Peng. 2015. <span>“What Is the Question?”</span> <em>Science</em> 347 (6228): 1314–15.
+</div>
+<div id="ref-lindholm2022discrimination" class="csl-entry" role="listitem">
+Lindholm, Mathias, Ronald Richman, Andreas Tsanakas, and Mario V Wüthrich. 2022. <span>“Discrimination-Free Insurance Pricing.”</span> <em>ASTIN Bulletin: The Journal of the IAA</em> 52 (1): 55–89.
+</div>
+<div id="ref-lindholm2024fair" class="csl-entry" role="listitem">
+———. 2024. <span>“What Is Fair? Proxy Discrimination Vs. Demographic Disparities in Insurance Pricing.”</span> <em>Scandinavian Actuarial Journal</em> 2024 (9): 935–70.
+</div>
+<div id="ref-verma2018fairness" class="csl-entry" role="listitem">
+Verma, Sahil, and Julia Rubin. 2018. <span>“Fairness Definitions Explained.”</span> In <em>2018 Ieee/Acm International Workshop on Software Fairness (Fairware)</em>, 1–7. IEEE.
+</div>
+<div id="ref-wu2019counterfactual" class="csl-entry" role="listitem">
+Wu, Yongkai, Lu Zhang, and Xintao Wu. 2019. <span>“Counterfactual Fairness: Unidentification, Bound and Algorithm.”</span> In <em>Proceedings of the Twenty-Eighth International Joint Conference on Artificial Intelligence</em>.
+</div>
+<div id="ref-xin2024antidiscrimination" class="csl-entry" role="listitem">
+Xin, Xi, and Fei Huang. 2024. <span>“Antidiscrimination Insurance Pricing: Regulations, Fairness Criteria, and Models.”</span> <em>North American Actuarial Journal</em> 28 (2): 285–319.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lectures/Ch6-Communication/Communication.html" class="pagination-link" aria-label="Lecture: Communication">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lecture: Communication</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

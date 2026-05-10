@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.557">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Fei Huang, UNSW Sydney">
+
+<title>Actuarial Data Science - Lecture: GLM</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lectures/Ch4-Modelling/Random_Forests.html" rel="next">
+<link href="../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html">Chapter 4 - Modelling</a></li><li class="breadcrumb-item"><a href="../../Lectures/Ch4-Modelling/GLM.html">Lecture: GLM</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Actuarial Data Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Chapter 1 - Introduction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Actuarial Data Science</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch1-Introduction/Lecture-Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Introduction to Actuarial Data Science</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Chapter 2 - Problem Statement</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch2-Problem Statement/Lecture-Problem Statement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Problem Statement</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Chapter 3 - Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Manipulation and Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Quality Check and Cleaning</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Chapter 4 - Modelling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Modelling and Shrinkage techniques</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/GLM.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lecture: GLM</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Random_Forests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Random Forests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Gradient Boosting Machine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Neural_Networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Neural Networks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Chapter 5 - Evaluations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Model Assessment and Selection</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Chapter 6 - Communication</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch6-Communication/Communication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Communication</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 7 - Deployment</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text">Chapter 8 - Ethics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch8-Ethics/Ethics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Ethics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 9 - Conclusion</span></span>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#recommended-reading" id="toc-recommended-reading" class="nav-link active" data-scroll-target="#recommended-reading">Recommended Reading</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#generalized-linear-models-review-from-prior-courses" id="toc-generalized-linear-models-review-from-prior-courses" class="nav-link" data-scroll-target="#generalized-linear-models-review-from-prior-courses">Generalized Linear Models (Review from Prior Courses)</a>
+  <ul class="collapse">
+  <li><a href="#linear-model" id="toc-linear-model" class="nav-link" data-scroll-target="#linear-model">Linear Model</a></li>
+  <li><a href="#components-of-a-linear-model" id="toc-components-of-a-linear-model" class="nav-link" data-scroll-target="#components-of-a-linear-model">Components of a Linear Model</a></li>
+  <li><a href="#insurance-applications" id="toc-insurance-applications" class="nav-link" data-scroll-target="#insurance-applications">Insurance Applications</a></li>
+  <li><a href="#how-to-solve-the-problem" id="toc-how-to-solve-the-problem" class="nav-link" data-scroll-target="#how-to-solve-the-problem">How to Solve the Problem?</a></li>
+  <li><a href="#generalisation" id="toc-generalisation" class="nav-link" data-scroll-target="#generalisation">Generalisation</a></li>
+  <li><a href="#one-parameter-canonical-exponential-family" id="toc-one-parameter-canonical-exponential-family" class="nav-link" data-scroll-target="#one-parameter-canonical-exponential-family">One-Parameter Canonical Exponential Family</a></li>
+  <li><a href="#example-normal-distribution" id="toc-example-normal-distribution" class="nav-link" data-scroll-target="#example-normal-distribution">Example: Normal Distribution</a></li>
+  <li><a href="#other-distributions" id="toc-other-distributions" class="nav-link" data-scroll-target="#other-distributions">Other distributions</a></li>
+  <li><a href="#how-to-select-the-responsetarget-distribution" id="toc-how-to-select-the-responsetarget-distribution" class="nav-link" data-scroll-target="#how-to-select-the-responsetarget-distribution">How to Select the Response/Target Distribution?</a></li>
+  <li><a href="#mean-and-variance" id="toc-mean-and-variance" class="nav-link" data-scroll-target="#mean-and-variance">Mean and Variance</a></li>
+  <li><a href="#examples-of-mean" id="toc-examples-of-mean" class="nav-link" data-scroll-target="#examples-of-mean">Examples of Mean</a></li>
+  <li><a href="#example-poisson-distribution" id="toc-example-poisson-distribution" class="nav-link" data-scroll-target="#example-poisson-distribution">Example: Poisson Distribution</a></li>
+  <li><a href="#variance-function" id="toc-variance-function" class="nav-link" data-scroll-target="#variance-function">Variance Function</a></li>
+  <li><a href="#mean-variance-relationship-1" id="toc-mean-variance-relationship-1" class="nav-link" data-scroll-target="#mean-variance-relationship-1">Mean-variance relationship (1)</a></li>
+  <li><a href="#link-function" id="toc-link-function" class="nav-link" data-scroll-target="#link-function">Link function</a></li>
+  <li><a href="#examples-of-link-functions" id="toc-examples-of-link-functions" class="nav-link" data-scroll-target="#examples-of-link-functions">Examples of Link Functions</a></li>
+  <li><a href="#examples-of-link-functions-for-bernoulli-response-1" id="toc-examples-of-link-functions-for-bernoulli-response-1" class="nav-link" data-scroll-target="#examples-of-link-functions-for-bernoulli-response-1">Examples of Link Functions for Bernoulli Response (1)</a></li>
+  <li><a href="#examples-of-link-functions-for-bernoulli-response-2" id="toc-examples-of-link-functions-for-bernoulli-response-2" class="nav-link" data-scroll-target="#examples-of-link-functions-for-bernoulli-response-2">Examples of Link Functions for Bernoulli Response (2)</a></li>
+  <li><a href="#canonical-link" id="toc-canonical-link" class="nav-link" data-scroll-target="#canonical-link">Canonical Link</a></li>
+  <li><a href="#example-the-bernoulli-distribution" id="toc-example-the-bernoulli-distribution" class="nav-link" data-scroll-target="#example-the-bernoulli-distribution">Example: The Bernoulli Distribution</a></li>
+  <li><a href="#other-examples-of-canonical-links" id="toc-other-examples-of-canonical-links" class="nav-link" data-scroll-target="#other-examples-of-canonical-links">Other Examples of Canonical Links</a></li>
+  <li><a href="#how-to-select-the-link-function" id="toc-how-to-select-the-link-function" class="nav-link" data-scroll-target="#how-to-select-the-link-function">How to Select the Link Function?</a></li>
+  <li><a href="#how-to-select-the-link-function-continued" id="toc-how-to-select-the-link-function-continued" class="nav-link" data-scroll-target="#how-to-select-the-link-function-continued">How to Select the Link Function? (continued)</a></li>
+  <li><a href="#glm-model-structure" id="toc-glm-model-structure" class="nav-link" data-scroll-target="#glm-model-structure">GLM Model Structure</a></li>
+  <li><a href="#beta-and-theta" id="toc-beta-and-theta" class="nav-link" data-scroll-target="#beta-and-theta"><span class="math inline">\beta</span> and <span class="math inline">\theta</span></a></li>
+  <li><a href="#model-interpretation-quantitative-predictors" id="toc-model-interpretation-quantitative-predictors" class="nav-link" data-scroll-target="#model-interpretation-quantitative-predictors">Model Interpretation: Quantitative Predictors</a></li>
+  <li><a href="#model-interpretation-qualitative-predictors" id="toc-model-interpretation-qualitative-predictors" class="nav-link" data-scroll-target="#model-interpretation-qualitative-predictors">Model Interpretation: Qualitative Predictors</a></li>
+  <li><a href="#log-likelihood" id="toc-log-likelihood" class="nav-link" data-scroll-target="#log-likelihood">Log-likelihood</a></li>
+  <li><a href="#maximum-likelihood-estimation-mle" id="toc-maximum-likelihood-estimation-mle" class="nav-link" data-scroll-target="#maximum-likelihood-estimation-mle">Maximum Likelihood Estimation (MLE)</a></li>
+  <li><a href="#goodness-of-fit-measures-deviance" id="toc-goodness-of-fit-measures-deviance" class="nav-link" data-scroll-target="#goodness-of-fit-measures-deviance">Goodness-of-Fit Measures: Deviance</a></li>
+  <li><a href="#model-comparison" id="toc-model-comparison" class="nav-link" data-scroll-target="#model-comparison">Model Comparison</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#exponential-distributions-and-their-deviances" id="toc-exponential-distributions-and-their-deviances" class="nav-link" data-scroll-target="#exponential-distributions-and-their-deviances">Exponential Distributions and Their Deviances</a></li>
+  <li><a href="#deviance-residuals-1" id="toc-deviance-residuals-1" class="nav-link" data-scroll-target="#deviance-residuals-1">Deviance Residuals (1)</a></li>
+  <li><a href="#deviance-residuals-1-continued" id="toc-deviance-residuals-1-continued" class="nav-link" data-scroll-target="#deviance-residuals-1-continued">Deviance Residuals (1) (continued)</a></li>
+  <li><a href="#deviance-residuals-2" id="toc-deviance-residuals-2" class="nav-link" data-scroll-target="#deviance-residuals-2">Deviance Residuals (2)</a></li>
+  <li><a href="#aic-and-bic" id="toc-aic-and-bic" class="nav-link" data-scroll-target="#aic-and-bic">AIC and BIC</a></li>
+  <li><a href="#procedure-of-constructing-a-glm" id="toc-procedure-of-constructing-a-glm" class="nav-link" data-scroll-target="#procedure-of-constructing-a-glm">Procedure of Constructing a GLM</a></li>
+  </ul></li>
+  <li><a href="#models-for-count-responses" id="toc-models-for-count-responses" class="nav-link" data-scroll-target="#models-for-count-responses">Models for Count Responses</a>
+  <ul class="collapse">
+  <li><a href="#count-response-poisson-regression" id="toc-count-response-poisson-regression" class="nav-link" data-scroll-target="#count-response-poisson-regression">Count Response: Poisson Regression</a></li>
+  <li><a href="#offsets" id="toc-offsets" class="nav-link" data-scroll-target="#offsets">Offsets</a></li>
+  <li><a href="#overdispersion" id="toc-overdispersion" class="nav-link" data-scroll-target="#overdispersion">Overdispersion</a></li>
+  <li><a href="#negative-binomial-regression" id="toc-negative-binomial-regression" class="nav-link" data-scroll-target="#negative-binomial-regression">Negative Binomial Regression</a></li>
+  </ul></li>
+  <li><a href="#models-for-binary-responses" id="toc-models-for-binary-responses" class="nav-link" data-scroll-target="#models-for-binary-responses">Models for Binary Responses</a>
+  <ul class="collapse">
+  <li><a href="#binary-response-logistic-regression" id="toc-binary-response-logistic-regression" class="nav-link" data-scroll-target="#binary-response-logistic-regression">Binary Response: Logistic Regression</a></li>
+  <li><a href="#performance-measures" id="toc-performance-measures" class="nav-link" data-scroll-target="#performance-measures">Performance Measures</a></li>
+  <li><a href="#how-to-choose-the-correct-cut-off" id="toc-how-to-choose-the-correct-cut-off" class="nav-link" data-scroll-target="#how-to-choose-the-correct-cut-off">How to Choose the Correct Cut-off</a></li>
+  <li><a href="#roc-and-auc" id="toc-roc-and-auc" class="nav-link" data-scroll-target="#roc-and-auc">ROC and AUC</a></li>
+  </ul></li>
+  <li><a href="#models-for-continuous-responses" id="toc-models-for-continuous-responses" class="nav-link" data-scroll-target="#models-for-continuous-responses">Models for Continuous Responses</a>
+  <ul class="collapse">
+  <li><a href="#continuous-response-gaussian-and-gamma-regression" id="toc-continuous-response-gaussian-and-gamma-regression" class="nav-link" data-scroll-target="#continuous-response-gaussian-and-gamma-regression">Continuous Response: Gaussian and Gamma Regression</a></li>
+  <li><a href="#continuous-response-gaussian-and-gamma-regression-continued" id="toc-continuous-response-gaussian-and-gamma-regression-continued" class="nav-link" data-scroll-target="#continuous-response-gaussian-and-gamma-regression-continued">Continuous Response: Gaussian and Gamma Regression (continued)</a></li>
+  </ul></li>
+  <li><a href="#models-for-a-mixture-of-discrete-and-continuous-responses" id="toc-models-for-a-mixture-of-discrete-and-continuous-responses" class="nav-link" data-scroll-target="#models-for-a-mixture-of-discrete-and-continuous-responses">Models for a Mixture of Discrete and Continuous Responses</a>
+  <ul class="collapse">
+  <li><a href="#tweedie-regression" id="toc-tweedie-regression" class="nav-link" data-scroll-target="#tweedie-regression">Tweedie Regression</a></li>
+  <li><a href="#tweedie-regression-continued" id="toc-tweedie-regression-continued" class="nav-link" data-scroll-target="#tweedie-regression-continued">Tweedie Regression (continued)</a></li>
+  </ul></li>
+  <li><a href="#other-considerations" id="toc-other-considerations" class="nav-link" data-scroll-target="#other-considerations">Other Considerations</a>
+  <ul class="collapse">
+  <li><a href="#interaction-terms" id="toc-interaction-terms" class="nav-link" data-scroll-target="#interaction-terms">Interaction terms</a></li>
+  <li><a href="#basis-extensions" id="toc-basis-extensions" class="nav-link" data-scroll-target="#basis-extensions">Basis Extensions</a></li>
+  <li><a href="#penalized-glm-shrinkage-techniques" id="toc-penalized-glm-shrinkage-techniques" class="nav-link" data-scroll-target="#penalized-glm-shrinkage-techniques">Penalized GLM (Shrinkage Techniques)</a></li>
+  </ul></li>
+  <li><a href="#using-r" id="toc-using-r" class="nav-link" data-scroll-target="#using-r">Using R</a>
+  <ul class="collapse">
+  <li><a href="#using-r-glm" id="toc-using-r-glm" class="nav-link" data-scroll-target="#using-r-glm">Using R: glm()</a></li>
+  <li><a href="#other-useful-r-functions" id="toc-other-useful-r-functions" class="nav-link" data-scroll-target="#other-useful-r-functions">Other Useful R Functions</a></li>
+  </ul></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a>
+  <ul class="collapse">
+  <li><a href="#example-1-question" id="toc-example-1-question" class="nav-link" data-scroll-target="#example-1-question">Example 1: Question</a></li>
+  <li><a href="#example-1-question-continued" id="toc-example-1-question-continued" class="nav-link" data-scroll-target="#example-1-question-continued">Example 1: Question (continued)</a></li>
+  <li><a href="#example-1-solution" id="toc-example-1-solution" class="nav-link" data-scroll-target="#example-1-solution">Example 1: Solution</a></li>
+  <li><a href="#example-2-question" id="toc-example-2-question" class="nav-link" data-scroll-target="#example-2-question">Example 2: Question</a></li>
+  <li><a href="#example-2-question-continued" id="toc-example-2-question-continued" class="nav-link" data-scroll-target="#example-2-question-continued">Example 2: Question (continued)</a></li>
+  <li><a href="#example-2-question-continued-1" id="toc-example-2-question-continued-1" class="nav-link" data-scroll-target="#example-2-question-continued-1">Example 2: Question (continued)</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="GLM.slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html">Chapter 4 - Modelling</a></li><li class="breadcrumb-item"><a href="../../Lectures/Ch4-Modelling/GLM.html">Lecture: GLM</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Lecture: GLM</h1>
+<p class="subtitle lead">Actuarial Data Science - Open Learning Resource</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Fei Huang, UNSW Sydney </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="recommended-reading" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-reading">Recommended Reading</h3>
+<ul>
+<li>Generalized Linear Models for Insurance Data: Review Chapter 5 (covered in ACTL 3162/5106)</li>
+<li>Generalized Linear Models for Insurance Data: Read Chapters 6, 7 (excluding Sections 7.7–7.9), and 8</li>
+</ul>
+</section>
+<section id="learning-objectives" class="level3">
+<h3 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li><p>GLMs are one of the core workhorses of actuarial modelling, especially in pricing and reserving. In this lecture, we revisit the GLM framework and connect it to the broader statistical learning ideas you have seen, so that you understand <em>when</em> and <em>why</em> a GLM is an appropriate choice, not just how to fit one in software.</p></li>
+<li><p>Perform data analytics modelling using GLM for response variables of the following types:</p>
+<ul>
+<li>count data</li>
+<li>binary data</li>
+<li>continuous data</li>
+<li>a mixture of discrete and continuous data</li>
+</ul></li>
+<li><p>Understand the specification of GLMs and their model assumptions.</p></li>
+<li><p>Select and validate a GLM appropriately.</p></li>
+<li><p>Compare GLMs with other modelling techniques.</p></li>
+</ul>
+</section>
+<section id="generalized-linear-models-review-from-prior-courses" class="level2">
+<h2 class="anchored" data-anchor-id="generalized-linear-models-review-from-prior-courses">Generalized Linear Models (Review from Prior Courses)</h2>
+<section id="linear-model" class="level3">
+<h3 class="anchored" data-anchor-id="linear-model">Linear Model</h3>
+<p>A Linear model assumes <span class="math display">
+Y \mid X \sim \mathcal{N}(\mu(X), \sigma^2 I).
+</span> And <span class="math display">
+\mathbb{E}(Y \mid X) = \mu(X) = X^T \beta,
+</span> where <span class="math inline">X = (1, x_1, x_2, \ldots, x_p)^T</span> and <span class="math inline">\beta = (\beta_0, \beta_1, \ldots, \beta_p)^T</span>.</p>
+<ul>
+<li>Normal errors</li>
+<li>Constant variance</li>
+<li>Additive linear relationship</li>
+</ul>
+</section>
+<section id="components-of-a-linear-model" class="level3">
+<h3 class="anchored" data-anchor-id="components-of-a-linear-model">Components of a Linear Model</h3>
+<p>The main components (that we are going to relax) are:</p>
+<ol type="1">
+<li><strong>Random component</strong>: the response variable <span class="math inline">Y \mid X</span> is <em>continuous</em> and <em>normally distributed</em> with mean <span class="math inline">\mu = \mu(X) = \mathbb{E}(Y \mid X)</span>.</li>
+<li><strong>Link</strong>: the relationship between the random component and the covariates <span class="math inline">X = (1, x_1, x_2, \ldots, x_p)^T</span> <span class="math display">
+\mu(X) = X^T \beta
+</span></li>
+<li><strong>Model fitting and inference</strong>: least squares, maximum likelihood estimation, and weighted least squares</li>
+</ol>
+</section>
+<section id="insurance-applications" class="level3">
+<h3 class="anchored" data-anchor-id="insurance-applications">Insurance Applications</h3>
+<p>In insurance settings, most variables are non-normal in nature. Models used are often multiplicative, hence linear on the log scale.</p>
+<ul>
+<li>In general insurance, claim numbers (frequency) are typically Poisson, or Poisson with over-dispersion. These distributions are not symmetric, and their variance is proportional to the mean.</li>
+<li>In general insurance, claim amounts (severity) are right-skewed, often following distributions such as the Gamma.<br>
+</li>
+<li>In mortality studies, the aim is to explain the number of deaths in terms of variables such as age, gender, and lifestyle.</li>
+<li>In health insurance, we may wish to explain the number of claims made by different individuals or groups of individuals in terms of explanatory variables such as age, gender and occupation.</li>
+</ul>
+</section>
+<section id="how-to-solve-the-problem" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-solve-the-problem">How to Solve the Problem?</h3>
+<ul>
+<li>Transformations on linear models (e.g., log-transformed response)?
+<ul>
+<li>If using a log-transformed response, then the target variable must be non-negative and will be lognormally distributed.<br>
+</li>
+<li>It does not solve all problems.<br>
+</li>
+</ul></li>
+<li>GLMs provide more flexibility and cover a wider range of distributions.</li>
+</ul>
+</section>
+<section id="generalisation" class="level3">
+<h3 class="anchored" data-anchor-id="generalisation">Generalisation</h3>
+<p>A generalized linear model (GLM) generalises normal linear regression models in the following directions:</p>
+<ol type="1">
+<li><p><strong>Random component</strong>: <span class="math display">
+Y \sim \text{some exponential family distribution}
+</span></p></li>
+<li><p><strong>Link</strong>: between the random component and covariates: <span class="math display">
+g(\mu(X)) = X^T \beta = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p
+</span> where <span class="math inline">g</span> is the link function and <span class="math inline">\mu = \mathbb{E}(Y \mid X)</span>. The link function can be any monotonic function (allowing inversion): <span class="math display">
+\mu(X) = g^{-1}(X^T \beta) = g^{-1}(\beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p)
+</span></p></li>
+<li><p><strong>Model fitting and inferences</strong>: maximum likelihood estimation</p>
+<ul>
+<li>Newton-Raphson Method</li>
+<li>Fisher scoring Method</li>
+</ul></li>
+</ol>
+</section>
+<section id="one-parameter-canonical-exponential-family" class="level3">
+<h3 class="anchored" data-anchor-id="one-parameter-canonical-exponential-family">One-Parameter Canonical Exponential Family</h3>
+<ul>
+<li><p><em>Canonical exponential family</em> for <span class="math inline">k = 1</span>, <span class="math inline">y \in \mathbb{R}</span>: <span class="math display">
+f_\theta(y) = \exp\left(\frac{y\theta - b(\theta)}{\phi} + c(y, \phi)\right)
+</span> for some <em>known</em> functions <span class="math inline">b(\cdot)</span> and <span class="math inline">c(\cdot, \cdot)</span>.</p></li>
+<li><p>If <span class="math inline">\phi</span> is known, this is a one-parameter exponential family with <span class="math inline">\theta</span> being the canonical parameter.<br>
+</p></li>
+<li><p>If <span class="math inline">\phi</span> is unknown, this may or may not be a two-parameter exponential family. <span class="math inline">\phi</span> is called the <em>dispersion parameter</em>.</p></li>
+<li><p>In this class, we always assume that <span class="math inline">\phi</span> is known.</p></li>
+</ul>
+</section>
+<section id="example-normal-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="example-normal-distribution">Example: Normal Distribution</h3>
+<ul>
+<li>Consider the following normal density function with known variance <span class="math inline">\sigma^2</span>:</li>
+</ul>
+<p><span class="math display">
+\begin{aligned}
+f_\theta(y) &amp;= \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(y - \mu)^2}{2\sigma^2}\right) \\
+&amp;= \exp\left\{ \frac{y\mu - \frac{1}{2}\mu^2}{\sigma^2}
+- \frac{1}{2} \left( \frac{y^2}{\sigma^2} + \log(2\pi\sigma^2) \right) \right\}
+\end{aligned}
+</span></p>
+<ul>
+<li>Therefore <span class="math inline">\theta = \mu</span>, <span class="math inline">\phi = \sigma^2</span>, <span class="math inline">b(\theta) = \frac{\theta^2}{2}</span>, and <span class="math display">
+c(y, \phi) = -\frac{1}{2} \left( \frac{y^2}{\phi} + \log(2\pi \phi) \right).
+</span></li>
+</ul>
+</section>
+<section id="other-distributions" class="level3">
+<h3 class="anchored" data-anchor-id="other-distributions">Other distributions</h3>
+<p>The exponential family includes a rich class of distributions, such as normal, Poisson, binomial, Gamma, and inverse Gaussian distributions.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Normal</th>
+<th>Poisson</th>
+<th>Bernoulli</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Notation</td>
+<td><span class="math inline">\mathcal{N}(\mu, \sigma^2)</span></td>
+<td><span class="math inline">\mathcal{P}(\mu)</span></td>
+<td><span class="math inline">\mathcal{B}(p)</span></td>
+</tr>
+<tr class="even">
+<td>Range of <span class="math inline">y</span></td>
+<td><span class="math inline">(-\infty, \infty)</span></td>
+<td><span class="math inline">\{0, 1, 2, \ldots\}</span></td>
+<td><span class="math inline">\{0, 1\}</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\phi</span></td>
+<td><span class="math inline">\sigma^2</span></td>
+<td><span class="math inline">1</span></td>
+<td><span class="math inline">1</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">b(\theta)</span></td>
+<td><span class="math inline">\dfrac{\theta^2}{2}</span></td>
+<td><span class="math inline">e^\theta</span></td>
+<td><span class="math inline">\log(1 + e^\theta)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">c(y,\phi)</span></td>
+<td><span class="math inline">-\dfrac{1}{2}\left(\dfrac{y^2}{\phi} + \log(2\pi\phi)\right)</span></td>
+<td><span class="math inline">-\log(y!)</span></td>
+<td><span class="math inline">0</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-to-select-the-responsetarget-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-select-the-responsetarget-distribution">How to Select the Response/Target Distribution?</h3>
+<p>We should choose the response distribution that is consistent with the characteristics of the response variable.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Examples">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Examples
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Count response variables, such as the number of claims (frequency) and the number of deaths in mortality studies.
+<ul>
+<li>Poisson distribution (mean = variance)</li>
+<li>Quasi-Poisson and Negative Binomial (variance &gt; mean)</li>
+</ul></li>
+<li>Binary response variables, such as fraud detection, email spam detection, and whether a client is credible or not.
+<ul>
+<li>Bernoulli distribution (binomial distribution with <span class="math inline">n=1</span>)</li>
+</ul></li>
+<li>Positive continuous response variables, such as claim amounts (severity) and insurance coverage.
+<ul>
+<li>Gamma and inverse Gaussian distributions</li>
+</ul></li>
+<li>A mixture of discrete and continuous response variables, such as aggregate loss in general insurance.
+<ul>
+<li>Tweedie distribution</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="mean-and-variance" class="level3">
+<h3 class="anchored" data-anchor-id="mean-and-variance">Mean and Variance</h3>
+<p>The mean <span class="math inline">\mathbb{E}(Y)</span> and the variance <span class="math inline">\mathrm{Var}(Y)</span> can be derived as follows:</p>
+<p><span class="math display">
+\mathbb{E}(Y) = \mu = b'(\theta).
+</span></p>
+<p><span class="math display">
+\mathrm{Var}(Y) = V(\mu)\,\phi = b''(\theta)\,\phi.
+</span> <span class="math inline">V(\mu)</span> is called the variance function.</p>
+</section>
+<section id="examples-of-mean" class="level3">
+<h3 class="anchored" data-anchor-id="examples-of-mean">Examples of Mean</h3>
+<ul>
+<li>Note that <span class="math inline">\mu = b'(\theta)</span>, so the mean <span class="math inline">\mu</span> depends on the canonical (location) parameter <span class="math inline">\theta</span>, or equivalently <span class="math inline">\theta</span> depends on <span class="math inline">\mu</span>. Hence, we sometimes write <span class="math inline">\theta = \theta(\mu)</span>.</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Examples">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Examples
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Normal <span class="math inline">N(\mu, \sigma^2)</span>: <span class="math inline">\theta = \mu</span>, and hence <span class="math inline">\theta(\mu) = \mu</span>.</p></li>
+<li><p>Gamma<span class="math inline">(\alpha, \beta)</span>: <span class="math inline">\theta = -\beta/\alpha = -\frac{1}{\mu}</span>, and hence <span class="math inline">\theta(\mu) = -\frac{1}{\mu}</span>.</p></li>
+<li><p>Inverse Gaussian<span class="math inline">(\alpha, \beta)</span>: <span class="math inline">\theta = -\frac{1}{2}\frac{\beta^2}{\alpha^2} = -\frac{1}{2\mu^2}</span>, and hence <span class="math inline">\theta(\mu) = -\frac{1}{2\mu^2}</span>.</p></li>
+<li><p>Poisson<span class="math inline">(\mu)</span>: <span class="math inline">\theta = \log \mu</span>, and hence <span class="math inline">\theta(\mu) = \log \mu</span>.</p></li>
+<li><p>Binomial<span class="math inline">(m, p)</span>: <span class="math inline">\theta = \log\!\left(\frac{p}{1-p}\right) = \log\!\left(\frac{\mu}{m-\mu}\right)</span>, and hence <span class="math inline">\theta(\mu) = \log\!\left(\frac{\mu}{m-\mu}\right)</span>.</p></li>
+<li><p>Negative Binomial<span class="math inline">(r, p)</span>: <span class="math inline">\theta = \log(1-p) = \log\!\left(\frac{\mu p}{r}\right)</span>, and hence <span class="math inline">\theta(\mu) = \log(1-p) = \log\!\left(\frac{\mu p}{r}\right)</span>.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="example-poisson-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="example-poisson-distribution">Example: Poisson Distribution</h3>
+<p>Consider a Poisson likelihood, <span class="math display">
+f(y) = \frac{\mu^y}{y!} e^{-\mu} = \exp\!\left(y \log \mu - \mu - \log(y!)\right),
+</span> Thus, <span class="math display">
+\theta = \log \mu, \quad b(\theta) = \mu, \quad c(y, \phi) = -\log(y!),
+</span> <span class="math display">
+\phi = 1,
+</span> <span class="math display">
+\mu = e^\theta,
+</span></p>
+<p><span class="math display">
+b(\theta) = e^\theta,
+</span> <span class="math display">
+b''(\theta) = e^\theta = \mu.
+</span></p>
+</section>
+<section id="variance-function" class="level3">
+<h3 class="anchored" data-anchor-id="variance-function">Variance Function</h3>
+<ul>
+<li>The variance is sometimes expressed as <span class="math inline">\mathrm{Var}(Y) = \phi V(\mu)</span>, where <span class="math display">
+V(\mu) = b''\!\left(\theta(\mu)\right)
+</span> and is called the <em>variance function</em>.</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Examples">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Examples
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Normal <span class="math inline">N(\mu, \sigma^2)</span> with <span class="math inline">V(\mu) = 1</span></p></li>
+<li><p>Gamma<span class="math inline">(\alpha, \beta)</span> with <span class="math inline">V(\mu) = \mu^2</span></p></li>
+<li><p>Inverse Gaussian<span class="math inline">(\alpha, \beta)</span> with <span class="math inline">V(\mu) = \mu^3</span></p></li>
+<li><p>Poisson<span class="math inline">(\mu)</span> with <span class="math inline">V(\mu) = \mu</span></p></li>
+<li><p>Binomial<span class="math inline">(m, p)</span> with <span class="math inline">V(\mu) = \mu\left(1 - \mu/m\right)</span></p></li>
+<li><p>Negative Binomial<span class="math inline">(r, p)</span> with <span class="math inline">V(\mu) = \mu\left(1 + \mu/r\right)</span></p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="mean-variance-relationship-1" class="level3">
+<h3 class="anchored" data-anchor-id="mean-variance-relationship-1">Mean-variance relationship (1)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/mean_var_rel.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Mean–Variance Relationships Across Distributions</figcaption>
+</figure>
+</div>
+</section>
+<section id="link-function" class="level3">
+<h3 class="anchored" data-anchor-id="link-function">Link function</h3>
+<ul>
+<li><span class="math inline">\beta</span> is the parameter of interest and needs to appear in the likelihood function to enable maximum likelihood estimation.</li>
+<li>A link function <span class="math inline">g</span> relates the linear predictor <span class="math inline">X^T\beta</span> to the mean parameter <span class="math inline">\mu</span>: <span class="math display">
+X^T\beta = g(\mu).
+</span></li>
+<li>The function <span class="math inline">g</span> is required to be monotone increasing and differentiable: <span class="math display">
+\mu = g^{-1}(X^T\beta).
+</span></li>
+</ul>
+</section>
+<section id="examples-of-link-functions" class="level3">
+<h3 class="anchored" data-anchor-id="examples-of-link-functions">Examples of Link Functions</h3>
+<div class="callout callout-style-default callout-tip callout-titled" title="Examples of Link Functions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Examples of Link Functions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>For linear regression, <span class="math inline">g(\cdot)</span> is the identity.</li>
+<li>Poisson data. Suppose <span class="math inline">Y \mid X \sim \text{Poisson}(\mu(X))</span>.
+<ul>
+<li><span class="math inline">\mu(X) &gt; 0</span>;</li>
+<li><span class="math inline">\log(\mu(X)) = X^T\beta</span>;</li>
+<li>In general, a link function for count data should map <span class="math inline">(0, +\infty)</span> to <span class="math inline">\mathbb{R}</span>;</li>
+<li>The log link is a natural choice.</li>
+</ul></li>
+<li>Bernoulli/Binomial data.
+<ul>
+<li><span class="math inline">0 &lt; \mu &lt; 1</span>;</li>
+<li><span class="math inline">g</span> should map <span class="math inline">(0,1)</span> to <span class="math inline">\mathbb{R}</span>;</li>
+<li>Three choices:
+<ol type="1">
+<li>logit: <span class="math inline">\log\!\left(\frac{\mu(X)}{1-\mu(X)}\right) = X^T\beta</span>;</li>
+<li>probit: <span class="math inline">\Phi^{-1}(\mu(X)) = X^T\beta</span>, where <span class="math inline">\Phi(\cdot)</span> is the normal CDF;</li>
+<li>complementary log-log: <span class="math inline">\log\!\left(-\log(1-\mu(X))\right) = X^T\beta</span>;</li>
+</ol></li>
+<li>The logit link is the natural choice.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="examples-of-link-functions-for-bernoulli-response-1" class="level3">
+<h3 class="anchored" data-anchor-id="examples-of-link-functions-for-bernoulli-response-1">Examples of Link Functions for Bernoulli Response (1)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/link1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Comparison of logit and probit link functions</figcaption>
+</figure>
+</div>
+<ul>
+<li>Blue: <span class="math inline">f_1(x) = \dfrac{e^x}{1 + e^x}</span> (logit link)</li>
+<li>Red: <span class="math inline">f_2(x) = \Phi(x)</span> (probit link, Gaussian CDF)</li>
+</ul>
+</section>
+<section id="examples-of-link-functions-for-bernoulli-response-2" class="level3">
+<h3 class="anchored" data-anchor-id="examples-of-link-functions-for-bernoulli-response-2">Examples of Link Functions for Bernoulli Response (2)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/link2.png" class="img-fluid figure-img" style="width:40.0%"></p>
+<figcaption>Inverse link functions: logit (blue) and probit (red)</figcaption>
+</figure>
+</div>
+<ul>
+<li>Blue: <span class="math inline">g_1(x) = f_1^{-1}(x) = \log\!\left(\frac{x}{1-x}\right)</span> (logit link)</li>
+<li>Red: <span class="math inline">g_2(x) = f_2^{-1}(x) = \Phi^{-1}(x)</span> (probit link)</li>
+</ul>
+</section>
+<section id="canonical-link" class="level3">
+<h3 class="anchored" data-anchor-id="canonical-link">Canonical Link</h3>
+<ul>
+<li>The function <span class="math inline">g</span> that links the mean <span class="math inline">\mu</span> to the canonical parameter <span class="math inline">\theta</span> is called the <em>canonical link</em>: <span class="math display">
+g(\mu) = \theta.
+</span></li>
+<li>Since <span class="math inline">\mu = b'(\theta)</span>, the canonical link is given by <span class="math display">
+g(\mu) = (b')^{-1}(\mu).
+</span></li>
+<li>The canonical link function creates an identity link between <span class="math inline">\theta</span> and the <span class="math inline">X^T\beta</span>: <span class="math display">
+g(\mu) = \theta = X^T\beta.
+</span></li>
+</ul>
+</section>
+<section id="example-the-bernoulli-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="example-the-bernoulli-distribution">Example: The Bernoulli Distribution</h3>
+<ul>
+<li>We can check that <span class="math display">
+b(\theta) = \log(1 + e^\theta).
+</span></li>
+<li>Hence we solve <span class="math display">
+b'(\theta) = \frac{e^\theta}{1 + e^\theta} = \mu,
+</span> <span class="math display">
+\theta = \log\!\left(\frac{\mu}{1-\mu}\right).
+</span></li>
+<li>The canonical link for the Bernoulli distribution is the <em>logit link</em>.</li>
+</ul>
+</section>
+<section id="other-examples-of-canonical-links" class="level3">
+<h3 class="anchored" data-anchor-id="other-examples-of-canonical-links">Other Examples of Canonical Links</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Distribution</th>
+<th><span class="math inline">b(\theta)</span></th>
+<th><span class="math inline">g(\mu)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Normal</td>
+<td><span class="math inline">\dfrac{\theta^2}{2}</span></td>
+<td><span class="math inline">\mu</span></td>
+</tr>
+<tr class="even">
+<td>Poisson</td>
+<td><span class="math inline">e^\theta</span></td>
+<td><span class="math inline">\log \mu</span></td>
+</tr>
+<tr class="odd">
+<td>Bernoulli</td>
+<td><span class="math inline">\log(1 + e^\theta)</span></td>
+<td><span class="math inline">\log\!\left(\dfrac{\mu}{1-\mu}\right)</span></td>
+</tr>
+<tr class="even">
+<td>Gamma</td>
+<td><span class="math inline">-\log(-\theta)</span></td>
+<td><span class="math inline">-\dfrac{1}{\mu}</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-to-select-the-link-function" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-select-the-link-function">How to Select the Link Function?</h3>
+<ol type="1">
+<li>Consistent with the range of the response data, for example
+<ul>
+<li>for response variables with positive means, a <em>log</em> link can be appropriate for Poisson, gamma, and inverse Gaussian distributions;</li>
+<li>for binary response variables (only taking values of 0 or 1), the mean should be bounded between 0 and 1. Hence, a <em>logit</em> link is appropriate.</li>
+</ul></li>
+<li>Easy to interpret.
+<ul>
+<li>Interpret the effects of the predictors on the mean of the response variable (i.e., interpret the coefficients).</li>
+<li>For example, the <em>log</em> link is easy to interpret, as it generates a multiplicative model for the mean of the response variable.<br>
+</li>
+<li>Interpretability is an important advantage of GLMs.</li>
+</ul></li>
+</ol>
+</section>
+<section id="how-to-select-the-link-function-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="how-to-select-the-link-function-continued">How to Select the Link Function? (continued)</h3>
+<ol start="3" type="1">
+<li>Easy to compute.
+<ul>
+<li>Canonical links simplify the likelihood function and make the optimisation procedure easier.</li>
+<li>This is a less important point compared to the first two, so canonical links are not always preferred.</li>
+</ul></li>
+</ol>
+</section>
+<section id="glm-model-structure" class="level3">
+<h3 class="anchored" data-anchor-id="glm-model-structure">GLM Model Structure</h3>
+<ul>
+<li>Let <span class="math inline">(X_i, Y_i) \in \mathbb{R}^p \times \mathbb{R}</span>, <span class="math inline">i = 1,2,\ldots,n</span>, be independent random pairs such that the conditional distribution of <span class="math inline">Y_i</span> given <span class="math inline">X_i</span> has a density in the canonical exponential family: <span class="math display">
+f_{\theta_i}(y_i) = \exp\left\{ \frac{y_i \theta_i - b(\theta_i)}{\phi} + c(y_i, \phi) \right\}.
+</span></li>
+<li><span class="math inline">\mathbf{Y} = (Y_1, \ldots, Y_n)^T</span>, <span class="math inline">\mathbf{X} = (X_1^T, \ldots, X_n^T)^T</span></li>
+<li>The mean <span class="math inline">\mu_i</span> is related to the canonical parameter <span class="math inline">\theta_i</span> via <span class="math display">
+\mu_i = b'(\theta_i).
+</span></li>
+<li>The mean <span class="math inline">\mu_i</span> depends on the covariates through a link function <span class="math inline">g</span>: <span class="math display">
+g(\mu_i) = X_i^T \beta.
+</span></li>
+</ul>
+</section>
+<section id="beta-and-theta" class="level3">
+<h3 class="anchored" data-anchor-id="beta-and-theta"><span class="math inline">\beta</span> and <span class="math inline">\theta</span></h3>
+<ul>
+<li><p>Given a link function <span class="math inline">g</span>, note the following relationship between <span class="math inline">\beta</span> and <span class="math inline">\theta</span>: <span class="math display">
+\begin{aligned}
+\theta_i
+&amp;= (b')^{-1}(\mu_i) \\
+&amp;= (b')^{-1}\big(g^{-1}(X_i^T \beta)\big) \equiv h(X_i^T \beta)
+\end{aligned}
+</span></p></li>
+<li><p>where <span class="math inline">h</span> is defined as <span class="math display">
+h = (b')^{-1} \circ g^{-1} = (g \circ b')^{-1}.
+</span></p></li>
+<li><p>Remark: if <span class="math inline">g</span> is the <em>canonical</em> link function, then <span class="math inline">h</span> is the <em>identity</em>.</p></li>
+</ul>
+</section>
+<section id="model-interpretation-quantitative-predictors" class="level3">
+<h3 class="anchored" data-anchor-id="model-interpretation-quantitative-predictors">Model Interpretation: Quantitative Predictors</h3>
+<p>The link function is closely related to the interpretation of coefficients.</p>
+<ul>
+<li><em>Log link</em>: <span class="math inline">\ln(\mu) = X^T\beta = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p</span> <span class="math display">
+\mu = e^{X^T\beta} = e^{\beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p}
+= e^{\beta_0} \times e^{\beta_1 X_1} \times \cdots \times e^{\beta_p X_p}
+</span>
+<ul>
+<li>When there is a unit change in a predictor <span class="math inline">X_j</span> (all others fixed), there is a multiplicative change (<span class="math inline">e^{\beta_j}</span>) in the mean <span class="math inline">\mu</span>, and the percentage change in <span class="math inline">\mu</span> is <span class="math inline">(e^{\beta_j} - 1)</span>.</li>
+<li>When <span class="math inline">\beta_j</span> is positive, <span class="math inline">e^{\beta_j} &gt; 1</span> and <span class="math inline">\mu</span> increases; when <span class="math inline">\beta_j</span> is negative, <span class="math inline">e^{\beta_j} &lt; 1</span> and <span class="math inline">\mu</span> decreases.</li>
+</ul></li>
+<li><em>Logit link</em>: <span class="math inline">\ln\!\left(\frac{\mu}{1-\mu}\right) = \ln(\text{odds}) = X^T\beta</span>
+<ul>
+<li>Similar interpretations.</li>
+</ul></li>
+</ul>
+</section>
+<section id="model-interpretation-qualitative-predictors" class="level3">
+<h3 class="anchored" data-anchor-id="model-interpretation-qualitative-predictors">Model Interpretation: Qualitative Predictors</h3>
+<p>For qualitative (categorical) predictors, the interpretation depends on the choice of the reference level.</p>
+<p>Suppose a categorical variable has a reference category. Then:</p>
+<ul>
+<li>The intercept typically corresponds to the expected response for the reference category.</li>
+<li>The coefficient associated with another category measures the difference relative to the reference category.</li>
+<li>Under a log link, exponentiating the coefficient gives the multiplicative effect (i.e., multiplicative relativities) relative to the reference category.</li>
+<li>Under a logit link, exponentiating the coefficient gives the odds ratio relative to the reference category.</li>
+</ul>
+<p>See the GLM lab materials for more detailed examples and interpretations.</p>
+</section>
+<section id="log-likelihood" class="level3">
+<h3 class="anchored" data-anchor-id="log-likelihood">Log-likelihood</h3>
+<ul>
+<li><p>The log-likelihood is given by <span class="math display">
+\begin{aligned}
+\ell_n(\beta; \mathbf{Y}, \mathbf{X})
+&amp;= \sum_i \frac{Y_i \theta_i - b(\theta_i)}{\phi} \\
+&amp;= \sum_i \frac{Y_i\, h(X_i^T \beta) - b\!\left(h(X_i^T \beta)\right)}{\phi}
+\end{aligned}
+</span> up to a constant term.</p></li>
+<li><p>Note that when we use the <em>canonical</em> link function, we obtain the simpler expression <span class="math display">
+\ell_n(\beta, \phi; \mathbf{Y}, \mathbf{X})
+= \sum_i \frac{Y_i X_i^T \beta - b(X_i^T \beta)}{\phi}.
+</span></p></li>
+</ul>
+</section>
+<section id="maximum-likelihood-estimation-mle" class="level3">
+<h3 class="anchored" data-anchor-id="maximum-likelihood-estimation-mle">Maximum Likelihood Estimation (MLE)</h3>
+<ul>
+<li>For linear models, the MLE and the ordinary least squares method are equivalent.<br>
+</li>
+<li>For GLMs, we use MLE for parameter estimation.</li>
+<li>The log-likelihood <span class="math inline">\ell(\theta)</span> is <em>strictly concave</em> when using the canonical link function and <span class="math inline">\phi &gt; 0</span>. As a consequence, the maximum likelihood estimator is <em>unique</em>.</li>
+<li>On the other hand, if another parameterisation is used, the likelihood function may not be strictly concave, leading to <em>several local maxima</em>. The following methods can be used for optimisation:
+<ul>
+<li>Newton–Raphson method</li>
+<li>Fisher scoring method</li>
+</ul></li>
+<li>The coefficient estimates and the fitted mean response are given by: <span class="math display">
+\hat{\mu}_i = g^{-1}\!\left(\hat{\beta}_0 + \hat{\beta}_1 x_{i1} + \cdots + \hat{\beta}_p x_{ip}\right).
+</span></li>
+</ul>
+</section>
+<section id="goodness-of-fit-measures-deviance" class="level3">
+<h3 class="anchored" data-anchor-id="goodness-of-fit-measures-deviance">Goodness-of-Fit Measures: Deviance</h3>
+<ul>
+<li><p>Deviance is a likelihood-based goodness-of-fit measure on the training set. It plays much the same role for GLMs as RSS does for ordinary linear models.<br>
+</p></li>
+<li><p><em>Null model</em>: only the constant term is included.<br>
+</p></li>
+<li><p><em>Full model (saturated model)</em>: each fitted value is equal to the observation, so the saturated model fits perfectly. The full model is the case when <span class="math inline">\mu_i = y_i</span> for all <span class="math inline">i = 1,2,\ldots,n</span>, so that the log-likelihood in the full model gives <span class="math display">
+\ell_{\text{full}}
+= \sum_{i=1}^{n} \left[ \frac{y_i \tilde{\theta}_i - b(\tilde{\theta}_i)}{\phi} + c(y_i, \phi) \right]
+</span> where <span class="math inline">\tilde{\theta}_i</span> are the canonical parameter values corresponding to <span class="math inline">\mu_i = y_i</span> for all <span class="math inline">i = 1,2,\ldots,n</span>.</p></li>
+<li><p>We define the <strong>deviance</strong> of the chosen GLM (with log-likelihood <span class="math inline">\ell</span>) as <span class="math inline">D \equiv 2(\ell_{\text{full}} - \ell).</span></p></li>
+<li><p>Note: for a linear model with Gaussian errors, the deviance is just the RSS on the training set. The null deviance is <span class="math inline">2(\ell_{\text{full}} - \ell_{\text{null}})</span>.</p></li>
+</ul>
+</section>
+<section id="model-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="model-comparison">Model Comparison</h3>
+<ul>
+<li><p>Consider two models:</p>
+<ul>
+<li>Model 1: <span class="math inline">q</span> parameters, with deviance <span class="math inline">D_1</span>;</li>
+<li>Model 2: <span class="math inline">p</span> parameters (<span class="math inline">p &gt; q</span>), with deviance <span class="math inline">D_2</span>. <span class="math display">
+D_1 - D_2 \sim \chi^2(p - q).
+</span></li>
+</ul></li>
+<li><p>Model 2 is a significant improvement over Model 1 (the more parsimonious model) if <span class="math inline">D_1 - D_2</span> exceeds the critical value from a <span class="math inline">\chi^2(p - q)</span> distribution.</p></li>
+<li><p>Since <span class="math display">
+\Pr\!\left[ \chi^2(\nu) &gt; 2\nu \right] \approx 5\%,
+</span> the following rule of thumb can be used as an approximation: <span class="math display">
+\text{Model 2 is preferred if } D_1 - D_2 &gt; 2(p - q).
+</span></p></li>
+</ul>
+</section>
+<section id="example" class="level3">
+<h3 class="anchored" data-anchor-id="example">Example</h3>
+<p>Let <span class="math inline">Y_{ij}</span> denote the number of claims for the <span class="math inline">j</span>th male driver in group <span class="math inline">i</span> (<span class="math inline">i=1,2,3</span>, <span class="math inline">j=1,2,\cdots</span>). Three models are fitted, with deviances as shown below:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 44%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Link function</th>
+<th>Deviance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model 1</td>
+<td><span class="math inline">\log(\mu_{ij}) = \alpha_i,\ i = 1,2,3</span></td>
+<td>60.40</td>
+</tr>
+<tr class="even">
+<td>Model 2</td>
+<td><span class="math inline">\log(\mu_{ij}) = \begin{cases} \alpha, &amp; \text{if } i = 1,2 \\ \beta, &amp; \text{if } i = 3 \end{cases}</span></td>
+<td>61.64</td>
+</tr>
+<tr class="odd">
+<td>Model 3</td>
+<td><span class="math inline">\log(\mu_{ij}) = \alpha</span></td>
+<td>72.53</td>
+</tr>
+</tbody>
+</table>
+<p>Determine whether or not<br>
+(a) model 2 is a significant improvement over model 3;<br>
+(b) model 1 is a significant improvement over model 2;<br>
+(c) model 1 is a significant improvement over model 3.</p>
+</section>
+<section id="exponential-distributions-and-their-deviances" class="level3">
+<h3 class="anchored" data-anchor-id="exponential-distributions-and-their-deviances">Exponential Distributions and Their Deviances</h3>
+<ul>
+<li><p>We drop the subscript <span class="math inline">i = 1,2,\ldots,n</span></p></li>
+<li><p>Deviances are:</p></li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 59%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Distribution</th>
+<th>Deviance <span class="math inline">D(y, \hat{\mu})</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Normal</td>
+<td><span class="math inline">\sum (y - \hat{\mu})^2</span></td>
+</tr>
+<tr class="even">
+<td>Poisson</td>
+<td><span class="math inline">2 \sum \left[ y \log\!\left(\frac{y}{\hat{\mu}}\right) - (y - \hat{\mu}) \right]</span></td>
+</tr>
+<tr class="odd">
+<td>Binomial</td>
+<td><span class="math inline">2 \sum \left[ y \log\!\left(\frac{y}{\hat{\mu}}\right) + (m - y)\log\!\left(\frac{m - y}{m - \hat{\mu}}\right) \right]</span></td>
+</tr>
+<tr class="even">
+<td>Gamma</td>
+<td><span class="math inline">2 \sum \left[ -\log\!\left(\frac{y}{\hat{\mu}}\right) + \frac{y - \hat{\mu}}{\hat{\mu}} \right]</span></td>
+</tr>
+<tr class="odd">
+<td>Inverse Gaussian</td>
+<td><span class="math inline">\sum \frac{(y - \hat{\mu})^2}{\hat{\mu}^2 y}</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="deviance-residuals-1" class="level3">
+<h3 class="anchored" data-anchor-id="deviance-residuals-1">Deviance Residuals (1)</h3>
+<ul>
+<li><p>Residuals are a primary tool for assessing how well a model fits the data.</p></li>
+<li><p>They can also help detect the form of the variance function and diagnose problem observations.</p></li>
+<li><p>Response residuals (<span class="math inline">y_i - \hat{\mu}_i</span>) are not very helpful, as they are not normally distributed and do not have constant variance.</p></li>
+</ul>
+</section>
+<section id="deviance-residuals-1-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="deviance-residuals-1-continued">Deviance Residuals (1) (continued)</h3>
+<ul>
+<li>We consider the <strong>deviance residuals</strong> instead: <span class="math display">
+r_i^D = \text{sign}(y_i - \hat{\mu}_i)\sqrt{d_i}
+</span>
+<ul>
+<li>where <span class="math inline">d_i</span> is the contribution of the <span class="math inline">i</span>th observation to the deviance (drawing on the idea that deviance is akin to RSS).</li>
+<li><span class="math inline">\text{sign}(y_i - \hat{\mu}_i) = 1</span> if <span class="math inline">y_i &gt; \hat{\mu}_i</span>, and <span class="math inline">\text{sign}(y_i - \hat{\mu}_i) = -1</span> if <span class="math inline">y_i &lt; \hat{\mu}_i</span>.</li>
+<li>For example, for a Poisson distribution, we have <span class="math display">
+r_i^D = \text{sign}(y_i - \hat{\mu}_i)\sqrt{2\left[ y_i \log\!\left(\frac{y_i}{\hat{\mu}_i}\right) - (y_i - \hat{\mu}_i) \right]}.
+</span></li>
+</ul></li>
+<li><span class="math inline">\sum_{i=1}^{n}(r_{i}^{D})^2=\sum_{i=1}^{n}d_i=D</span>.</li>
+</ul>
+</section>
+<section id="deviance-residuals-2" class="level3">
+<h3 class="anchored" data-anchor-id="deviance-residuals-2">Deviance Residuals (2)</h3>
+<ul>
+<li>Deviance residuals are approximately normally distributed for most response distributions.
+<ul>
+<li>We can use a QQ plot of the standardised deviance residuals as a diagnostic tool.</li>
+</ul></li>
+<li>Deviance residuals should have no systematic patterns with respect to the predictors.</li>
+<li>Standardised deviance residuals have approximately constant variance.</li>
+</ul>
+</section>
+<section id="aic-and-bic" class="level3">
+<h3 class="anchored" data-anchor-id="aic-and-bic">AIC and BIC</h3>
+<ul>
+<li><p>Similar to the RSS of a linear model, deviance always decreases as the number of predictors increases.</p></li>
+<li><p>AIC and BIC are penalised likelihood measures, which balance the goodness of fit on the training set and model complexity.<br>
+</p></li>
+<li><p>When a log-likelihood loss function is used, we have</p>
+<ul>
+<li><span class="math inline">\text{AIC} = -2 \, \text{loglik} + 2d</span></li>
+<li><span class="math inline">\text{BIC} = -2 \, \text{loglik} + (\log n)d</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="procedure-of-constructing-a-glm" class="level3">
+<h3 class="anchored" data-anchor-id="procedure-of-constructing-a-glm">Procedure of Constructing a GLM</h3>
+<ul>
+<li>Choose a response distribution <span class="math inline">f(y_i)</span> and hence choose <span class="math inline">b(\theta)</span>.</li>
+<li>Choose a link <span class="math inline">g(\mu)</span>.</li>
+<li>Choose explanatory variables <span class="math inline">X</span> in terms of which <span class="math inline">g(\mu)</span> is to be modelled.</li>
+<li>Collect observations <span class="math inline">y_1,\cdots,y_n</span> on the response <span class="math inline">y</span> and corresponding values <span class="math inline">x_1,\cdots,x_n</span> on the explanatory variables <span class="math inline">x</span>.</li>
+<li>Fit the model by estimating <span class="math inline">\beta</span> (and, if unknown, <span class="math inline">\phi</span>).</li>
+<li>Given the estimate of <span class="math inline">\beta</span>, generate predictions (or fitted values) of <span class="math inline">y</span> for different settings of <span class="math inline">x</span>, and examine how well the model fits. The estimated values of <span class="math inline">\beta</span> can also be used to assess whether the explanatory variables are important in determining <span class="math inline">\mu</span>.</li>
+</ul>
+</section>
+</section>
+<section id="models-for-count-responses" class="level2">
+<h2 class="anchored" data-anchor-id="models-for-count-responses">Models for Count Responses</h2>
+<section id="count-response-poisson-regression" class="level3">
+<h3 class="anchored" data-anchor-id="count-response-poisson-regression">Count Response: Poisson Regression</h3>
+<ul>
+<li><span class="math inline">Y_i \sim \text{Poisson}(\lambda_i)</span>: <span class="math inline">\dfrac{\lambda_i^{y_i}}{y_i!} e^{-\lambda_i}</span>,
+<ul>
+<li><span class="math inline">g(\mu_i) = X_i^T \beta \quad \Rightarrow \quad \log(\lambda_i) = X_i^T \beta</span> (canonical link = log link; log-linear model)</li>
+</ul></li>
+</ul>
+<p>Model assumptions:</p>
+<ul>
+<li><strong>Poisson Response</strong>: The response variable is a count per unit of time or space, described by a Poisson distribution.</li>
+<li><strong>Independence</strong>: The observations must be independent of one another.</li>
+<li><strong>Mean = Variance</strong>: By definition, the mean of a Poisson random variable is equal to its variance.</li>
+<li><strong>Linearity</strong>: The log of the mean rate, <span class="math inline">\log(\lambda_i)</span>, must be a linear function of <span class="math inline">x</span>.</li>
+</ul>
+</section>
+<section id="offsets" class="level3">
+<h3 class="anchored" data-anchor-id="offsets">Offsets</h3>
+<ul>
+<li>If <span class="math inline">\mu</span> is the mean of the count <span class="math inline">Y</span>, then the occurrence rate <span class="math inline">\mu / n</span> is of interest, and <span class="math display">
+g\!\left(\frac{\mu}{n}\right) = X^T \beta.
+</span></li>
+<li>When <span class="math inline">g</span> is the log function, we have <span class="math display">
+\log\!\left(\frac{\mu}{n}\right) = X^T \beta
+\quad \Rightarrow \quad
+\log \mu = \log n + X^T \beta.
+</span></li>
+<li>The variable <span class="math inline">n</span> is called the <em>exposure</em>, and <span class="math inline">\log n</span> is called an <em>offset</em>.</li>
+<li>With the offset, <span class="math inline">Y</span> has expected value directly proportional to exposure: <span class="math display">
+\mu = n e^{X^T \beta}.
+</span></li>
+<li>Offsets are used to correct for group size or differing time periods of observation.</li>
+</ul>
+</section>
+<section id="overdispersion" class="level3">
+<h3 class="anchored" data-anchor-id="overdispersion">Overdispersion</h3>
+<ul>
+<li>Overdispersion suggests that there is more variation in the response than the model implies.</li>
+</ul>
+<p>How to solve it?</p>
+<ol type="1">
+<li><strong>Quasi-Poisson</strong> and <strong>quasi-likelihood</strong>: use an estimated dispersion factor to inflate standard errors: <span class="math inline">\sqrt{\hat{\phi}} \times \mathrm{SE}(\hat{\beta})</span>. <span class="math inline">\hat{\phi} = \frac{\sum (\text{Pearson residuals})^2}{n - p},</span> where <span class="math inline">p</span> is the number of model parameters. <span class="math inline">\hat{\phi}</span> will be larger than 1 in the presence of overdispersion.
+<ul>
+<li>Pearson residuals: <span class="math display">
+r_i^{P} = \dfrac{y_i - \hat{\mu}_i}{\sqrt{V(\hat{\mu}_i)}}.
+</span></li>
+</ul></li>
+<li>Use a negative binomial regression model.</li>
+</ol>
+</section>
+<section id="negative-binomial-regression" class="level3">
+<h3 class="anchored" data-anchor-id="negative-binomial-regression">Negative Binomial Regression</h3>
+<p>If <span class="math inline">Y \sim \text{Poisson}(\lambda)</span> and <span class="math inline">\lambda \sim \text{Gamma}\!\left(r, \frac{1-p}{p}\right)</span>, then <span class="math display">
+Y \sim \text{NegBinom}(r, p).
+</span></p>
+<ul>
+<li><span class="math inline">\mathbb{E}(Y) = \dfrac{pr}{1 - p} = \mu</span> and <span class="math inline">\mathrm{Var}(Y) = \dfrac{pr}{(1 - p)^2} = \mu + \dfrac{\mu^2}{r}</span></li>
+<li>The overdispersion in this case is given by <span class="math inline">\dfrac{\mu^2}{r}</span> (so smaller values of <span class="math inline">r</span> indicate greater overdispersion).</li>
+</ul>
+</section>
+</section>
+<section id="models-for-binary-responses" class="level2">
+<h2 class="anchored" data-anchor-id="models-for-binary-responses">Models for Binary Responses</h2>
+<p>Review: <em>An Introduction to Statistical Learning</em> <span class="citation" data-cites="james2013introduction">(<a href="#ref-james2013introduction" role="doc-biblioref">James et al. 2013</a>)</span>, Sections 4.3 and 4.6.2</p>
+<section id="binary-response-logistic-regression" class="level3">
+<h3 class="anchored" data-anchor-id="binary-response-logistic-regression">Binary Response: Logistic Regression</h3>
+<p>A <em>binary</em> target variable with the <em>logit</em> link is called a logistic regression model.</p>
+<ul>
+<li><span class="math inline">Y_i \sim \text{Binomial}(1, \pi_i)</span>
+<ul>
+<li><span class="math inline">g(\mu_i) = g(\pi_i) = \ln\!\left(\frac{\pi_i}{1-\pi_i}\right) = X_i^T \beta</span> (canonical link = logit link)</li>
+<li><span class="math inline">\pi_i = \dfrac{e^{X_i^T \beta}}{1 + e^{X_i^T \beta}}</span></li>
+<li>The logit link ensures predictions of <span class="math inline">\pi_i</span> using <span class="math inline">X_i</span> are in the interval <span class="math inline">(0,1)</span> for all <span class="math inline">\beta</span> and <span class="math inline">X_i</span>.</li>
+</ul></li>
+<li>Other links
+<ul>
+<li>probit link: <span class="math inline">\Phi^{-1}(\pi_i)</span></li>
+<li>complementary log-log (c-log-log) link: <span class="math inline">\log\!\left(-\log(1 - \pi_i)\right)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="performance-measures" class="level3">
+<h3 class="anchored" data-anchor-id="performance-measures">Performance Measures</h3>
+<ul>
+<li>We need a <em>cut-off</em> to translate the predicted probabilities into classifications.<br>
+</li>
+<li>Confusion matrix corresponding to the cut-off:</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="callout callout-style-default callout-note callout-titled" title="Performance Measures">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Performance Measures
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\text{Sensitivity / Recall / True Positive Rate} = \dfrac{TP}{TP + FN}</span>
+<ul>
+<li>The ratio of <span class="math inline">TP</span> to the total number of positive events.</li>
+</ul></li>
+<li><span class="math inline">\text{Specificity} = \dfrac{TN}{TN + FP}</span>
+<ul>
+<li>The ratio of <span class="math inline">TN</span> to the total number of negative events.</li>
+</ul></li>
+<li><span class="math inline">\text{False Positive Rate} = \dfrac{FP}{TN + FP} = 1 - \text{Specificity}</span></li>
+<li>The confusion matrix can be computed on both the training and testing sets.</li>
+</ul>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/confusion.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Confusion Matrix.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="how-to-choose-the-correct-cut-off" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-choose-the-correct-cut-off">How to Choose the Correct Cut-off</h3>
+<ul>
+<li>Depends on the business objective.</li>
+<li>For fraud detection, a low cut-off is preferred to avoid the high cost of undetected fraud.<br>
+</li>
+<li>In other cases, if the profits and costs associated with correct and incorrect classifications are known, an optimal cut-off can be chosen to maximise overall profit or minimise overall cost.</li>
+</ul>
+</section>
+<section id="roc-and-auc" class="level3">
+<h3 class="anchored" data-anchor-id="roc-and-auc">ROC and AUC</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/rocauc.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>ROC Curve</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="ROC and AUC">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+ROC and AUC
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>The Receiver Operating Characteristic (ROC) curve plots the True Positive Rate against the False Positive Rate.</li>
+<li>Each point on the ROC curve corresponds to a certain cut-off.</li>
+<li>A good model will have its ROC curve bend towards the top-left corner.</li>
+<li>AUC is the area under the ROC curve.</li>
+<li>The <em>relative</em> value of the AUC can be used for quantitative assessment of a classifier: the higher, the better.
+<ul>
+<li><span class="math inline">\text{AUC} = 1</span>: perfect classifier.</li>
+<li><span class="math inline">\text{AUC} = 0.5</span>: random classifier. The ROC curve lies on the <span class="math inline">45^\circ</span> diagonal line.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="models-for-continuous-responses" class="level2">
+<h2 class="anchored" data-anchor-id="models-for-continuous-responses">Models for Continuous Responses</h2>
+<section id="continuous-response-gaussian-and-gamma-regression" class="level3">
+<h3 class="anchored" data-anchor-id="continuous-response-gaussian-and-gamma-regression">Continuous Response: Gaussian and Gamma Regression</h3>
+<ul>
+<li><strong>Gaussian</strong> response: linear regression</li>
+</ul>
+<p><strong>Positive right-skewed continuous response:</strong></p>
+<ul>
+<li><strong>Gamma</strong> response: <span class="math display">
+Y_i \sim \text{Gamma}(\mu_i, \nu)
+</span>
+<ul>
+<li><span class="math inline">g(\mu_i) = \log(\mu_i) = X_i^T \beta</span></li>
+<li>The canonical link is the inverse function. Since parameters from a model with the inverse link are difficult to interpret, the <em>log</em> link is usually regarded as more useful.</li>
+</ul></li>
+</ul>
+</section>
+<section id="continuous-response-gaussian-and-gamma-regression-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="continuous-response-gaussian-and-gamma-regression-continued">Continuous Response: Gaussian and Gamma Regression (continued)</h3>
+<ul>
+<li><strong>Inverse Gaussian</strong> response: <span class="math display">
+Y_i \sim \text{IG}(\mu_i, \sigma^2)
+</span>
+<ul>
+<li><span class="math inline">g(\mu_i) = \log(\mu_i) = X_i^T \beta</span> (log link)</li>
+<li>The canonical link is <span class="math inline">g(\mu) = \mu^{-2}</span>. However, the log link is usually preferred.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="models-for-a-mixture-of-discrete-and-continuous-responses" class="level2">
+<h2 class="anchored" data-anchor-id="models-for-a-mixture-of-discrete-and-continuous-responses">Models for a Mixture of Discrete and Continuous Responses</h2>
+<section id="tweedie-regression" class="level3">
+<h3 class="anchored" data-anchor-id="tweedie-regression">Tweedie Regression</h3>
+<p>Assume <span class="math inline">c</span> is the number of claims on a policy and <span class="math inline">z_1, \ldots, z_c</span> are the individual claim sizes. Then the total claim size is <span class="math display">
+Y = \sum_{i=1}^{c} z_i = z_1 + \cdots + z_c.
+</span></p>
+<ul>
+<li>If <span class="math inline">c</span> is <strong>Poisson</strong> and <span class="math inline">z_j</span> are independent <strong>Gamma</strong> random variables, then <span class="math inline">Y</span> has a <strong>Tweedie</strong> distribution.</li>
+<li>This distribution has a non-zero probability at <span class="math inline">Y = 0</span>, equal to the Poisson probability of no claims. The rest of the distribution is similar to the Gamma distribution.</li>
+</ul>
+</section>
+<section id="tweedie-regression-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="tweedie-regression-continued">Tweedie Regression (continued)</h3>
+<ul>
+<li><p>The Tweedie distribution is a member of the exponential family and <span class="math display">
+\mathrm{Var}(Y) = \phi \mu^p,
+</span> where <span class="math inline">1 &lt; p &lt; 2</span>. Here, <span class="math inline">p</span> is the power of the variance function.</p></li>
+<li><p>Note:</p>
+<ul>
+<li><span class="math inline">p = 0</span>: Normal<br>
+</li>
+<li><span class="math inline">p = 1</span>: Poisson<br>
+</li>
+<li><span class="math inline">p = 2</span>: Gamma<br>
+</li>
+<li><span class="math inline">p = 3</span>: Inverse Gaussian</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="other-considerations" class="level2">
+<h2 class="anchored" data-anchor-id="other-considerations">Other Considerations</h2>
+<section id="interaction-terms" class="level3">
+<h3 class="anchored" data-anchor-id="interaction-terms">Interaction terms</h3>
+<ul>
+<li><p>In many applications, the effect of one predictor may depend on another predictor.</p></li>
+<li><p>We can include <em>interaction terms</em> in a GLM: <span class="math display">
+g(\mu) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1 X_2
+</span></p></li>
+<li><p>Interpretation:</p>
+<ul>
+<li>The effect of <span class="math inline">X_1</span> on the response depends on the value/level of <span class="math inline">X_2</span></li>
+<li>Interaction terms allow for <em>non-additive</em> effects</li>
+</ul></li>
+<li><p>Types of interactions:</p>
+<ul>
+<li>Continuous × Continuous (captures non-linear joint effects)<br>
+</li>
+<li>Categorical × Categorical (different group combinations)<br>
+</li>
+<li>Continuous × Categorical (slope differs across groups)</li>
+</ul></li>
+</ul>
+</section>
+<section id="basis-extensions" class="level3">
+<h3 class="anchored" data-anchor-id="basis-extensions">Basis Extensions</h3>
+<ul>
+<li><p>Extend linear predictors using basis functions: <span class="math display">
+g(\mu) = \beta_0 + \beta_1 b_1(X) + \cdots + \beta_K b_K(X)
+</span></p></li>
+<li><p>Here:</p>
+<ul>
+<li><span class="math inline">b_k(X)</span> are <strong>basis functions</strong> (transformations of X)<br>
+</li>
+<li>e.g.&nbsp;<span class="math inline">X, X^2, \text{splines}, \log X</span></li>
+</ul></li>
+<li><p>Basis functions can capture non-linear relationships and improve predictive performance</p></li>
+<li><p>These ideas form the basis of more flexible models such as <em>Generalised Additive Models (GAMs)</em></p></li>
+</ul>
+</section>
+<section id="penalized-glm-shrinkage-techniques" class="level3">
+<h3 class="anchored" data-anchor-id="penalized-glm-shrinkage-techniques">Penalized GLM (Shrinkage Techniques)</h3>
+<ul>
+<li><p>Penalised GLMs add a penalty to the likelihood: <span class="math display">
+\text{Loss} = -\ell(\beta) + \lambda \cdot \text{Penalty}(\beta)
+</span></p></li>
+<li><p>Common choices of penalties:</p>
+<ul>
+<li>Lasso<br>
+</li>
+<li>Ridge<br>
+</li>
+<li>Elastic Net</li>
+</ul></li>
+<li><p>Refer to the topic of <strong>Modelling and Shrage Techniques</strong> discussed earlier</p></li>
+</ul>
+</section>
+</section>
+<section id="using-r" class="level2">
+<h2 class="anchored" data-anchor-id="using-r">Using R</h2>
+<section id="using-r-glm" class="level3">
+<h3 class="anchored" data-anchor-id="using-r-glm">Using R: glm()</h3>
+<ul>
+<li><code>glm()</code> function
+<ul>
+<li><code>glm(formula, family = familytype(link = linkfunction), data = )</code></li>
+</ul></li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Family</th>
+<th>Default (canonical) link</th>
+<th>Other / preferred link(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>binomial</td>
+<td>(link = “logit”)</td>
+<td>“probit”, “cloglog”</td>
+</tr>
+<tr class="even">
+<td>gaussian</td>
+<td>(link = “identity”)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>gamma</td>
+<td>(link = “inverse”)</td>
+<td>“log”</td>
+</tr>
+<tr class="even">
+<td>inverse.gaussian</td>
+<td>(link = “1/mu^2”)</td>
+<td>“log”</td>
+</tr>
+<tr class="odd">
+<td>poisson</td>
+<td>(link = “log”)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>quasipoisson</td>
+<td>(link = “log”)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>quasibinomial</td>
+<td>(link = “logit”)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="other-useful-r-functions" class="level3">
+<h3 class="anchored" data-anchor-id="other-useful-r-functions">Other Useful R Functions</h3>
+<ul>
+<li><code>library(statmod)</code> and <code>library(tweedie)</code></li>
+<li><code>glm.nb()</code> (from <strong>MASS</strong>): fit a Negative Binomial regression</li>
+<li><code>tweedie.profile()</code>: maximum likelihood estimation of the Tweedie index parameter <span class="math inline">p</span></li>
+<li><code>step()</code>: stepwise model selection</li>
+<li><code>summary()</code></li>
+<li><code>AIC()</code></li>
+<li><code>BIC()</code></li>
+<li>etc.</li>
+</ul>
+</section>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<section id="example-1-question" class="level3">
+<h3 class="anchored" data-anchor-id="example-1-question">Example 1: Question</h3>
+<p>You are working as an actuarial analyst for a general insurer. You are given a dataset with the following information:</p>
+<ul>
+<li>NumClaims: number of claims of a policyholder over a period of time<br>
+</li>
+<li>Time: the number of years a policyholder is observed<br>
+</li>
+<li>Age: age of a policyholder<br>
+</li>
+<li>Gender: gender of a policyholder<br>
+</li>
+<li>RiskCat: risk category to which a policyholder belongs</li>
+</ul>
+</section>
+<section id="example-1-question-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="example-1-question-continued">Example 1: Question (continued)</h3>
+<p>You are asked to examine the effects of various factors on the number of claims that a policyholder is observed over a period of time. Please specify: 1. the distribution of the target variable<br>
+2. the predictors<br>
+3. the link function<br>
+4. the offset (if any)<br>
+5. write down the key R command to fit such a GLM</p>
+</section>
+<section id="example-1-solution" class="level3">
+<h3 class="anchored" data-anchor-id="example-1-solution">Example 1: Solution</h3>
+<ol type="1">
+<li>Poisson distribution</li>
+<li>Age, Gender and RiskCat</li>
+<li>log link</li>
+<li><span class="math inline">\log(\text{Time})</span></li>
+<li><code>modPossion &lt;- glm(NumClaims ~ Age + Gender + RiskCat, family=poisson, offet = log(Time))</code></li>
+</ol>
+</section>
+<section id="example-2-question" class="level3">
+<h3 class="anchored" data-anchor-id="example-2-question">Example 2: Question</h3>
+<p>We analyse 4624 claims from Australian automobile insurance to understand the factors that affect claim severity and to predict claim severity.</p>
+<ul>
+<li>ClaimAmount: the sum of claim payments<br>
+</li>
+<li>VehValue: the vehicle value in thousands of Australian dollars<br>
+</li>
+<li>Gender: the gender of the policyholder (Female = 1, Male = 0)</li>
+</ul>
+</section>
+<section id="example-2-question-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="example-2-question-continued">Example 2: Question (continued)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/GLM_E2.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>R output for fitted GLM</figcaption>
+</figure>
+</div>
+</section>
+<section id="example-2-question-continued-1" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="example-2-question-continued-1">Example 2: Question (continued)</h3>
+<ol type="1">
+<li>Specify the distribution and the link function used in this model.<br>
+</li>
+<li>Explain why they are selected for this example.<br>
+</li>
+<li>Write down the mathematical form of the link function <span class="math inline">g(\mu) = X^T \beta</span> for this model.<br>
+</li>
+<li>Interpret the GLM coefficients related to VehValue and Female.<br>
+</li>
+<li>Discuss how to perform diagnostic checking for this model.</li>
+</ol>
+</section>
+<section id="references" class="level3">
+
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-james2013introduction" class="csl-entry" role="listitem">
+James, Gareth, Daniela Witten, Trevor Hastie, Robert Tibshirani, et al. 2013. <em>An Introduction to Statistical Learning: With Applications in r</em>. Vol. 103. Springer.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" class="pagination-link" aria-label="Lecture: Modelling and Shrinkage techniques">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lecture: Modelling and Shrinkage techniques</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lectures/Ch4-Modelling/Random_Forests.html" class="pagination-link" aria-label="Lecture: Random Forests">
+        <span class="nav-page-text">Lecture: Random Forests</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

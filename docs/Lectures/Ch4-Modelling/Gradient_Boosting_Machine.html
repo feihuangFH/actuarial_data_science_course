@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Fei Huang, UNSW Sydney">
+
+<title>Actuarial Data Science - Lecture: Gradient Boosting Machine</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lectures/Ch4-Modelling/Neural_Networks.html" rel="next">
+<link href="../../Lectures/Ch4-Modelling/Random_Forests.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html">Chapter 4 - Modelling</a></li><li class="breadcrumb-item"><a href="../../Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html">Lecture: Gradient Boosting Machine</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Actuarial Data Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Chapter 1 - Introduction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Actuarial Data Science</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch1-Introduction/Lecture-Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Introduction to Actuarial Data Science</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Chapter 2 - Problem Statement</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch2-Problem Statement/Lecture-Problem Statement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Problem Statement</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Chapter 3 - Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Manipulation and Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Quality Check and Cleaning</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Chapter 4 - Modelling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Modelling and Shrinkage techniques</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: GLM</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Random_Forests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Random Forests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lecture: Gradient Boosting Machine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Neural_Networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Neural Networks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Chapter 5 - Evaluations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Model Assessment and Selection</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Chapter 6 - Communication</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch6-Communication/Communication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Communication</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 7 - Deployment</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text">Chapter 8 - Ethics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch8-Ethics/Ethics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Ethics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 9 - Conclusion</span></span>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#recommended-reading" id="toc-recommended-reading" class="nav-link active" data-scroll-target="#recommended-reading">Recommended Reading</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">Motivation</a>
+  <ul class="collapse">
+  <li><a href="#review-bagging-and-random-forests" id="toc-review-bagging-and-random-forests" class="nav-link" data-scroll-target="#review-bagging-and-random-forests">Review: Bagging and Random Forests</a></li>
+  <li><a href="#example-bootstrap-trees" id="toc-example-bootstrap-trees" class="nav-link" data-scroll-target="#example-bootstrap-trees">Example: Bootstrap Trees</a></li>
+  <li><a href="#motivation-1" id="toc-motivation-1" class="nav-link" data-scroll-target="#motivation-1">Motivation</a></li>
+  <li><a href="#model-averaging" id="toc-model-averaging" class="nav-link" data-scroll-target="#model-averaging">Model Averaging</a></li>
+  </ul></li>
+  <li><a href="#adaptive-boosting-adaboost-and-stagewise-additive-modelling" id="toc-adaptive-boosting-adaboost-and-stagewise-additive-modelling" class="nav-link" data-scroll-target="#adaptive-boosting-adaboost-and-stagewise-additive-modelling">Adaptive Boosting (AdaBoost) and Stagewise Additive Modelling</a>
+  <ul class="collapse">
+  <li><a href="#adaboost" id="toc-adaboost" class="nav-link" data-scroll-target="#adaboost">AdaBoost</a></li>
+  <li><a href="#schematic-of-adaboost" id="toc-schematic-of-adaboost" class="nav-link" data-scroll-target="#schematic-of-adaboost">Schematic of AdaBoost</a></li>
+  <li><a href="#how-to-reweight-the-data" id="toc-how-to-reweight-the-data" class="nav-link" data-scroll-target="#how-to-reweight-the-data">How to Reweight the Data?</a></li>
+  <li><a href="#adaboost.m1" id="toc-adaboost.m1" class="nav-link" data-scroll-target="#adaboost.m1">AdaBoost.M1</a></li>
+  <li><a href="#adaboost-algorithm-m1" id="toc-adaboost-algorithm-m1" class="nav-link" data-scroll-target="#adaboost-algorithm-m1">AdaBoost Algorithm (M1)</a></li>
+  <li><a href="#example-boosting-stumps" id="toc-example-boosting-stumps" class="nav-link" data-scroll-target="#example-boosting-stumps">Example: Boosting Stumps</a></li>
+  <li><a href="#training-error-vs.-testing-error" id="toc-training-error-vs.-testing-error" class="nav-link" data-scroll-target="#training-error-vs.-testing-error">Training Error vs.&nbsp;Testing error</a></li>
+  <li><a href="#boosting-in-noisy-problems" id="toc-boosting-in-noisy-problems" class="nav-link" data-scroll-target="#boosting-in-noisy-problems">Boosting in Noisy Problems</a></li>
+  <li><a href="#additive-modelling" id="toc-additive-modelling" class="nav-link" data-scroll-target="#additive-modelling">Additive Modelling</a></li>
+  <li><a href="#forward-stagewise-additive-modeling" id="toc-forward-stagewise-additive-modeling" class="nav-link" data-scroll-target="#forward-stagewise-additive-modeling">Forward Stagewise Additive Modeling</a></li>
+  <li><a href="#forward-stagewise-additive-modeling-continued" id="toc-forward-stagewise-additive-modeling-continued" class="nav-link" data-scroll-target="#forward-stagewise-additive-modeling-continued">Forward Stagewise Additive Modeling (continued)</a></li>
+  <li><a href="#adaboost-stagewise-modelling" id="toc-adaboost-stagewise-modelling" class="nav-link" data-scroll-target="#adaboost-stagewise-modelling">AdaBoost: Stagewise Modelling</a></li>
+  </ul></li>
+  <li><a href="#gradient-boosting-machine" id="toc-gradient-boosting-machine" class="nav-link" data-scroll-target="#gradient-boosting-machine">Gradient Boosting Machine</a>
+  <ul class="collapse">
+  <li><a href="#gradient-boosting-breiman2001random" id="toc-gradient-boosting-breiman2001random" class="nav-link" data-scroll-target="#gradient-boosting-breiman2001random">Gradient Boosting <span class="citation" data-cites="breiman2001random">(Breiman 2001)</span></a></li>
+  <li><a href="#performance-comparison" id="toc-performance-comparison" class="nav-link" data-scroll-target="#performance-comparison">Performance Comparison</a></li>
+  <li><a href="#analogy-gradient-descent" id="toc-analogy-gradient-descent" class="nav-link" data-scroll-target="#analogy-gradient-descent">Analogy: Gradient Descent</a></li>
+  <li><a href="#gradient-decent-the-effect-of-gamma" id="toc-gradient-decent-the-effect-of-gamma" class="nav-link" data-scroll-target="#gradient-decent-the-effect-of-gamma">Gradient Decent: The Effect of <span class="math inline">\gamma</span></a></li>
+  <li><a href="#gradient-boosting-machine-motivation-and-ideas" id="toc-gradient-boosting-machine-motivation-and-ideas" class="nav-link" data-scroll-target="#gradient-boosting-machine-motivation-and-ideas">Gradient Boosting Machine: Motivation and Ideas</a></li>
+  <li><a href="#gradient-boosting-machine-the-algorithm" id="toc-gradient-boosting-machine-the-algorithm" class="nav-link" data-scroll-target="#gradient-boosting-machine-the-algorithm">Gradient Boosting Machine: The Algorithm</a></li>
+  <li><a href="#a-special-case-gradient-boosting-regression-with-squared-error-loss." id="toc-a-special-case-gradient-boosting-regression-with-squared-error-loss." class="nav-link" data-scroll-target="#a-special-case-gradient-boosting-regression-with-squared-error-loss.">A Special Case: Gradient Boosting Regression with Squared Error Loss.</a></li>
+  <li><a href="#least-squares-regression-boosting" id="toc-least-squares-regression-boosting" class="nav-link" data-scroll-target="#least-squares-regression-boosting">Least Squares Regression Boosting</a></li>
+  <li><a href="#boosting-tuning-parameters" id="toc-boosting-tuning-parameters" class="nav-link" data-scroll-target="#boosting-tuning-parameters">Boosting Tuning Parameters</a></li>
+  <li><a href="#adaboost-vs-gradient-boosting" id="toc-adaboost-vs-gradient-boosting" class="nav-link" data-scroll-target="#adaboost-vs-gradient-boosting">AdaBoost vs Gradient Boosting</a></li>
+  <li><a href="#when-the-basis-functions-are-carts" id="toc-when-the-basis-functions-are-carts" class="nav-link" data-scroll-target="#when-the-basis-functions-are-carts">When the Basis Functions Are CARTs</a></li>
+  </ul></li>
+  <li><a href="#ensemble-learning" id="toc-ensemble-learning" class="nav-link" data-scroll-target="#ensemble-learning">Ensemble Learning</a>
+  <ul class="collapse">
+  <li><a href="#ensemble-learning-1" id="toc-ensemble-learning-1" class="nav-link" data-scroll-target="#ensemble-learning-1">Ensemble Learning</a></li>
+  <li><a href="#interpretation-variable-importance-plot" id="toc-interpretation-variable-importance-plot" class="nav-link" data-scroll-target="#interpretation-variable-importance-plot">Interpretation: Variable Importance Plot</a></li>
+  <li><a href="#variable-importance-plot-email-spam-prediction" id="toc-variable-importance-plot-email-spam-prediction" class="nav-link" data-scroll-target="#variable-importance-plot-email-spam-prediction">Variable Importance Plot: Email Spam Prediction</a></li>
+  <li><a href="#interpretation-partial-dependence-plot" id="toc-interpretation-partial-dependence-plot" class="nav-link" data-scroll-target="#interpretation-partial-dependence-plot">Interpretation: Partial Dependence Plot</a></li>
+  <li><a href="#partial-dependence-plot-email-spam-prediction" id="toc-partial-dependence-plot-email-spam-prediction" class="nav-link" data-scroll-target="#partial-dependence-plot-email-spam-prediction">Partial Dependence Plot: Email Spam Prediction</a></li>
+  <li><a href="#post-processing-by-the-lasso" id="toc-post-processing-by-the-lasso" class="nav-link" data-scroll-target="#post-processing-by-the-lasso">Post-processing by the Lasso</a></li>
+  <li><a href="#ensemble-learning-in-applications" id="toc-ensemble-learning-in-applications" class="nav-link" data-scroll-target="#ensemble-learning-in-applications">Ensemble Learning in Applications</a></li>
+  <li><a href="#fun-facts" id="toc-fun-facts" class="nav-link" data-scroll-target="#fun-facts">Fun Facts</a></li>
+  </ul></li>
+  <li><a href="#using-r" id="toc-using-r" class="nav-link" data-scroll-target="#using-r">Using R</a>
+  <ul class="collapse">
+  <li><a href="#using-r-1" id="toc-using-r-1" class="nav-link" data-scroll-target="#using-r-1">Using R</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Gradient_Boosting_Machine.slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture: Gradient Boosting Machine</h1>
+<p class="subtitle lead">Actuarial Data Science - Open Learning Resource</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Fei Huang, UNSW Sydney </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="recommended-reading" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-reading">Recommended Reading</h3>
+<ul>
+<li>An Introduction to Statistical Learning (ISLR): Review Section 8.2.3</li>
+<li>The Elements of Statistical Learning (ESL): Sections 10.1-10.3, 10.10.2, 10.10.3, 10.13</li>
+</ul>
+</section>
+<section id="learning-objectives" class="level3">
+<h3 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li><p>Gradient boosting machines (GBMs) are another key ensemble method that often deliver state-of-the-art predictive performance, but can feel like a “black box” at first. In this lecture, we break down the boosting idea into small steps so that you can see how GBMs are built up from simple components and how to control their complexity in practice.</p></li>
+<li><p>Understand the motivation for boosting and the boosting technique</p></li>
+<li><p>Perform predictive modelling using GBMs</p></li>
+<li><p>Compare GBMs with other modelling techniques</p></li>
+</ul>
+</section>
+<section id="motivation" class="level2">
+<h2 class="anchored" data-anchor-id="motivation">Motivation</h2>
+<section id="review-bagging-and-random-forests" class="level3">
+<h3 class="anchored" data-anchor-id="review-bagging-and-random-forests">Review: Bagging and Random Forests</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/Leo_Breiman.jpg" class="img-fluid figure-img" style="width:20.0%"></p>
+<figcaption class="figure-caption">Leo Breiman (1928–2005) (Source: Wikipedia)</figcaption>
+</figure>
+</div>
+<ul>
+<li>Deep trees (fine subgroups) are more accurate but very noisy.</li>
+<li>Idea: fit many different trees and average their predictions.
+<ul>
+<li>Grow trees on bootstrap subsamples of the data</li>
+<li>Randomly select variables/features as candidates for splits</li>
+</ul></li>
+</ul>
+</section>
+<section id="example-bootstrap-trees" class="level3">
+<h3 class="anchored" data-anchor-id="example-bootstrap-trees">Example: Bootstrap Trees</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/trees.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption class="figure-caption">Different trees fitted on bootstrap samples.</figcaption>
+</figure>
+</div>
+</section>
+<section id="motivation-1" class="level3">
+<h3 class="anchored" data-anchor-id="motivation-1">Motivation</h3>
+<ul>
+<li>Bagging and Random Forests:
+<ul>
+<li>They do not reduce the bias of the final predictions from a single tree.</li>
+<li>Each tree is built independently.</li>
+</ul></li>
+<li>Why not build new trees based on the information from previously built trees?
+<ul>
+<li>i.e., build the trees <em>sequentially</em> and <em>dependently</em></li>
+<li>For example, new trees can “focus” more on the data that previous trees do not predict well.</li>
+</ul></li>
+<li>Why cannot stronger trees be given more weight?</li>
+</ul>
+</section>
+<section id="model-averaging" class="level3">
+<h3 class="anchored" data-anchor-id="model-averaging">Model Averaging</h3>
+<p>CART models are simple but often produce noisy (bushy) or weak predictors.</p>
+<ul>
+<li><em>Bagging <span class="citation" data-cites="breiman1996bagging">(<a href="#ref-breiman1996bagging" role="doc-biblioref">Breiman 1996</a>)</span></em>: Fit many large trees to bootstrap-resampled versions of the training data.</li>
+<li><em>Random Forests <span class="citation" data-cites="breiman2001random">(<a href="#ref-breiman2001random" role="doc-biblioref">Breiman 2001</a>)</span></em>: A more advanced version of bagging.</li>
+<li><em>Boosting <span class="citation" data-cites="freund1997decision">(<a href="#ref-freund1997decision" role="doc-biblioref">Freund and Schapire 1997</a>)</span></em>: Fit many large or small trees to reweighted versions of the training data.</li>
+</ul>
+<p>In general: Boosting &gt; Random Forests &gt; Bagging &gt; Single Tree</p>
+</section>
+</section>
+<section id="adaptive-boosting-adaboost-and-stagewise-additive-modelling" class="level2">
+<h2 class="anchored" data-anchor-id="adaptive-boosting-adaboost-and-stagewise-additive-modelling">Adaptive Boosting (AdaBoost) and Stagewise Additive Modelling</h2>
+<section id="adaboost" class="level3">
+<h3 class="anchored" data-anchor-id="adaboost">AdaBoost</h3>
+<ul>
+<li><span class="citation" data-cites="freund1997decision">Freund and Schapire (<a href="#ref-freund1997decision" role="doc-biblioref">1997</a>)</span>: Fit many large or small trees to <em>reweighted</em> versions of the training data. Classification is performed via a weighted majority vote.<br>
+</li>
+<li>Given a vector of predictor variables <span class="math inline">X</span>, a classifier <span class="math inline">G(X)</span> produces a prediction taking one of the two values <span class="math inline">\{-1, 1\}</span>.</li>
+<li>The purpose of boosting is to sequentially apply a weak classification algorithm to repeatedly modified versions of the data, thereby producing a sequence of weak classifiers <span class="math inline">G_m(x)</span>, <span class="math inline">m=1,2,\cdots, M</span>.</li>
+<li>The predictions from all of them are then combined through a weighted majority vote to produce the final prediction: <span class="math display">
+G(x)=\text{sign}\left(\sum_{m=1}^{M}\alpha_mG_m(x)\right).
+</span></li>
+</ul>
+</section>
+<section id="schematic-of-adaboost" class="level3">
+<h3 class="anchored" data-anchor-id="schematic-of-adaboost">Schematic of AdaBoost</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/adaboost.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption class="figure-caption">Schematic of AdaBoost (Source: <em>The Elements of Statistical Learning</em> <span class="citation" data-cites="hastie2009elements">(<a href="#ref-hastie2009elements" role="doc-biblioref">Hastie et al. 2009</a>)</span>, Figure 10.1).</figcaption>
+</figure>
+</div>
+</section>
+<section id="how-to-reweight-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-reweight-the-data">How to Reweight the Data?</h3>
+<ul>
+<li>Apply weights <span class="math inline">w_1, w_2, \cdots, w_N</span> to each of the training observations <span class="math inline">(x_i, y_i)</span>, <span class="math inline">i = 1, 2, \cdots, N</span>.</li>
+<li>Initially, at step <span class="math inline">m = 1</span>, all weights are set to <span class="math inline">w_i=1/N</span>.</li>
+<li>At step <span class="math inline">m</span>, <span class="math inline">m = 2, 3, \cdots, M</span>, the observations that were misclassified by the classifier <span class="math inline">G_{m-1}(x)</span> at the previous step have their weights increased by a factor <span class="math inline">\exp(\alpha_m)</span>, whereas the weights of correctly classified observations are decreased.</li>
+<li>As iterations proceed, observations that are difficult to classify correctly receive increasing influence.</li>
+<li>Each successive classifier is thereby forced to concentrate on those training observations that were misclassified by previous ones.</li>
+</ul>
+</section>
+<section id="adaboost.m1" class="level3">
+<h3 class="anchored" data-anchor-id="adaboost.m1">AdaBoost.M1</h3>
+<ul>
+<li>The first boosting algorithm; described as the “best off-the-shelf classifier in the world” <span class="citation" data-cites="breiman1998arcing">(<a href="#ref-breiman1998arcing" role="doc-biblioref">Breiman 1998</a>)</span>.</li>
+<li>A new tree is built on reweighted (rather than bootstrapped) datasets.</li>
+<li>The weights of the trees are no longer equal.</li>
+</ul>
+</section>
+<section id="adaboost-algorithm-m1" class="level3">
+<h3 class="anchored" data-anchor-id="adaboost-algorithm-m1">AdaBoost Algorithm (M1)</h3>
+<ol type="1">
+<li><p>Initialise observation weights:$ w_i = , i = 1, 2, , N.$</p></li>
+<li><p>For <span class="math inline">m = 1, 2, \dots, M</span>:</p>
+<ul>
+<li>Fit a classifier <span class="math inline">G_m(x)</span> to the training data using weights <span class="math inline">w_i</span>.</li>
+<li>Compute the weighted error: <span class="math display">
+\text{err}_m = \frac{\sum_{i=1}^N w_i \, I(y_i \ne G_m(x_i))}{\sum_{i=1}^N w_i}.
+</span></li>
+<li>Compute the model weight:<span class="math inline">\alpha_m = \log\left(\frac{1 - \text{err}_m}{\text{err}_m}\right).</span></li>
+<li>Update the observation weights:<span class="math inline">w_i \leftarrow w_i \cdot \exp\left[\alpha_m \, I(y_i \ne G_m(x_i))\right], \quad i = 1, \dots, N.</span></li>
+</ul></li>
+<li><p>Output the final classifier:<span class="math inline">G(x) = \text{sign}\left(\sum_{m=1}^M \alpha_m G_m(x)\right).</span></p></li>
+</ol>
+<p><em>Adapted from</em> <em>The Elements of Statistical Learning</em> <span class="citation" data-cites="hastie2009elements">(<a href="#ref-hastie2009elements" role="doc-biblioref">Hastie et al. 2009</a>)</span>, Algorithm 10.1.</p>
+</section>
+<section id="example-boosting-stumps" class="level3">
+<h3 class="anchored" data-anchor-id="example-boosting-stumps">Example: Boosting Stumps</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/boosting1.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption class="figure-caption">Test error versus boosting iterations for decision stumps (Source: <em>The Elements of Statistical Learning</em> <span class="citation" data-cites="hastie2009elements">(<a href="#ref-hastie2009elements" role="doc-biblioref">Hastie et al. 2009</a>)</span>, Figure 10.2).</figcaption>
+</figure>
+</div>
+<ul>
+<li>A very weak classifier.</li>
+<li>A stump is a two-node tree with a single split.</li>
+<li>Boosting stumps works remarkably well.</li>
+</ul>
+</section>
+<section id="training-error-vs.-testing-error" class="level3">
+<h3 class="anchored" data-anchor-id="training-error-vs.-testing-error">Training Error vs.&nbsp;Testing error</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/boosting2.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption class="figure-caption">Training and test error as a function of the number of boosting iterations.</figcaption>
+</figure>
+</div>
+<ul>
+<li>Boosting drives the training error (green) towards zero.</li>
+<li>Further iterations often continue to improve the test error (red).<br>
+</li>
+<li>Does boosting overfit?</li>
+</ul>
+</section>
+<section id="boosting-in-noisy-problems" class="level3">
+<h3 class="anchored" data-anchor-id="boosting-in-noisy-problems">Boosting in Noisy Problems</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/boosting3.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption class="figure-caption">Training and test error as a function of the number of boosting iterations (noisy setting).</figcaption>
+</figure>
+</div>
+<ul>
+<li>The test error increases (slowly) as boosting iterations proceed.</li>
+</ul>
+</section>
+<section id="additive-modelling" class="level3">
+<h3 class="anchored" data-anchor-id="additive-modelling">Additive Modelling</h3>
+<p>Boosting builds an additive model <span class="math display">
+f(x) = \sum_{m=1}^M \beta_m \, b(x; \gamma_m),
+</span> where <span class="math inline">b(x; \gamma_m)</span> is a tree, and <span class="math inline">\gamma_m</span> parametrises the splits.</p>
+<p>We have seen this type of model in statistics before, for example:</p>
+<ul>
+<li>GAMs: <span class="math inline">f(x) = \sum_j f_j(x_j)</span></li>
+<li>Basis expansions: <span class="math inline">f(x) = \sum_{m=1}^M \theta_m h_m(x)</span></li>
+</ul>
+<p>Traditionally, the parameters <span class="math inline">\theta_m</span> are fitted <em>jointly</em> (e.g.&nbsp;least squares or maximum likelihood).</p>
+<p>With boosting, the parameters <span class="math inline">(\beta_m, \gamma_m)</span> are fitted in a stagewise fashion. This slows the process down and tends to overfit less quickly.</p>
+</section>
+<section id="forward-stagewise-additive-modeling" class="level3">
+<h3 class="anchored" data-anchor-id="forward-stagewise-additive-modeling">Forward Stagewise Additive Modeling</h3>
+<p><strong>Algorithm:</strong></p>
+<ol type="1">
+<li><p>Initialise <span class="math inline">f_0(x) = 0</span></p></li>
+<li><p>For <span class="math inline">m = 1, \dots, M</span>:</p>
+<ol type="a">
+<li><p>Fit a base learner by solving <span class="math display">
+(\beta_m, \gamma_m)
+= \arg\min_{\beta, \gamma}
+\sum_{i=1}^N L\big(y_i, \, f_{m-1}(x_i) + \beta\, b(x_i; \gamma)\big)
+</span></p></li>
+<li><p>Update the model <span class="math display">
+f_m(x) = f_{m-1}(x) + \beta_m \, b(x; \gamma_m)
+</span></p></li>
+</ol></li>
+</ol>
+<p><em>Adapted from</em> <em>The Elements of Statistical Learning</em> <span class="citation" data-cites="hastie2009elements">(<a href="#ref-hastie2009elements" role="doc-biblioref">Hastie et al. 2009</a>)</span>, Algorithm 10.2.</p>
+</section>
+<section id="forward-stagewise-additive-modeling-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="forward-stagewise-additive-modeling-continued">Forward Stagewise Additive Modeling (continued)</h3>
+<p>Sometimes step (b) is replaced by: <span class="math display">
+f_m(x) = f_{m-1}(x) + \epsilon \, \beta_m \, b(x; \gamma_m)
+</span></p>
+<ul>
+<li><span class="math inline">\epsilon</span> is a <em>shrinkage factor</em> (learning rate)<br>
+</li>
+<li>In the <code>gbm</code> package in R, the default is <span class="math inline">\epsilon = 0.001</span><br>
+</li>
+<li>Shrinkage slows down learning and typically improves performance</li>
+</ul>
+</section>
+<section id="adaboost-stagewise-modelling" class="level3">
+<h3 class="anchored" data-anchor-id="adaboost-stagewise-modelling">AdaBoost: Stagewise Modelling</h3>
+<ul>
+<li>AdaBoost.M1 (Algorithm 10.1) is equivalent to forward stagewise additive modelling (Algorithm 10.2) using the <em>exponential loss function</em>.</li>
+<li>AdaBoost builds an additive logistic regression model (Sections 10.4–10.5 of <em>The Elements of Statistical Learning</em> provide the explanation and proof; these are not required in this course.] <span class="math display">
+F(x) = \log \frac{\Pr(Y=1 \mid x)}{\Pr(Y=-1 \mid x)}
+= \sum_{m=1}^{M} \alpha_m f_m(x)
+</span> by <em>stagewise fitting</em> using the exponential loss function <span class="math display">
+L(y, F(x)) = \exp(-yF(x)).
+</span></li>
+<li>Instead of fitting trees to residuals, the special form of the exponential loss leads to fitting trees to weighted versions of the original data.</li>
+</ul>
+</section>
+</section>
+<section id="gradient-boosting-machine" class="level2">
+<h2 class="anchored" data-anchor-id="gradient-boosting-machine">Gradient Boosting Machine</h2>
+<section id="gradient-boosting-breiman2001random" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-boosting-breiman2001random">Gradient Boosting <span class="citation" data-cites="breiman2001random">(<a href="#ref-breiman2001random" role="doc-biblioref">Breiman 2001</a>)</span></h3>
+<ul>
+<li>A general boosting algorithm that works with a variety of loss functions. Models include regression, K-class classification, and risk modelling.</li>
+<li>Gradient Boosting builds additive tree models, for example, for representing the logits in logistic regression.</li>
+<li><strong>Tree size</strong> is a parameter that determines the order of interaction. (stumps have no interactions)</li>
+<li>Gradient boosting inherits many desirable features of trees (variable selection, handling missing data, mixed predictors), and improves on their weaknesses, such as predictive performance.</li>
+<li>Implemented in the <code>gbm</code> package in R, or via the <code>caret</code> package with <code>method = "gbm"</code>.</li>
+</ul>
+</section>
+<section id="performance-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="performance-comparison">Performance Comparison</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/boosting4.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption class="figure-caption">Test error versus number of trees for bagging, random forests, and gradient boosting (Source: <em>The Elements of Statistical Learning</em> <span class="citation" data-cites="hastie2009elements">(<a href="#ref-hastie2009elements" role="doc-biblioref">Hastie et al. 2009</a>)</span>, Figure 15.1).</figcaption>
+</figure>
+</div>
+</section>
+<section id="analogy-gradient-descent" class="level3">
+<h3 class="anchored" data-anchor-id="analogy-gradient-descent">Analogy: Gradient Descent</h3>
+<ul>
+<li>Before introducing gradient boosting, we briefly review its analogy: gradient descent — a basic numerical optimisation technique.</li>
+<li>Gradient descent iteratively solves <span class="math inline">\arg\min_{\mathbf{x}} \, \mathcal{L}(\mathbf{x})</span> as follows:
+<ol type="1">
+<li>Initialise <span class="math inline">i = 0</span>, <span class="math inline">\mathbf{x}_0</span>.</li>
+<li>Repeat until a stopping criterion is satisfied:
+<ol type="a">
+<li><span class="math inline">\mathbf{x}_{i+1} = \mathbf{x}_i - \gamma \nabla_{\mathbf{x}} \mathcal{L}(\mathbf{x}_i)</span>, where <span class="math inline">\gamma &gt; 0</span> is a small constant.</li>
+<li><span class="math inline">i \leftarrow i + 1</span>.</li>
+</ol></li>
+<li>Output <span class="math inline">\mathbf{x}_i</span>.</li>
+</ol></li>
+</ul>
+</section>
+<section id="gradient-decent-the-effect-of-gamma" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-decent-the-effect-of-gamma">Gradient Decent: The Effect of <span class="math inline">\gamma</span></h3>
+<ul>
+<li>The step size <span class="math inline">|\mathbf{x}_{i+1} - \mathbf{x}_i|</span> increases as <span class="math inline">\gamma</span> increases.</li>
+<li>However, this does not mean the optimum is reached more quickly (the algorithm may oscillate).</li>
+<li><span class="math inline">\mathbf{x}_i</span> may even diverge if <span class="math inline">\gamma</span> is too large.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/gradient_decent/combine/combine-crop.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Effect of the learning rate <span class="math inline">\gamma</span> in gradient descent. Left: <span class="math inline">\gamma=0.3</span> and <span class="math inline">x_5</span> is close to the solution; middle: <span class="math inline">\gamma=0.9</span>, where larger steps still leave <span class="math inline">\mathbf{x}_5</span> far from the optimum; right: <span class="math inline">\gamma=1.1</span>, where the iterates diverge.</figcaption>
+</figure>
+</div>
+</section>
+<section id="gradient-boosting-machine-motivation-and-ideas" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-boosting-machine-motivation-and-ideas">Gradient Boosting Machine: Motivation and Ideas</h3>
+<p>Now let us discuss gradient boosting machines.</p>
+<ul>
+<li>We want to minimize <span class="math inline">\hat{\mathcal{R}} = \sum_{i=1}^N \mathcal{L}(y_i, f(x_i)).</span>.</li>
+<li>To do this, we can perform “functional” gradient descent with respect to <span class="math inline">f</span>.</li>
+<li>A function <span class="math inline">f</span> can be viewed as a (possibly infinite-dimensional) vector of values <span class="math inline">f(x)</span> indexed by <span class="math inline">x</span>. To perform gradient descent on <span class="math inline">f</span>, we need the gradient <span class="math inline">\nabla_f \hat{\mathcal{R}}</span> at every <span class="math inline">x</span>.</li>
+<li>However, we can only compute the gradient at the observed points <span class="math inline">x_i</span>, <span class="math inline">i = 1, \dots, N</span>.</li>
+<li>To generalise to other <span class="math inline">x</span>, we fit a predictor (e.g.&nbsp;a CART) to data <span class="math inline">(x_i,\hat{\mathcal{R}}(x_i))</span> to approximate the full gradient.</li>
+</ul>
+</section>
+<section id="gradient-boosting-machine-the-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-boosting-machine-the-algorithm">Gradient Boosting Machine: The Algorithm</h3>
+<ul>
+<li>Set <span class="math inline">f_0 = 0</span>, <span class="math inline">k = 0</span>, and shrinkage parameter <span class="math inline">\gamma &gt; 0</span>.</li>
+<li>Repeat until a stopping criterion is satisfied:
+<ol type="a">
+<li>Compute the pseudo-residuals on the observations <span class="math display">
+r_i = - \left. \frac{\partial \mathcal{L}(y_i, f(x_i))}{\partial f(x_i)} \right|_{f = f_k},
+\quad i = 1, \dots, N.
+</span></li>
+<li>Fit a base learner <span class="math inline">b(x)</span> to <span class="math inline">\{(x_i, r_i)\}_{i=1}^N</span>, for example by minimising the sum-of-squared loss <span class="math inline">\sum_{i=1}^N \big(r_i - b(x_i)\big)^2.</span></li>
+<li>Update the model <span class="math inline">f_{k+1}(x) = f_k(x) + \gamma \, b(x).</span></li>
+<li><span class="math inline">k \leftarrow k + 1</span>.</li>
+</ol></li>
+<li>Output the gradient boosting predictor <span class="math inline">\hat{y} = f_k(x)</span>.</li>
+</ul>
+</section>
+<section id="a-special-case-gradient-boosting-regression-with-squared-error-loss." class="level3">
+<h3 class="anchored" data-anchor-id="a-special-case-gradient-boosting-regression-with-squared-error-loss.">A Special Case: Gradient Boosting Regression with Squared Error Loss.</h3>
+<p>Let us consider a special case to better understand gradient boosting.</p>
+<ul>
+<li>In this case, the gradients at the observed data points are just the residuals from the current model fit. Hence, the new predictor is fitted to the residuals.</li>
+</ul>
+</section>
+<section id="least-squares-regression-boosting" class="level3">
+<h3 class="anchored" data-anchor-id="least-squares-regression-boosting">Least Squares Regression Boosting</h3>
+<ol type="1">
+<li>Set <span class="math inline">\hat{f}(x) = 0</span> and <span class="math inline">r_i = y_i</span> for all <span class="math inline">i</span> in the training set.</li>
+<li>For <span class="math inline">b = 1, 2, \cdots, B</span>, repeat:
+<ol type="a">
+<li>Fit a tree <span class="math inline">\hat{f}^{\,b}</span> with <span class="math inline">d</span> splits (<span class="math inline">d + 1</span> terminal nodes) to the training data <span class="math inline">(X, r)</span>.</li>
+<li>Update <span class="math inline">\hat{f}</span> by adding a shrunken version of the new tree: <span class="math display">
+\hat{f}(x) \leftarrow \hat{f}(x) + \lambda \, \hat{f}^{\,b}(x)
+</span></li>
+<li>Update the residuals <span class="math display">
+   r_i \leftarrow r_i - \lambda \, \hat{f}^{\,b}(x_i)
+</span></li>
+</ol></li>
+<li>Output the boosted model: <span class="math display">
+\hat{f}(x) = \sum_{b=1}^{B} \lambda \, \hat{f}^{\,b}(x)
+</span></li>
+</ol>
+</section>
+<section id="boosting-tuning-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="boosting-tuning-parameters">Boosting Tuning Parameters</h3>
+<ol type="1">
+<li>The number of trees <span class="math inline">B</span>
+<ul>
+<li>May overfit if <span class="math inline">B</span> is too large</li>
+<li>Use cross-validation to select <span class="math inline">B</span></li>
+</ul></li>
+<li>The shrinkage parameter <span class="math inline">\lambda</span>
+<ul>
+<li>A small positive number</li>
+<li>Controls the rate at which boosting learns (learning rate)</li>
+<li>Typical values are 0.01 or 0.001</li>
+<li>Slows down the rate of overfitting</li>
+</ul></li>
+<li>The number <span class="math inline">d</span> of splits in each tree
+<ul>
+<li><span class="math inline">d=1</span> often works well; each tree is a stump</li>
+<li>More generally, <span class="math inline">d</span> is the interaction depth and controls the interaction order of the boosted model, since <span class="math inline">d</span> splits can involve at most <span class="math inline">d</span> variables</li>
+</ul></li>
+</ol>
+</section>
+<section id="adaboost-vs-gradient-boosting" class="level3">
+<h3 class="anchored" data-anchor-id="adaboost-vs-gradient-boosting">AdaBoost vs Gradient Boosting</h3>
+<ul>
+<li>AdaBoost uses the exponential loss and is essentially performing greedy stagewise forward basis expansion.</li>
+<li>Gradient boosting is similar to AdaBoost, with the gradient approximated by basis functions.</li>
+<li>Gradient boosting is not specific to a particular loss function.</li>
+</ul>
+<p></p>
+</section>
+<section id="when-the-basis-functions-are-carts" class="level3">
+<h3 class="anchored" data-anchor-id="when-the-basis-functions-are-carts">When the Basis Functions Are CARTs</h3>
+<ul>
+<li>All previous discussions apply to boosting with any weak learners.</li>
+<li>CARTs are commonly used as weak learners.</li>
+</ul>
+</section>
+</section>
+<section id="ensemble-learning" class="level2">
+<h2 class="anchored" data-anchor-id="ensemble-learning">Ensemble Learning</h2>
+<section id="ensemble-learning-1" class="level3">
+<h3 class="anchored" data-anchor-id="ensemble-learning-1">Ensemble Learning</h3>
+<p><em>Ensemble Learning</em> consists of two steps:</p>
+<ol type="1">
+<li>Construction of a <em>dictionary</em> <span class="math inline">\mathcal{D} = \{T_1(X), T_2(X), \dots, T_M(X)\}</span> of basis elements (weak learners) <span class="math inline">T_m(X)</span>.</li>
+<li>Fitting a model <span class="math inline">f(X) = \sum_{m=1}^M \alpha_m T_m(X).</span></li>
+</ol>
+<p>Simple examples of ensembles</p>
+<ul>
+<li>Linear regression: The ensemble consists of the coordinate functions <span class="math inline">T_m(X)=X_m</span>. The fitting is done by least squares.</li>
+<li>Ramdom forests: The ensemble consists of trees grown on bootstrap samples of the data, with additional randomisation at each split. The fitting simply averages the predictions.</li>
+<li>Gradient boosting: The ensemble is built in an adaptive (stagewise) fashion, and the final model is a weighted sum of the learners.</li>
+</ul>
+</section>
+<section id="interpretation-variable-importance-plot" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-variable-importance-plot">Interpretation: Variable Importance Plot</h3>
+<ul>
+<li>Ranks the predictors according to their importance scores</li>
+<li>The importance score for a particular predictor is computed by totalling the reduction in node impurity due to that predictor, averaged over all the trees in the ensemble.</li>
+<li>In general, variables that are used to form splits more frequently and earlier in the trees lead to larger improvements in node purity and are therefore more important.</li>
+</ul>
+</section>
+<section id="variable-importance-plot-email-spam-prediction" class="level3">
+<h3 class="anchored" data-anchor-id="variable-importance-plot-email-spam-prediction">Variable Importance Plot: Email Spam Prediction</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/boosting5.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption class="figure-caption">Variable importance (spam data, GBM) (Source: <em>The Elements of Statistical Learning</em> <span class="citation" data-cites="hastie2009elements">(<a href="#ref-hastie2009elements" role="doc-biblioref">Hastie et al. 2009</a>)</span>, Figure 10.6).</figcaption>
+</figure>
+</div>
+</section>
+<section id="interpretation-partial-dependence-plot" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-partial-dependence-plot">Interpretation: Partial Dependence Plot</h3>
+<ul>
+<li>Can be used to interpret the results of any “black-box” learning method.</li>
+<li>Let <span class="math inline">X_S</span> be a subset of predictors and <span class="math inline">X_C</span> be its complement. The partial dependence of <span class="math inline">f(X)</span> on <span class="math inline">X_S</span> is defined as <span class="math display">
+f_S(X_S) = \mathbb{E}_{X_C}\big[f(X_S, X_C)\big],
+</span> which can be estimated by <span class="math display">
+\bar{f}(X_S) = \frac{1}{N} \sum_{i=1}^{N} f(X_S, x_{iC}).
+</span></li>
+<li>Visualises the marginal effect of <span class="math inline">X_S</span> on the average prediction of the target variable, after accounting for the effects of the other variables <span class="math inline">X_C</span>.</li>
+</ul>
+</section>
+<section id="partial-dependence-plot-email-spam-prediction" class="level3">
+<h3 class="anchored" data-anchor-id="partial-dependence-plot-email-spam-prediction">Partial Dependence Plot: Email Spam Prediction</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/boosting6.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption class="figure-caption">Partial dependence plots (spam data, GBM) (Source: <em>The Elements of Statistical Learning</em> <span class="citation" data-cites="hastie2009elements">(<a href="#ref-hastie2009elements" role="doc-biblioref">Hastie et al. 2009</a>)</span>, Figure 10.7).</figcaption>
+</figure>
+</div>
+</section>
+<section id="post-processing-by-the-lasso" class="level3">
+<h3 class="anchored" data-anchor-id="post-processing-by-the-lasso">Post-processing by the Lasso</h3>
+<ul>
+<li>Ensemble models are often large, involving thousands of small trees, and many of these trees can be very similar.</li>
+<li>Post-processing aims to select a smaller subset of trees and combine them more efficiently.</li>
+<li>This post-processing step can improve the performance of the original ensemble.</li>
+</ul>
+<p>Fit the model <span class="math inline">f(X) = \sum_{m=1}^M \alpha_m T_m(X)</span> in step (2) using Lasso regularization: <span class="math display">
+\alpha(\lambda) = \arg\min_{\alpha} \sum_{i=1}^N \mathcal{L}\big(y_i, \alpha_0 + \sum_{m=1}^M \alpha_m T_m(x_i)\big)
++ \lambda \sum_{m=1}^M |\alpha_m|.
+</span></p>
+</section>
+<section id="ensemble-learning-in-applications" class="level3">
+<h3 class="anchored" data-anchor-id="ensemble-learning-in-applications">Ensemble Learning in Applications</h3>
+<ul>
+<li>Ensemble learning methods such as Random Forest and Gradient Boosting Trees can be routinely used in many applications (often as “off-the-shelf” methods).</li>
+<li>Due to their ease of use and strong predictive performance, they are useful benchmark models. For example:
+<ul>
+<li>If you are wondering whether a group of features can be used to predict another variable well, you can first use a Random Forest or a boosting method to explore this quickly.</li>
+<li>When you are trying to build a simple but interpretable model (e.g.&nbsp;a GLM), if the predictive performance is much worse than that of a Random Forest or boosting, it may indicate that the model is misspecified. For example, you may need to consider adding interaction terms or nonlinear effects.</li>
+</ul></li>
+</ul>
+</section>
+<section id="fun-facts" class="level3">
+<h3 class="anchored" data-anchor-id="fun-facts">Fun Facts</h3>
+<ul>
+<li>Interesting observations:
+<ul>
+<li>Predictive power: Neural Networks &gt; Boosting &gt; Random Forests</li>
+<li>Invention timeline: Neural networks were developed earlier than boosting, which was developed earlier than random forests</li>
+<li>Ease of use: Random forests &gt; Boosting &gt; Neural networks</li>
+</ul></li>
+<li>Takeaways:
+<ul>
+<li>Simpler methods are not always easier to invent</li>
+<li>Predictive performance is not everything</li>
+<li>There is no free lunch.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="using-r" class="level2">
+<h2 class="anchored" data-anchor-id="using-r">Using R</h2>
+<section id="using-r-1" class="level3">
+<h3 class="anchored" data-anchor-id="using-r-1">Using R</h3>
+<ul>
+<li><code>randomForest</code>: implementation of Leo Breiman’s algorithm.</li>
+<li><code>gbm</code>: implementation of Friedman’s gradient boosting algorithm.</li>
+<li><code>glmnet</code>: Lasso and elastic net (for post-processing ensembles).</li>
+<li><a href="http://topepo.github.io/caret/index.html"><code>caret</code></a>: a package that provides a unified interface for building predictive models. It includes tools for:
+<ul>
+<li>data splitting<br>
+</li>
+<li>pre-processing</li>
+<li>feature selection</li>
+<li>model tuning using resampling</li>
+<li>variable importance estimation</li>
+</ul></li>
+<li><code>pdp</code>: partial dependence plots</li>
+</ul>
+</section>
+<section id="references" class="level3">
+
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-breiman1996bagging" class="csl-entry" role="listitem">
+Breiman, Leo. 1996. <span>“Bagging Predictors.”</span> <em>Machine Learning</em> 24 (2): 123–40.
+</div>
+<div id="ref-breiman1998arcing" class="csl-entry" role="listitem">
+———. 1998. <span>“Arcing Classifier (with Discussion and a Rejoinder by the Author).”</span> <em>The Annals of Statistics</em> 26 (3): 801–49.
+</div>
+<div id="ref-breiman2001random" class="csl-entry" role="listitem">
+———. 2001. <span>“Random Forests.”</span> <em>Machine Learning</em> 45 (1): 5–32.
+</div>
+<div id="ref-freund1997decision" class="csl-entry" role="listitem">
+Freund, Yoav, and Robert E Schapire. 1997. <span>“A Decision-Theoretic Generalization of on-Line Learning and an Application to Boosting.”</span> <em>Journal of Computer and System Sciences</em> 55 (1): 119–39.
+</div>
+<div id="ref-hastie2009elements" class="csl-entry" role="listitem">
+Hastie, Trevor, Robert Tibshirani, Jerome Friedman, et al. 2009. <span>“The Elements of Statistical Learning.”</span> Springer series in statistics New-York.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lectures/Ch4-Modelling/Random_Forests.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lecture: Random Forests</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lectures/Ch4-Modelling/Neural_Networks.html" class="pagination-link">
+        <span class="nav-page-text">Lecture: Neural Networks</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

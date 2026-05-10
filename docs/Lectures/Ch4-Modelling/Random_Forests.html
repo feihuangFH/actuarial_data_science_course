@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Fei Huang, UNSW Sydney">
+
+<title>Actuarial Data Science - Lecture: Random Forests</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html" rel="next">
+<link href="../../Lectures/Ch4-Modelling/GLM.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html">Chapter 4 - Modelling</a></li><li class="breadcrumb-item"><a href="../../Lectures/Ch4-Modelling/Random_Forests.html">Lecture: Random Forests</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Actuarial Data Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Chapter 1 - Introduction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Actuarial Data Science</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch1-Introduction/Lecture-Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Introduction to Actuarial Data Science</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Chapter 2 - Problem Statement</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch2-Problem Statement/Lecture-Problem Statement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Problem Statement</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Chapter 3 - Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Manipulation and Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Quality Check and Cleaning</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Chapter 4 - Modelling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Modelling and Shrinkage techniques</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: GLM</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Random_Forests.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lecture: Random Forests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Gradient Boosting Machine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch4-Modelling/Neural_Networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Neural Networks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Chapter 5 - Evaluations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Model Assessment and Selection</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Chapter 6 - Communication</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch6-Communication/Communication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Communication</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 7 - Deployment</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text">Chapter 8 - Ethics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lectures/Ch8-Ethics/Ethics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Ethics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Chapter 9 - Conclusion</span></span>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#recommended-reading" id="toc-recommended-reading" class="nav-link active" data-scroll-target="#recommended-reading">Recommended Reading</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#classification-and-regression-trees-cart" id="toc-classification-and-regression-trees-cart" class="nav-link" data-scroll-target="#classification-and-regression-trees-cart">Classification and Regression Trees (CART)</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#a-classification-example-using-cart" id="toc-a-classification-example-using-cart" class="nav-link" data-scroll-target="#a-classification-example-using-cart">A Classification Example Using CART</a></li>
+  <li><a href="#a-regression-example-using-cart" id="toc-a-regression-example-using-cart" class="nav-link" data-scroll-target="#a-regression-example-using-cart">A Regression Example Using CART</a></li>
+  <li><a href="#terminologies" id="toc-terminologies" class="nav-link" data-scroll-target="#terminologies">Terminologies</a></li>
+  <li><a href="#classification-and-regression-trees-cart-1" id="toc-classification-and-regression-trees-cart-1" class="nav-link" data-scroll-target="#classification-and-regression-trees-cart-1">Classification and Regression Trees (CART)</a></li>
+  <li><a href="#train-cart-how-to-make-the-splits" id="toc-train-cart-how-to-make-the-splits" class="nav-link" data-scroll-target="#train-cart-how-to-make-the-splits">Train CART: how to make the splits?</a></li>
+  <li><a href="#partition-criteria-regression" id="toc-partition-criteria-regression" class="nav-link" data-scroll-target="#partition-criteria-regression">Partition Criteria: Regression</a></li>
+  <li><a href="#partition-criteria-classification" id="toc-partition-criteria-classification" class="nav-link" data-scroll-target="#partition-criteria-classification">Partition Criteria: Classification</a></li>
+  <li><a href="#partition-criteria-classification-continued" id="toc-partition-criteria-classification-continued" class="nav-link" data-scroll-target="#partition-criteria-classification-continued">Partition Criteria: Classification (continued)</a></li>
+  <li><a href="#stopping-criteria" id="toc-stopping-criteria" class="nav-link" data-scroll-target="#stopping-criteria">Stopping Criteria</a></li>
+  <li><a href="#controlling-tree-complexity" id="toc-controlling-tree-complexity" class="nav-link" data-scroll-target="#controlling-tree-complexity">Controlling Tree Complexity</a></li>
+  <li><a href="#cost-complexity-pruning-weakest-link-pruning" id="toc-cost-complexity-pruning-weakest-link-pruning" class="nav-link" data-scroll-target="#cost-complexity-pruning-weakest-link-pruning">Cost-complexity Pruning (weakest link pruning)</a></li>
+  <li><a href="#classification-and-regression-tree-cart" id="toc-classification-and-regression-tree-cart" class="nav-link" data-scroll-target="#classification-and-regression-tree-cart">Classification and Regression Tree (CART)</a></li>
+  <li><a href="#classification-and-regression-tree-cart-1" id="toc-classification-and-regression-tree-cart-1" class="nav-link" data-scroll-target="#classification-and-regression-tree-cart-1">Classification and Regression Tree (CART)</a></li>
+  <li><a href="#classification-and-regression-tree-cart-2" id="toc-classification-and-regression-tree-cart-2" class="nav-link" data-scroll-target="#classification-and-regression-tree-cart-2">Classification and Regression Tree (CART)</a></li>
+  <li><a href="#classification-and-regression-tree-cart-3" id="toc-classification-and-regression-tree-cart-3" class="nav-link" data-scroll-target="#classification-and-regression-tree-cart-3">Classification and Regression Tree (CART)</a></li>
+  <li><a href="#classification-and-regression-tree-cart-4" id="toc-classification-and-regression-tree-cart-4" class="nav-link" data-scroll-target="#classification-and-regression-tree-cart-4">Classification and Regression Tree (CART)</a></li>
+  <li><a href="#classification-and-regression-tree-cart-5" id="toc-classification-and-regression-tree-cart-5" class="nav-link" data-scroll-target="#classification-and-regression-tree-cart-5">Classification and Regression Tree (CART)</a></li>
+  <li><a href="#classification-and-regression-tree-cart-6" id="toc-classification-and-regression-tree-cart-6" class="nav-link" data-scroll-target="#classification-and-regression-tree-cart-6">Classification and Regression Tree (CART)</a></li>
+  <li><a href="#classification-and-regression-tree-cart-7" id="toc-classification-and-regression-tree-cart-7" class="nav-link" data-scroll-target="#classification-and-regression-tree-cart-7">Classification and Regression Tree (CART)</a></li>
+  <li><a href="#advantages-and-limitations-of-cart" id="toc-advantages-and-limitations-of-cart" class="nav-link" data-scroll-target="#advantages-and-limitations-of-cart">Advantages and Limitations of CART</a></li>
+  <li><a href="#advantages-and-limitations-of-cart-continued" id="toc-advantages-and-limitations-of-cart-continued" class="nav-link" data-scroll-target="#advantages-and-limitations-of-cart-continued">Advantages and Limitations of CART (continued)</a></li>
+  <li><a href="#cart-vs.-glm" id="toc-cart-vs.-glm" class="nav-link" data-scroll-target="#cart-vs.-glm">CART vs.&nbsp;GLM</a></li>
+  </ul></li>
+  <li><a href="#ensemble-methods-bagging" id="toc-ensemble-methods-bagging" class="nav-link" data-scroll-target="#ensemble-methods-bagging">Ensemble Methods: Bagging</a>
+  <ul class="collapse">
+  <li><a href="#ensemble-methods" id="toc-ensemble-methods" class="nav-link" data-scroll-target="#ensemble-methods">Ensemble Methods</a></li>
+  <li><a href="#ensemble-methods-continued" id="toc-ensemble-methods-continued" class="nav-link" data-scroll-target="#ensemble-methods-continued">Ensemble Methods (continued)</a></li>
+  <li><a href="#first-ensemble-bagging-bootstrap-averaging" id="toc-first-ensemble-bagging-bootstrap-averaging" class="nav-link" data-scroll-target="#first-ensemble-bagging-bootstrap-averaging">First Ensemble: Bagging (Bootstrap Averaging)</a></li>
+  <li><a href="#bagging-procedure" id="toc-bagging-procedure" class="nav-link" data-scroll-target="#bagging-procedure">Bagging Procedure</a></li>
+  <li><a href="#out-of-bag-error-estimation" id="toc-out-of-bag-error-estimation" class="nav-link" data-scroll-target="#out-of-bag-error-estimation">Out-of-Bag Error Estimation</a></li>
+  <li><a href="#featurevariable-importance" id="toc-featurevariable-importance" class="nav-link" data-scroll-target="#featurevariable-importance">Feature/Variable Importance</a></li>
+  <li><a href="#why-bagging-works" id="toc-why-bagging-works" class="nav-link" data-scroll-target="#why-bagging-works">Why Bagging Works?</a></li>
+  <li><a href="#another-illustration" id="toc-another-illustration" class="nav-link" data-scroll-target="#another-illustration">Another Illustration</a></li>
+  <li><a href="#why-bagging-works-not-so-well" id="toc-why-bagging-works-not-so-well" class="nav-link" data-scroll-target="#why-bagging-works-not-so-well">Why Bagging Works Not So Well?</a></li>
+  </ul></li>
+  <li><a href="#ensemble-method-random-forest" id="toc-ensemble-method-random-forest" class="nav-link" data-scroll-target="#ensemble-method-random-forest">Ensemble Method: Random Forest</a>
+  <ul class="collapse">
+  <li><a href="#random-forest-where-randomness-helps" id="toc-random-forest-where-randomness-helps" class="nav-link" data-scroll-target="#random-forest-where-randomness-helps">Random Forest: Where Randomness Helps</a></li>
+  <li><a href="#an-example-of-random-forest" id="toc-an-example-of-random-forest" class="nav-link" data-scroll-target="#an-example-of-random-forest">An Example of Random Forest</a></li>
+  <li><a href="#tuning-random-forest" id="toc-tuning-random-forest" class="nav-link" data-scroll-target="#tuning-random-forest">Tuning Random Forest</a></li>
+  <li><a href="#out-of-bag-error-oob-error" id="toc-out-of-bag-error-oob-error" class="nav-link" data-scroll-target="#out-of-bag-error-oob-error">Out-of-Bag Error (OOB Error)</a></li>
+  <li><a href="#example-oob-error-and-test-error" id="toc-example-oob-error-and-test-error" class="nav-link" data-scroll-target="#example-oob-error-and-test-error">Example: OOB Error and Test Error</a></li>
+  <li><a href="#featurevariable-importance-1" id="toc-featurevariable-importance-1" class="nav-link" data-scroll-target="#featurevariable-importance-1">Feature/Variable Importance</a></li>
+  <li><a href="#example-feature-importance" id="toc-example-feature-importance" class="nav-link" data-scroll-target="#example-feature-importance">Example: Feature Importance</a></li>
+  <li><a href="#random-forest-pros-and-cons" id="toc-random-forest-pros-and-cons" class="nav-link" data-scroll-target="#random-forest-pros-and-cons">Random Forest (Pros and Cons)</a></li>
+  </ul></li>
+  <li><a href="#using-r-and-actuarial-applications" id="toc-using-r-and-actuarial-applications" class="nav-link" data-scroll-target="#using-r-and-actuarial-applications">Using R and Actuarial Applications</a>
+  <ul class="collapse">
+  <li><a href="#using-r" id="toc-using-r" class="nav-link" data-scroll-target="#using-r">Using R</a></li>
+  <li><a href="#actuarial-applications-of-tree-based-methods-life" id="toc-actuarial-applications-of-tree-based-methods-life" class="nav-link" data-scroll-target="#actuarial-applications-of-tree-based-methods-life">Actuarial Applications of Tree-based Methods: Life</a></li>
+  <li><a href="#actuarial-applications-of-tree-based-methods-health" id="toc-actuarial-applications-of-tree-based-methods-health" class="nav-link" data-scroll-target="#actuarial-applications-of-tree-based-methods-health">Actuarial Applications of Tree-based Methods: Health</a></li>
+  <li><a href="#actuarial-applications-of-tree-based-methods-general-insurance" id="toc-actuarial-applications-of-tree-based-methods-general-insurance" class="nav-link" data-scroll-target="#actuarial-applications-of-tree-based-methods-general-insurance">Actuarial Applications of Tree-based Methods: General Insurance</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Random_Forests.slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lecture: Random Forests</h1>
+<p class="subtitle lead">Actuarial Data Science - Open Learning Resource</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Fei Huang, UNSW Sydney </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="recommended-reading" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-reading">Recommended Reading</h3>
+<ul>
+<li>An Introduction to Statistical Learning (ISLR): Review Chapter 8</li>
+<li>The Elements of Statistical Learning (ESL): Chapter 15 (excluding Sections 15.3.3, 15.3.4 and 15.4)</li>
+</ul>
+</section>
+<section id="learning-objectives" class="level3">
+<h3 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li><p>Tree-based methods and random forests are powerful yet relatively interpretable approaches for modelling complex, non-linear relationships. In this lecture, we build from single trees to ensembles and focus on practical questions an actuary cares about: how to tune models, how to assess performance, and when these methods are preferable to simpler models.</p></li>
+<li><p>Understand the motivations behind ensemble learning methods, including bagging and random forests</p></li>
+<li><p>Construct Classification and Regression Tree (CART).</p></li>
+<li><p>Perform predictive modelling using random forests, including model fitting, hyperparameter selection, and model assessment</p></li>
+<li><p>Compare random forests with other modelling techniques</p></li>
+</ul>
+</section>
+<section id="classification-and-regression-trees-cart" class="level2">
+<h2 class="anchored" data-anchor-id="classification-and-regression-trees-cart">Classification and Regression Trees (CART)</h2>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<ul>
+<li>We begin by discussing <em>ensemble learning</em> methods.</li>
+<li>An <em>ensemble learning</em> method builds a <em>strong</em> predictor by combining multiple <em>weak</em> predictors.</li>
+<li>The <em>weak</em> predictor can be any model, but the most commonly used is the <em>classification and regression tree (CART)</em>.</li>
+</ul>
+</section>
+<section id="a-classification-example-using-cart" class="level3">
+<h3 class="anchored" data-anchor-id="a-classification-example-using-cart">A Classification Example Using CART</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/cart/iris/combine-crop.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Classifying the iris data using CART (Source: Flower images are from Wikipedia)</figcaption>
+</figure>
+</div>
+</section>
+<section id="a-regression-example-using-cart" class="level3">
+<h3 class="anchored" data-anchor-id="a-regression-example-using-cart">A Regression Example Using CART</h3>
+<ul>
+<li>The <code>Hitters</code> dataset: predict a baseball player’s log salary based on <code>Years</code> and <code>Hits</code></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/hitterSalaryPart-eps-converted-to.png" class="img-fluid figure-img" style="width:48.0%"></p>
+<figcaption class="figure-caption">Partition of the feature space for the Hitters data (Source: <em>An Introduction to Statistical Learning</em> <span class="citation" data-cites="james2013introduction">(<a href="#ref-james2013introduction" role="doc-biblioref">James et al. 2013</a>)</span>, Figure. 8.2)</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/hitterSalaryTree-eps-converted-to.png" class="img-fluid figure-img" style="width:48.0%"></p>
+<figcaption class="figure-caption">Regression tree for the Hitters data (Source: adapted from <em>An Introduction to Statistical Learning</em> <span class="citation" data-cites="james2013introduction">(<a href="#ref-james2013introduction" role="doc-biblioref">James et al. 2013</a>)</span>, Figure. 8.1)</figcaption>
+</figure>
+</div>
+</section>
+<section id="terminologies" class="level3">
+<h3 class="anchored" data-anchor-id="terminologies">Terminologies</h3>
+<ul>
+<li><em>Node</em>: a point in a decision tree that corresponds to a subset of the data, typically resulting from one or more binary splits.</li>
+<li><em>Root node</em>: the node at the top of a tree, representing the full dataset.</li>
+<li><em>Terminal nodes (leaves)</em>: nodes at the bottom of the tree that are not split further.</li>
+<li><em>Branches</em>: the segments of the trees that connect nodes.</li>
+<li><em>Depth</em>: the number of branches from the root node to the furthest leaf (terminal node).</li>
+</ul>
+</section>
+<section id="classification-and-regression-trees-cart-1" class="level3">
+<h3 class="anchored" data-anchor-id="classification-and-regression-trees-cart-1">Classification and Regression Trees (CART)</h3>
+<ul>
+<li>Binary splits</li>
+<li>Create terminal nodes that contain similar observations</li>
+<li>Can be used for both regression and classification:
+<ul>
+<li>Regression: use the average of the response values in that group as the predicted value</li>
+<li>Classification: use the most common class of the response values in that group as the predicted class</li>
+</ul></li>
+</ul>
+</section>
+<section id="train-cart-how-to-make-the-splits" class="level3">
+<h3 class="anchored" data-anchor-id="train-cart-how-to-make-the-splits">Train CART: how to make the splits?</h3>
+<ul>
+<li>Training a CART is like partitioning the data with one (or more) feature(s) at each step</li>
+<li>In theory, the regions could have any shape. However, we choose to divide the predictor space into high-dimensional rectangles or boxes, for simplicity and ease of interpretation.</li>
+<li><strong>Our goal</strong>: create terminal nodes that contain homogeneous response observations.</li>
+<li>It is computationally prohibitive to find the optimal partitions. In practice, the partitions are found in a <em>top-down greedy</em> manner: <em>recursive binary splitting</em>.
+<ul>
+<li>It begins at the top of the tree and successively splits the predictor space.</li>
+<li>At each step, the <em>best</em> split is made at that particular step, rather than looking ahead and picking a split that will lead to a better tree in some future step.</li>
+</ul></li>
+</ul>
+</section>
+<section id="partition-criteria-regression" class="level3">
+<h3 class="anchored" data-anchor-id="partition-criteria-regression">Partition Criteria: Regression</h3>
+<p>Let <span class="math inline">R_m</span> denote a node. The RSS of the response variable in <span class="math inline">R_m</span> is <span class="math display">
+RSS_m = \sum_{i \in R_m} (y_i - \hat{y}_{R_m})^2
+</span> where <span class="math inline">\hat{y}_{R_m}</span> is the mean of the response variable in <span class="math inline">R_m</span>.</p>
+<ul>
+<li>Minimize the RSS of each node: <span class="math display">\min\limits_{i,s}\sum\limits_{j:x^j_i\le s}(y_j-\bar y_1)^2+\sum\limits_{j:x^j_i&gt;s}(y_j-\bar y_2)^2</span></li>
+<li>The lower the RSS, the more homogeneous the response values in that node</li>
+</ul>
+</section>
+<section id="partition-criteria-classification" class="level3">
+<h3 class="anchored" data-anchor-id="partition-criteria-classification">Partition Criteria: Classification</h3>
+<p>Let <span class="math inline">\hat{p}_{mk}=\dfrac{1}{N_m}\sum_{x_i \in R_m}I(y_i = k)</span> represent the proportion of training observations in the <span class="math inline">m</span>th region/node that belong to the <span class="math inline">k</span>th class.</p>
+<ul>
+<li><p>Classification error: <span class="math inline">E = 1 - \max_k(\hat{p}_{mk})</span></p></li>
+<li><p>Gini index: <span class="math inline">G = \sum_{k=1}^{K}\hat{p}_{mk}(1 - \hat{p}_{mk})</span></p></li>
+<li><p>Cross-entropy: <span class="math inline">D = -\sum_{k=1}^{K}\hat{p}_{mk}\ln(\hat{p}_{mk})</span></p></li>
+</ul>
+<p>The lower these measures, the more homogeneous the response values in that group.</p>
+</section>
+<section id="partition-criteria-classification-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="partition-criteria-classification-continued">Partition Criteria: Classification (continued)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/impurity measures.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption class="figure-caption">Comparison of impurity measures for two-class classification (Source: <em>The Elements of Statistical Learning</em> <span class="citation" data-cites="hastie2009elements">(<a href="#ref-hastie2009elements" role="doc-biblioref">Hastie et al. 2009</a>)</span>, Figure 9.3).</figcaption>
+</figure>
+</div>
+</section>
+<section id="stopping-criteria" class="level3">
+<h3 class="anchored" data-anchor-id="stopping-criteria">Stopping Criteria</h3>
+<ul>
+<li>Minimum leaf node size</li>
+<li>Maximum number of leaf nodes</li>
+<li>Maximum depth</li>
+<li>Minimum improvement: no further splits that lead to a significant reduction in node impurity</li>
+</ul>
+</section>
+<section id="controlling-tree-complexity" class="level3">
+<h3 class="anchored" data-anchor-id="controlling-tree-complexity">Controlling Tree Complexity</h3>
+<ul>
+<li>How to measure the complexity of a tree? (similar to the number of coefficients in LM/GLM)
+<ul>
+<li>the number of splits, or the number of terminal nodes</li>
+</ul></li>
+<li>Review: bias, variance, and model complexity</li>
+<li><strong>Our goal</strong>: optimise the bias–variance trade-off to maximise predictive performance on an independent test set.</li>
+</ul>
+</section>
+<section id="cost-complexity-pruning-weakest-link-pruning" class="level3">
+<h3 class="anchored" data-anchor-id="cost-complexity-pruning-weakest-link-pruning">Cost-complexity Pruning (weakest link pruning)</h3>
+<ul>
+<li>In ISLR, we learned: <span class="math display">
+\text{training error}+\alpha|T|=\sum_{m=1}^{|T|}\sum_{x_i\in R_m}(y_i-\hat{y}_{R_m})^2+\alpha|T|
+</span></li>
+<li><span class="math inline">|T|</span> is the number of terminal nodes of the tree <span class="math inline">T</span>.<br>
+</li>
+<li><span class="math inline">R_m</span> is the rectangle (subset of the predictor space) corresponding to the <span class="math inline">m</span>th terminal node.</li>
+<li><span class="math inline">\hat{y}_{R_m}</span> is the predicted response associated with <span class="math inline">R_m</span>, i.e., the mean of the training observations in <span class="math inline">R_m</span>.</li>
+<li><span class="math inline">\alpha</span> controls the trade-off between the tree’s complexity and its fit to the training data, and can be tuned using cross-validation (CV).</li>
+</ul>
+</section>
+<section id="classification-and-regression-tree-cart" class="level3">
+<h3 class="anchored" data-anchor-id="classification-and-regression-tree-cart">Classification and Regression Tree (CART)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/cart/cart_simulated_split0.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Simulated data with three classes.</figcaption>
+</figure>
+</div>
+</section>
+<section id="classification-and-regression-tree-cart-1" class="level3">
+<h3 class="anchored" data-anchor-id="classification-and-regression-tree-cart-1">Classification and Regression Tree (CART)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/cart/cart_simulated_split1.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Tree with depth = 1.</figcaption>
+</figure>
+</div>
+</section>
+<section id="classification-and-regression-tree-cart-2" class="level3">
+<h3 class="anchored" data-anchor-id="classification-and-regression-tree-cart-2">Classification and Regression Tree (CART)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/cart/cart_simulated_split2.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Tree with depth = 2.</figcaption>
+</figure>
+</div>
+</section>
+<section id="classification-and-regression-tree-cart-3" class="level3">
+<h3 class="anchored" data-anchor-id="classification-and-regression-tree-cart-3">Classification and Regression Tree (CART)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/cart/cart_simulated_split3.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Tree with depth = 3.</figcaption>
+</figure>
+</div>
+</section>
+<section id="classification-and-regression-tree-cart-4" class="level3">
+<h3 class="anchored" data-anchor-id="classification-and-regression-tree-cart-4">Classification and Regression Tree (CART)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/cart/cart_simulated_split4.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Tree with depth = 4.</figcaption>
+</figure>
+</div>
+</section>
+<section id="classification-and-regression-tree-cart-5" class="level3">
+<h3 class="anchored" data-anchor-id="classification-and-regression-tree-cart-5">Classification and Regression Tree (CART)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/cart/cart_simulated_split5.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Tree with depth = 5.</figcaption>
+</figure>
+</div>
+</section>
+<section id="classification-and-regression-tree-cart-6" class="level3">
+<h3 class="anchored" data-anchor-id="classification-and-regression-tree-cart-6">Classification and Regression Tree (CART)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/cart/cart_simulated_split6.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Tree with depth = 6.</figcaption>
+</figure>
+</div>
+</section>
+<section id="classification-and-regression-tree-cart-7" class="level3">
+<h3 class="anchored" data-anchor-id="classification-and-regression-tree-cart-7">Classification and Regression Tree (CART)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/cart/cart_simulated_split15.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption class="figure-caption">Tree with depth = 15.</figcaption>
+</figure>
+</div>
+<p>[Add a example picture of Regression Tree here]</p>
+</section>
+<section id="advantages-and-limitations-of-cart" class="level3">
+<h3 class="anchored" data-anchor-id="advantages-and-limitations-of-cart">Advantages and Limitations of CART</h3>
+<ul>
+<li>Pros
+<ul>
+<li>Fast in training and inference</li>
+<li>Interpretable, especially for shallow trees</li>
+<li>Handles nonlinear relationships: invariant to strictly monotonic feature transformations (no need to scale the data)</li>
+<li>Interactions are automatically accommodated</li>
+<li>Categorical variables are handled automatically without the need for binarisation or selecting a baseline model</li>
+<li>Variables/features are automatically selected</li>
+<li>Easy to extend to multi-class classification</li>
+<li>Immune to outliers</li>
+<li>Can be easily modified to handle missing data</li>
+</ul></li>
+</ul>
+</section>
+<section id="advantages-and-limitations-of-cart-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="advantages-and-limitations-of-cart-continued">Advantages and Limitations of CART (continued)</h3>
+<ul>
+<li>Cons
+<ul>
+<li>Performance is not very strong; sensitive to noise</li>
+<li>Prone to overfitting</li>
+<li>Categorical variables: tend to favour features with many levels over those with few levels</li>
+<li>Lack of model diagnostic tools for decision trees</li>
+</ul></li>
+</ul>
+</section>
+<section id="cart-vs.-glm" class="level3">
+<h3 class="anchored" data-anchor-id="cart-vs.-glm">CART vs.&nbsp;GLM</h3>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 43%">
+<col style="width: 43%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>GLM</th>
+<th>CART</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model</td>
+<td><span class="math inline">Y \mid X \sim \text{Exponential family}</span>; <span class="math inline">g(\mu)=X^T\beta</span></td>
+<td>A tree with binary splits</td>
+</tr>
+<tr class="even">
+<td>Continuous predictors</td>
+<td><span class="math inline">\Phi_j(x)\beta</span>, where <span class="math inline">\Phi</span> is the linear basis function of <span class="math inline">x</span></td>
+<td>Tree splits based on the value of a continuous predictor</td>
+</tr>
+<tr class="odd">
+<td>Categorical predictors</td>
+<td>binarisation or selecting a baseline level</td>
+<td>Tree splits according to categorical levels, e.g.&nbsp;<span class="math inline">X = a, b, c</span>; left split: <span class="math inline">X = a, b</span>, right split: <span class="math inline">X = c</span></td>
+</tr>
+<tr class="even">
+<td>Interactions</td>
+<td>Need to be manually included in the model</td>
+<td>Automatically incorporated via mixed splits</td>
+</tr>
+<tr class="odd">
+<td>Collinearity</td>
+<td>A major issue: inflates variance of coefficient estimates and predictions, leads to non-unique estimates and reduced interpretability</td>
+<td>Less of an issue, but can affect variable importance measures</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="ensemble-methods-bagging" class="level2">
+<h2 class="anchored" data-anchor-id="ensemble-methods-bagging">Ensemble Methods: Bagging</h2>
+<section id="ensemble-methods" class="level3">
+<h3 class="anchored" data-anchor-id="ensemble-methods">Ensemble Methods</h3>
+<p>Can be applied to both regression and classification problems; applicable to CART and other statistical machine learning models.</p>
+<ol type="1">
+<li>Bagging:
+<ul>
+<li>Create multiple copies of the original training dataset using the <em>bootstrap</em></li>
+<li>Fit a tree/model to each copy</li>
+<li>Combine the fitted results from all copies to create a single predictive model</li>
+</ul></li>
+<li>Random Forests
+<ul>
+<li>Improve bagged trees/models by <em>decorrelating</em> the trees (reducing the variance)</li>
+<li>A random sample of <span class="math inline">m</span> predictors is chosen as split candidates from the full set of <span class="math inline">p</span> predictors.</li>
+</ul></li>
+</ol>
+</section>
+<section id="ensemble-methods-continued" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="ensemble-methods-continued">Ensemble Methods (continued)</h3>
+<ol start="3" type="1">
+<li>Boosting
+<ul>
+<li>Grow the trees/models <em>sequentially</em> by fitting small trees each time — learn slowly</li>
+<li>No bootstrap sampling; each tree/model is fit on a modified version of the original dataset</li>
+</ul></li>
+</ol>
+</section>
+<section id="first-ensemble-bagging-bootstrap-averaging" class="level3">
+<h3 class="anchored" data-anchor-id="first-ensemble-bagging-bootstrap-averaging">First Ensemble: Bagging (Bootstrap Averaging)</h3>
+<ul>
+<li><p>The first method to improve CART using ensemble methods is to train a number of CARTs, each trained on a bootstrapped dataset. The average of their outputs is then used as the final prediction.</p></li>
+<li><p>A <strong>general-purpose</strong> procedure to reduce the variance of a statistical learning method</p>
+<ul>
+<li>particularly useful and frequently used in the context of decision trees</li>
+</ul></li>
+<li><p>This often performs better than a single CART.</p></li>
+</ul>
+</section>
+<section id="bagging-procedure" class="level3">
+<h3 class="anchored" data-anchor-id="bagging-procedure">Bagging Procedure</h3>
+<ol type="1">
+<li>Bootstrap
+<ul>
+<li>Sample with replacement repeatedly</li>
+<li>Generate <span class="math inline">B</span> different bootstrapped training datasets</li>
+</ul></li>
+<li>Train
+<ul>
+<li>Train on the <span class="math inline">b</span>th bootstrapped training set to obtain <span class="math inline">\hat{f}^{\ast b}(x)</span></li>
+</ul></li>
+<li>Aggregate
+<ul>
+<li>Regression: average all predictions <span class="math display">
+  \hat{f}_{\text{bag}}(x) = \frac{1}{B}\sum_{b=1}^{B}\hat{f}^{\ast b}(x)
+</span></li>
+<li>Classification: take a majority vote</li>
+</ul></li>
+</ol>
+</section>
+<section id="out-of-bag-error-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="out-of-bag-error-estimation">Out-of-Bag Error Estimation</h3>
+<ul>
+<li>Analogous to the idea of leave-one-out bootstrap estimation of prediction error.</li>
+<li>This is a straightforward way to estimate the test error of a bagged model, without the need to perform cross-validation (CV) or use a validation set.</li>
+<li>On average, each bagged tree makes use of around two-thirds of the observations.</li>
+<li>The remaining one-third of the observations are referred to as the out-of-bag (OOB) observations</li>
+<li>Predict the response for the <span class="math inline">i</span>th observation using each of the trees for which that observation was OOB
+<ul>
+<li><span class="math inline">\sim B/3</span> predictions for the <span class="math inline">i</span>th observation</li>
+</ul></li>
+<li>Take the average or a majority vote of these predictions to obtain a single OOB prediction for the <span class="math inline">i</span>th observation.</li>
+</ul>
+</section>
+<section id="featurevariable-importance" class="level3">
+<h3 class="anchored" data-anchor-id="featurevariable-importance">Feature/Variable Importance</h3>
+<ul>
+<li>Bagging can lead to difficult-to-interpret results</li>
+<li>Variable importance measures can be used (analogous to ANOVA across successive models)
+<ul>
+<li>Bagging regression trees: RSS reduction for each split over a predictor</li>
+<li>Bagging classification trees: Gini index reduction for each split over a predictor</li>
+<li>Record the total amount by which the RSS/Gini index is decreased due to splits over a given predictor</li>
+</ul></li>
+<li>Select the predictors with the highest variable importance measures</li>
+</ul>
+</section>
+<section id="why-bagging-works" class="level3">
+<h3 class="anchored" data-anchor-id="why-bagging-works">Why Bagging Works?</h3>
+<ul>
+<li>Bias-variance trade-off: <span class="math display">\begin{align}
+\text{Err}(x_0)
+&amp;= \sigma_\epsilon^2+\text{Bias}^2(\hat{f}(x_0))+\text{Var}(\hat{f}(x_0)) \nonumber \\
+&amp;= \text{Irreducible Error} + \text{Bias}^2 + \text{Variance} \nonumber
+\end{align}</span></li>
+<li>By averaging, the <em>variance of the predictor</em> is reduced.</li>
+</ul>
+</section>
+<section id="another-illustration" class="level3">
+<h3 class="anchored" data-anchor-id="another-illustration">Another Illustration</h3>
+<ul>
+<li>Bagging three CARTs (<span class="math inline">T_1</span>, <span class="math inline">T_2</span>, <span class="math inline">T_3</span>) in binary classification.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/bagging/three_tree-crop.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption class="figure-caption">Illustration of bagging with three CART models: overall performance improves when the error regions overlap less.</figcaption>
+</figure>
+</div>
+<ul>
+<li>The overall performance is better when the error regions (red circles) overlap less.</li>
+</ul>
+</section>
+<section id="why-bagging-works-not-so-well" class="level3">
+<h3 class="anchored" data-anchor-id="why-bagging-works-not-so-well">Why Bagging Works Not So Well?</h3>
+<ul>
+<li>“Averaging” reduces the variance of random variables most when the variables are independent.</li>
+<li>However, in bagging, different CARTs are trained on bootstrapped datasets drawn from the <em>same</em> dataset. Therefore, the predictions of the CARTs are often strongly correlated.</li>
+<li>As a result, the reduction in variance is often limited.</li>
+</ul>
+</section>
+</section>
+<section id="ensemble-method-random-forest" class="level2">
+<h2 class="anchored" data-anchor-id="ensemble-method-random-forest">Ensemble Method: Random Forest</h2>
+<section id="random-forest-where-randomness-helps" class="level3">
+<h3 class="anchored" data-anchor-id="random-forest-where-randomness-helps">Random Forest: Where Randomness Helps</h3>
+<ul>
+<li>How can we improve bagging? Add more randomness.</li>
+<li><strong>Random Forest</strong>: to “decorrelate” the CARTs, each tree is built using only a <em>randomly selected subset of features</em>.</li>
+<li>At each split of the tree, a fresh random sample of <span class="math inline">m</span> predictors is chosen as split candidates from the full set of <span class="math inline">p</span> predictors</li>
+<li>Strong predictors are used in (far) fewer trees, which helps to decorrelate the trees.
+<ul>
+<li>This reduces the variance of the resulting model.</li>
+</ul></li>
+<li>Typically choose:
+<ul>
+<li><span class="math inline">m \approx \lfloor \sqrt{p} \rfloor</span> for classification, and the minimum node size is 1.</li>
+<li><span class="math inline">m \approx \lfloor p/3 \rfloor</span> for regression, and the minimum node size is 5.</li>
+<li>In practice, these values should be treated as tuning parameters and depend on the problem.</li>
+</ul></li>
+<li>Bagging is a special case of random forests with <span class="math inline">m = p</span>.</li>
+</ul>
+</section>
+<section id="an-example-of-random-forest" class="level3">
+<h3 class="anchored" data-anchor-id="an-example-of-random-forest">An Example of Random Forest</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./plot/random_forest/random_forest_default.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Random forest with <span class="math inline">n_{\text{trees}} = 1000</span> and minimum node size = 20.</figcaption>
+</figure>
+</div>
+</section>
+<section id="tuning-random-forest" class="level3">
+<h3 class="anchored" data-anchor-id="tuning-random-forest">Tuning Random Forest</h3>
+<p>Hyperparameters:</p>
+<ul>
+<li>How many trees to use?</li>
+<li>How deep are the trees? When should the trees stop growing?</li>
+<li>What is the size of the subset of features to use?</li>
+</ul>
+<p>These can be selected using cross-validation. Random forests are often not very sensitive to these parameters (a strong <em>off-the-shelf</em> predictor).</p>
+</section>
+<section id="out-of-bag-error-oob-error" class="level3">
+<h3 class="anchored" data-anchor-id="out-of-bag-error-oob-error">Out-of-Bag Error (OOB Error)</h3>
+<ul>
+<li>For each observation <span class="math inline">z_i=(x_i, y_i)</span>, construct its random forest predictor by averaging only those trees corresponding to bootstrap samples in which <span class="math inline">z_i</span> did not appear.</li>
+<li>The OOB error estimate is almost identical to that obtained by <span class="math inline">N</span>-fold cross-validation.</li>
+<li>Random forests can be fit in a single sequence, with cross-validation effectively performed along the way.</li>
+<li>Once the OOB error stabilises, training can be terminated.</li>
+</ul>
+</section>
+<section id="example-oob-error-and-test-error" class="level3">
+<h3 class="anchored" data-anchor-id="example-oob-error-and-test-error">Example: OOB Error and Test Error</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/OOB.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">OOB error vs.&nbsp;test error (Source: <em>The Elements of Statistical Learning</em> <span class="citation" data-cites="hastie2009elements">(<a href="#ref-hastie2009elements" role="doc-biblioref">Hastie et al. 2009</a>)</span>, Figure 15.4).</figcaption>
+</figure>
+</div>
+</section>
+<section id="featurevariable-importance-1" class="level3">
+<h3 class="anchored" data-anchor-id="featurevariable-importance-1">Feature/Variable Importance</h3>
+<ul>
+<li><p>A similar feature importance measure can be used for bagging by considering the average reduction in RSS or Gini index over all trees for each variable.</p></li>
+<li><p>The OOB samples can also be used to construct an alternative variable importance measure that reflects the predictive strength of each variable.</p>
+<ul>
+<li>When the <span class="math inline">b</span>th tree is grown, the OOB samples are passed down the tree and the prediction accuracy is recorded.</li>
+<li>Randomly <strong>permute</strong> the <span class="math inline">j</span>th variable in the OOB samples, and the accuracy is computed again.</li>
+<li>The decrease in accuracy as a result of this permutation is averaged over all trees, and is used as a measure of the importance of the <span class="math inline">j</span>th variable in the random forest.</li>
+<li>This <em>randomisation</em> effectively removes the effect of the variable, much like setting a coefficient to zero in a linear model.</li>
+</ul></li>
+</ul>
+</section>
+<section id="example-feature-importance" class="level3">
+<h3 class="anchored" data-anchor-id="example-feature-importance">Example: Feature Importance</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/FeatureImportance.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption class="figure-caption">Feature importance based on Gini index (left) and permutation (right) (Source: <em>The Elements of Statistical Learning</em> <span class="citation" data-cites="hastie2009elements">(<a href="#ref-hastie2009elements" role="doc-biblioref">Hastie et al. 2009</a>)</span>, Figure 15.5).</figcaption>
+</figure>
+</div>
+</section>
+<section id="random-forest-pros-and-cons" class="level3">
+<h3 class="anchored" data-anchor-id="random-forest-pros-and-cons">Random Forest (Pros and Cons)</h3>
+<ul>
+<li>Pros
+<ul>
+<li>Decent performance (nonlinear)</li>
+<li>Easy to train in parallel</li>
+<li>Easy to tune</li>
+<li>Increasing the number of trees does not lead to overfitting, but increases computation<br>
+</li>
+<li>Pruning is unnecessary</li>
+<li>Not sensitive to outliers</li>
+</ul></li>
+<li>Cons
+<ul>
+<li>Loses the interpretability of CART</li>
+<li>Often does not perform the best: does not reduce the bias of CART.</li>
+</ul></li>
+<li>LASSO can be used to reduce the number of trees</li>
+</ul>
+</section>
+</section>
+<section id="using-r-and-actuarial-applications" class="level2">
+<h2 class="anchored" data-anchor-id="using-r-and-actuarial-applications">Using R and Actuarial Applications</h2>
+<section id="using-r" class="level3">
+<h3 class="anchored" data-anchor-id="using-r">Using R</h3>
+<ul>
+<li>CART
+<ul>
+<li><code>library(trees)</code></li>
+<li>OR <code>libary(rpart)</code></li>
+</ul></li>
+<li>Random Forest
+<ul>
+<li><code>library(randomForest)</code></li>
+<li>OR <code>library(caret)</code></li>
+</ul></li>
+</ul>
+<p>Review: <em>An Introduction to Statistical Learning</em> <span class="citation" data-cites="james2013introduction">(<a href="#ref-james2013introduction" role="doc-biblioref">James et al. 2013</a>)</span>, Chapter 8.3 (Lab)</p>
+</section>
+<section id="actuarial-applications-of-tree-based-methods-life" class="level3">
+<h3 class="anchored" data-anchor-id="actuarial-applications-of-tree-based-methods-life">Actuarial Applications of Tree-based Methods: Life</h3>
+<p>Mortality modelling is an important topic in life insurance, used in the management of longevity/mortality risk and in the actuarial pricing of mortality-linked securities and joint-life products. Traditionally, regression-based models (such as GLMs) and extrapolative fitting techniques (e.g., ARIMA) have been used to model mortality.</p>
+<ul>
+<li><p>In <a href="https://arxiv.org/pdf/1705.03396.pdf"><span class="citation" data-cites="deprez2017machine">Deprez, Shevchenko, and Wüthrich (<span>2017</span>)</span></a>, regression trees are used both to illustrate how mortality modeling can be improved by accounting for feature components of an individual and to estimate conditional probabilities related to the cause of mortality. The analysis is based on Swiss mortality data from the <a href="https://www.mortality.org/">Human Mortality Database</a>.</p></li>
+<li><p><a href="https://www.soa.org/globalassets/assets/Files/Research/Projects/2017-gltd-recovery-mortality-tree.pdf"><span class="citation" data-cites="kopinsky2017gltd">Kopinsky (<span>2017</span>)</span></a> uses tree-based models to fit and predict maternity recovery rates and mortality rates. The data for this study comprise between 500,000 and 3,000,000 records and were extracted from a selected Group Long-Term Disability Database (more detail available in the paper).</p></li>
+</ul>
+</section>
+<section id="actuarial-applications-of-tree-based-methods-health" class="level3">
+<h3 class="anchored" data-anchor-id="actuarial-applications-of-tree-based-methods-health">Actuarial Applications of Tree-based Methods: Health</h3>
+<p>Traditionally, health actuaries use simple claims data to set premium and reserves. Nowadays, they have access to large volumes of clients’ personal , claims, and medical information. Actuaries increasingly use advanced visualisation techniques and other machine-learning methods.</p>
+<ul>
+<li><p><a href="https://www.soa.org/globalassets/assets/files/resources/research-report/2019/machine-learning-methods.pdf"><span class="citation" data-cites="diana2019mlinsurance">Diana et al. (<span>2019</span>)</span></a> use machine-learning methods such as GLM, regression trees, random forests, and Bayesian analysis to model insurance claims.</p></li>
+<li><p><a href="https://link.springer.com/article/10.1007/s40747-018-0072-1"><span class="citation" data-cites="boodhun2018risk">Boodhun and Jayabalan (<span>2018</span>)</span></a> use machine-learning algorithms, including random forests, to predict applicants’ risk levels. The dataset is from Prudential Life Insurance and contains nearly 60,000 applications with 128 attributes characterising the applicants.</p></li>
+</ul>
+</section>
+<section id="actuarial-applications-of-tree-based-methods-general-insurance" class="level3">
+<h3 class="anchored" data-anchor-id="actuarial-applications-of-tree-based-methods-general-insurance">Actuarial Applications of Tree-based Methods: General Insurance</h3>
+<p>Claims are typically modeled using GLMs. Other machine-learning techniques, such as tree-based methods, copula regression, and kernel regression, are now also used.</p>
+<ul>
+<li><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3164764"><span class="citation" data-cites="noll2020case">Noll, Salzmann, and Wuthrich (<span>2020</span>)</span></a> compare GLMs to regression trees, boosted trees, and neural networks on French motor third-party liability insurance data.</li>
+</ul>
+</section>
+<section id="references" class="level3">
+
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-boodhun2018risk" class="csl-entry" role="listitem">
+Boodhun, Noorhannah, and Manoj Jayabalan. 2018. <span>“Risk Prediction in Life Insurance Industry Using Supervised Learning Algorithms.”</span> <em>Complex &amp; Intelligent Systems</em> 4 (2): 145–54.
+</div>
+<div id="ref-deprez2017machine" class="csl-entry" role="listitem">
+Deprez, Philippe, Pavel V Shevchenko, and Mario V Wüthrich. 2017. <span>“Machine Learning Techniques for Mortality Modeling.”</span> <em>European Actuarial Journal</em> 7 (2): 337–52.
+</div>
+<div id="ref-diana2019mlinsurance" class="csl-entry" role="listitem">
+Diana, Alex, Jim Griffin, Jaideep Oberoi, and Ji Yao. 2019. <span>“Machine-Learning Methods for Insurance Applications: A Survey.”</span> Society of Actuaries. <a href="https://www.soa.org/globalassets/assets/files/resources/research-report/2019/machine-learning-methods.pdf">https://www.soa.org/globalassets/assets/files/resources/research-report/2019/machine-learning-methods.pdf</a>.
+</div>
+<div id="ref-hastie2009elements" class="csl-entry" role="listitem">
+Hastie, Trevor, Robert Tibshirani, Jerome Friedman, et al. 2009. <span>“The Elements of Statistical Learning.”</span> Springer series in statistics New-York.
+</div>
+<div id="ref-james2013introduction" class="csl-entry" role="listitem">
+James, Gareth, Daniela Witten, Trevor Hastie, Robert Tibshirani, et al. 2013. <em>An Introduction to Statistical Learning: With Applications in r</em>. Vol. 103. Springer.
+</div>
+<div id="ref-kopinsky2017gltd" class="csl-entry" role="listitem">
+Kopinsky, Matthew. 2017. <span>“Predicting Group Long Term Disability Recovery and Mortality Rates Using Tree Models.”</span> Society of Actuaries. <a href="https://www.soa.org/globalassets/assets/files/research/projects/2017-gltd-recovery-mortality-tree.pdf">https://www.soa.org/globalassets/assets/files/research/projects/2017-gltd-recovery-mortality-tree.pdf</a>.
+</div>
+<div id="ref-noll2020case" class="csl-entry" role="listitem">
+Noll, Alexander, Robert Salzmann, and Mario V Wuthrich. 2020. <span>“Case Study: French Motor Third-Party Liability Claims.”</span> <em>Available at SSRN 3164764</em>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lectures/Ch4-Modelling/GLM.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lecture: GLM</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html" class="pagination-link">
+        <span class="nav-page-text">Lecture: Gradient Boosting Machine</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
