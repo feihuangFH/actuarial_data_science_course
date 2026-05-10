@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Fei Huang, UNSW Sydney">
+
+<title>Lecture: Data Quality Check and Cleaning – Actuarial Data Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" rel="next">
+<link href="../../../Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.html" rel="prev">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-F11HECZVN7"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-F11HECZVN7', { 'anonymize_ip': true});
+</script>
+<link href="../../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.html">Chapter 3 - Data</a></li><li class="breadcrumb-item"><a href="../../../Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.html">Lecture: Data Quality Check and Cleaning</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../../">Actuarial Data Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../index.html#datathon" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Industry datathon</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../index.html#teaching-in-tune" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Teaching in Tune</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 1 - Introduction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Actuarial Data Science</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch1-Introduction/Lecture-Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Introduction to Actuarial Data Science</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 2 - Problem Statement</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch2-Problem Statement/Lecture-Problem Statement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Problem Statement</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 3 - Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Data Manipulation and Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lecture: Data Quality Check and Cleaning</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 4 - Modelling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Modelling and Shrinkage techniques</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch4-Modelling/GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: GLM</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch4-Modelling/Random_Forests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Random Forests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Gradient Boosting Machine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch4-Modelling/Neural_Networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Neural Networks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 5 - Evaluations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Model Assessment and Selection</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 6 - Communication</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch6-Communication/Communication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Communication</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 7 - Ethics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch8-Ethics/Ethics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture: Ethics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#recommended-reading" id="toc-recommended-reading" class="nav-link active" data-scroll-target="#recommended-reading">Recommended Reading</a></li>
+  <li><a href="#tibbles" id="toc-tibbles" class="nav-link" data-scroll-target="#tibbles">Tibbles</a>
+  <ul class="collapse">
+  <li><a href="#tibbles-1" id="toc-tibbles-1" class="nav-link" data-scroll-target="#tibbles-1">Tibbles</a></li>
+  <li><a href="#creating-tibbles" id="toc-creating-tibbles" class="nav-link" data-scroll-target="#creating-tibbles">Creating Tibbles</a></li>
+  <li><a href="#example-converting-to-a-tibble" id="toc-example-converting-to-a-tibble" class="nav-link" data-scroll-target="#example-converting-to-a-tibble">Example: Converting to a Tibble</a></li>
+  <li><a href="#example-creating-a-tibble" id="toc-example-creating-a-tibble" class="nav-link" data-scroll-target="#example-creating-a-tibble">Example: Creating a Tibble</a></li>
+  <li><a href="#example-creating-tibbles-with-special-names" id="toc-example-creating-tibbles-with-special-names" class="nav-link" data-scroll-target="#example-creating-tibbles-with-special-names">Example: Creating Tibbles with Special Names</a></li>
+  <li><a href="#pipe-data-using" id="toc-pipe-data-using" class="nav-link" data-scroll-target="#pipe-data-using">Pipe Data using <code>%&gt;%</code></a></li>
+  <li><a href="#tibble-vs.-data-frame" id="toc-tibble-vs.-data-frame" class="nav-link" data-scroll-target="#tibble-vs.-data-frame">Tibble vs.&nbsp;Data Frame</a></li>
+  <li><a href="#examples-extracting-variables-from-a-tibble" id="toc-examples-extracting-variables-from-a-tibble" class="nav-link" data-scroll-target="#examples-extracting-variables-from-a-tibble">Examples: Extracting Variables from a Tibble</a></li>
+  </ul></li>
+  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">Import Data</a>
+  <ul class="collapse">
+  <li><a href="#import-data-1" id="toc-import-data-1" class="nav-link" data-scroll-target="#import-data-1">Import Data</a></li>
+  </ul></li>
+  <li><a href="#tidy-data" id="toc-tidy-data" class="nav-link" data-scroll-target="#tidy-data">Tidy Data</a>
+  <ul class="collapse">
+  <li><a href="#tidy-data-1" id="toc-tidy-data-1" class="nav-link" data-scroll-target="#tidy-data-1">Tidy Data</a></li>
+  <li><a href="#pivoting-longer" id="toc-pivoting-longer" class="nav-link" data-scroll-target="#pivoting-longer">Pivoting: Longer</a></li>
+  <li><a href="#pivoting-wider" id="toc-pivoting-wider" class="nav-link" data-scroll-target="#pivoting-wider">Pivoting: Wider</a></li>
+  <li><a href="#separating" id="toc-separating" class="nav-link" data-scroll-target="#separating">Separating</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#example-using-separate" id="toc-example-using-separate" class="nav-link" data-scroll-target="#example-using-separate">Example: Using <code>separate()</code></a></li>
+  <li><a href="#unite" id="toc-unite" class="nav-link" data-scroll-target="#unite">Unite</a></li>
+  <li><a href="#missing1" id="toc-missing1" class="nav-link" data-scroll-target="#missing1">Missing Values</a></li>
+  <li><a href="#making-implicit-missing-values-explicit" id="toc-making-implicit-missing-values-explicit" class="nav-link" data-scroll-target="#making-implicit-missing-values-explicit">Making Implicit Missing Values Explicit</a></li>
+  <li><a href="#making-explicit-missing-values-implicit" id="toc-making-explicit-missing-values-implicit" class="nav-link" data-scroll-target="#making-explicit-missing-values-implicit">Making Explicit Missing Values Implicit</a></li>
+  <li><a href="#filling-missing-values-with-fill" id="toc-filling-missing-values-with-fill" class="nav-link" data-scroll-target="#filling-missing-values-with-fill">Filling Missing Values with <code>fill()</code></a></li>
+  </ul></li>
+  <li><a href="#assessing-data-quality" id="toc-assessing-data-quality" class="nav-link" data-scroll-target="#assessing-data-quality">Assessing Data Quality</a>
+  <ul class="collapse">
+  <li><a href="#common-data-issues" id="toc-common-data-issues" class="nav-link" data-scroll-target="#common-data-issues">Common Data Issues</a></li>
+  <li><a href="#diagnosing-missing-data" id="toc-diagnosing-missing-data" class="nav-link" data-scroll-target="#diagnosing-missing-data">Diagnosing Missing Data</a></li>
+  <li><a href="#missing-data" id="toc-missing-data" class="nav-link" data-scroll-target="#missing-data">Missing Data</a></li>
+  <li><a href="#handling-missing-values" id="toc-handling-missing-values" class="nav-link" data-scroll-target="#handling-missing-values">Handling Missing Values</a></li>
+  <li><a href="#imputing-missing-values" id="toc-imputing-missing-values" class="nav-link" data-scroll-target="#imputing-missing-values">Imputing Missing Values</a></li>
+  <li><a href="#irregular-data-and-outliers" id="toc-irregular-data-and-outliers" class="nav-link" data-scroll-target="#irregular-data-and-outliers">Irregular Data and Outliers</a></li>
+  <li><a href="#uninformative-data" id="toc-uninformative-data" class="nav-link" data-scroll-target="#uninformative-data">Uninformative Data</a></li>
+  <li><a href="#censored-data" id="toc-censored-data" class="nav-link" data-scroll-target="#censored-data">Censored data</a></li>
+  <li><a href="#high-cardinality-features" id="toc-high-cardinality-features" class="nav-link" data-scroll-target="#high-cardinality-features">High-Cardinality Features</a></li>
+  <li><a href="#imbalanced-data" id="toc-imbalanced-data" class="nav-link" data-scroll-target="#imbalanced-data">Imbalanced Data</a></li>
+  <li><a href="#data-validation" id="toc-data-validation" class="nav-link" data-scroll-target="#data-validation">Data Validation</a></li>
+  </ul></li>
+  <li><a href="#exploratory-data-analysis-eda" id="toc-exploratory-data-analysis-eda" class="nav-link" data-scroll-target="#exploratory-data-analysis-eda">Exploratory Data Analysis (EDA)</a>
+  <ul class="collapse">
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+  <li><a href="#variation" id="toc-variation" class="nav-link" data-scroll-target="#variation">Variation</a></li>
+  <li><a href="#cat_plot" id="toc-cat_plot" class="nav-link" data-scroll-target="#cat_plot">Visualising Distributios: Categorical Variables</a></li>
+  <li><a href="#visualising-distributions-continuous-variables" id="toc-visualising-distributions-continuous-variables" class="nav-link" data-scroll-target="#visualising-distributions-continuous-variables">Visualising Distributions: Continuous Variables</a></li>
+  <li><a href="#exercise-histogram-bin-widths" id="toc-exercise-histogram-bin-widths" class="nav-link" data-scroll-target="#exercise-histogram-bin-widths">Exercise: Histogram Bin Widths</a></li>
+  <li><a href="#freqpoly" id="toc-freqpoly" class="nav-link" data-scroll-target="#freqpoly">Exercise: Frequency Polygons by Group</a></li>
+  <li><a href="#typical-values" id="toc-typical-values" class="nav-link" data-scroll-target="#typical-values">Typical Values</a></li>
+  <li><a href="#example-interpreting-a-histogram" id="toc-example-interpreting-a-histogram" class="nav-link" data-scroll-target="#example-interpreting-a-histogram">Example: Interpreting a Histogram</a></li>
+  <li><a href="#example-discussion" id="toc-example-discussion" class="nav-link" data-scroll-target="#example-discussion">Example: Discussion</a></li>
+  <li><a href="#outliers" id="toc-outliers" class="nav-link" data-scroll-target="#outliers">Unusual Values (Outliers)</a></li>
+  <li><a href="#visualising-outliers" id="toc-visualising-outliers" class="nav-link" data-scroll-target="#visualising-outliers">Visualising Outliers</a></li>
+  <li><a href="#display-unusual-values" id="toc-display-unusual-values" class="nav-link" data-scroll-target="#display-unusual-values">Display Unusual Values</a></li>
+  <li><a href="#deal-with-outliers-example" id="toc-deal-with-outliers-example" class="nav-link" data-scroll-target="#deal-with-outliers-example">Deal with Outliers: Example</a></li>
+  <li><a href="#deal-with-outliers" id="toc-deal-with-outliers" class="nav-link" data-scroll-target="#deal-with-outliers">Deal with Outliers</a></li>
+  <li><a href="#missing" id="toc-missing" class="nav-link" data-scroll-target="#missing">Missing Values</a></li>
+  <li><a href="#covariation" id="toc-covariation" class="nav-link" data-scroll-target="#covariation">Covariation</a></li>
+  <li><a href="#cat_con" id="toc-cat_con" class="nav-link" data-scroll-target="#cat_con">A Categorical and a Continuous Variable</a></li>
+  <li><a href="#boxplot" id="toc-boxplot" class="nav-link" data-scroll-target="#boxplot">Boxplot</a></li>
+  <li><a href="#example-diamond-prices-by-cut" id="toc-example-diamond-prices-by-cut" class="nav-link" data-scroll-target="#example-diamond-prices-by-cut">Example: Diamond Prices by Cut</a></li>
+  <li><a href="#example-highway-mileage-by-vehicle-class" id="toc-example-highway-mileage-by-vehicle-class" class="nav-link" data-scroll-target="#example-highway-mileage-by-vehicle-class">Example: Highway Mileage by Vehicle Class</a></li>
+  <li><a href="#two-categorical-variables" id="toc-two-categorical-variables" class="nav-link" data-scroll-target="#two-categorical-variables">Two Categorical Variables</a></li>
+  <li><a href="#example-computing-counts-with-dplyr" id="toc-example-computing-counts-with-dplyr" class="nav-link" data-scroll-target="#example-computing-counts-with-dplyr">Example: Computing Counts with dplyr</a></li>
+  <li><a href="#example-visualising-counts-with-geom_tile" id="toc-example-visualising-counts-with-geom_tile" class="nav-link" data-scroll-target="#example-visualising-counts-with-geom_tile">Example: Visualising Counts with geom_tile()</a></li>
+  <li><a href="#two-continuous-variables" id="toc-two-continuous-variables" class="nav-link" data-scroll-target="#two-continuous-variables">Two Continuous Variables</a></li>
+  <li><a href="#other-ways-to-visualise-the-relationship" id="toc-other-ways-to-visualise-the-relationship" class="nav-link" data-scroll-target="#other-ways-to-visualise-the-relationship">Other Ways to Visualise the Relationship</a></li>
+  <li><a href="#example-add-transparency" id="toc-example-add-transparency" class="nav-link" data-scroll-target="#example-add-transparency">Example: Add Transparency</a></li>
+  <li><a href="#from-data-patterns-to-models" id="toc-from-data-patterns-to-models" class="nav-link" data-scroll-target="#from-data-patterns-to-models">From Data Patterns to Models</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/feihuangFH/actuarial_data_science_course/blob/main/Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Lecture-Import-Quality-Check-and-Cleaning.slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.html">Chapter 3 - Data</a></li><li class="breadcrumb-item"><a href="../../../Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.html">Lecture: Data Quality Check and Cleaning</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Lecture: Data Quality Check and Cleaning</h1>
+<p class="subtitle lead">Actuarial Data Science - Open Learning Resource</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Fei Huang, UNSW Sydney </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="recommended-reading" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-reading">Recommended Reading</h3>
+<ul>
+<li><a href="https://r4ds.hadley.nz/">R for Data Science</a>, Chapters 5, 7, 10<br>
+</li>
+<li>Applied predictive Modelling, Chapters 3.3 (only transformations to resolve outliers), 3.4</li>
+</ul>
+<p>Some coding examples in this lecture are adapted from <em>R for Data Science</em> <span class="citation" data-cites="wickham2023r">(<a href="#ref-wickham2023r" role="doc-biblioref">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span>.</p>
+</section>
+<section id="tibbles" class="level2">
+<h2 class="anchored" data-anchor-id="tibbles">Tibbles</h2>
+<section id="tibbles-1" class="level3">
+<h3 class="anchored" data-anchor-id="tibbles-1">Tibbles</h3>
+<ul>
+<li>We work with “tibbles” instead of R’s traditional <code>data.frame</code> in the <code>tidyverse</code> environment.</li>
+<li>The <code>tibble</code> package provides opinionated data frames that make working in the <code>tidyverse</code> easier.</li>
+<li>See <code>vignette("tibble")</code> for more information.</li>
+</ul>
+<p>This lecture focuses on data quality: how to store your data in a tidy, convenient format, and how to identify and fix common data issues before they silently undermine your analysis. The aim is that by the end, you feel more confident trusting the datasets you work with, or at least knowing when you <em>should not</em> trust them yet.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidyverse")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyverse' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tibble' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyr' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readr' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'forcats' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'lubridate' was built under R version 4.1.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>-- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+v dplyr     1.1.1     v readr     2.1.4
+v forcats   1.0.0     v stringr   1.5.1
+v ggplot2   4.0.2     v tibble    3.2.1
+v lubridate 1.9.2     v tidyr     1.3.0
+v purrr     1.0.2     
+-- Conflicts ------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+i Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+</section>
+<section id="creating-tibbles" class="level3">
+<h3 class="anchored" data-anchor-id="creating-tibbles">Creating Tibbles</h3>
+<ul>
+<li>Convert a data frame to a tibble: <code>as_tibble()</code></li>
+<li>Create tibbles: <code>tibble()</code></li>
+<li>Use non-syntactic names with backticks <code></code></li>
+<li><code>tribble()</code>: create tibbles in a transposed format</li>
+</ul>
+</section>
+<section id="example-converting-to-a-tibble" class="level3">
+<h3 class="anchored" data-anchor-id="example-converting-to-a-tibble">Example: Converting to a Tibble</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(iris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fct"],"align":["left"]}],"data":[{"1":"5.1","2":"3.5","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.0","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.7","2":"3.2","3":"1.3","4":"0.2","5":"setosa"},{"1":"4.6","2":"3.1","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.6","3":"1.4","4":"0.2","5":"setosa"},{"1":"5.4","2":"3.9","3":"1.7","4":"0.4","5":"setosa"},{"1":"4.6","2":"3.4","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.0","2":"3.4","3":"1.5","4":"0.2","5":"setosa"},{"1":"4.4","2":"2.9","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.1","3":"1.5","4":"0.1","5":"setosa"},{"1":"5.4","2":"3.7","3":"1.5","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.4","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.0","3":"1.4","4":"0.1","5":"setosa"},{"1":"4.3","2":"3.0","3":"1.1","4":"0.1","5":"setosa"},{"1":"5.8","2":"4.0","3":"1.2","4":"0.2","5":"setosa"},{"1":"5.7","2":"4.4","3":"1.5","4":"0.4","5":"setosa"},{"1":"5.4","2":"3.9","3":"1.3","4":"0.4","5":"setosa"},{"1":"5.1","2":"3.5","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.7","2":"3.8","3":"1.7","4":"0.3","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.5","4":"0.3","5":"setosa"},{"1":"5.4","2":"3.4","3":"1.7","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.7","3":"1.5","4":"0.4","5":"setosa"},{"1":"4.6","2":"3.6","3":"1.0","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.3","3":"1.7","4":"0.5","5":"setosa"},{"1":"4.8","2":"3.4","3":"1.9","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.0","3":"1.6","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.4","3":"1.6","4":"0.4","5":"setosa"},{"1":"5.2","2":"3.5","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.2","2":"3.4","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.7","2":"3.2","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.1","3":"1.6","4":"0.2","5":"setosa"},{"1":"5.4","2":"3.4","3":"1.5","4":"0.4","5":"setosa"},{"1":"5.2","2":"4.1","3":"1.5","4":"0.1","5":"setosa"},{"1":"5.5","2":"4.2","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.1","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.2","3":"1.2","4":"0.2","5":"setosa"},{"1":"5.5","2":"3.5","3":"1.3","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.6","3":"1.4","4":"0.1","5":"setosa"},{"1":"4.4","2":"3.0","3":"1.3","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.4","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.5","3":"1.3","4":"0.3","5":"setosa"},{"1":"4.5","2":"2.3","3":"1.3","4":"0.3","5":"setosa"},{"1":"4.4","2":"3.2","3":"1.3","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.5","3":"1.6","4":"0.6","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.9","4":"0.4","5":"setosa"},{"1":"4.8","2":"3.0","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.6","2":"3.2","3":"1.4","4":"0.2","5":"setosa"},{"1":"5.3","2":"3.7","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.3","3":"1.4","4":"0.2","5":"setosa"},{"1":"7.0","2":"3.2","3":"4.7","4":"1.4","5":"versicolor"},{"1":"6.4","2":"3.2","3":"4.5","4":"1.5","5":"versicolor"},{"1":"6.9","2":"3.1","3":"4.9","4":"1.5","5":"versicolor"},{"1":"5.5","2":"2.3","3":"4.0","4":"1.3","5":"versicolor"},{"1":"6.5","2":"2.8","3":"4.6","4":"1.5","5":"versicolor"},{"1":"5.7","2":"2.8","3":"4.5","4":"1.3","5":"versicolor"},{"1":"6.3","2":"3.3","3":"4.7","4":"1.6","5":"versicolor"},{"1":"4.9","2":"2.4","3":"3.3","4":"1.0","5":"versicolor"},{"1":"6.6","2":"2.9","3":"4.6","4":"1.3","5":"versicolor"},{"1":"5.2","2":"2.7","3":"3.9","4":"1.4","5":"versicolor"},{"1":"5.0","2":"2.0","3":"3.5","4":"1.0","5":"versicolor"},{"1":"5.9","2":"3.0","3":"4.2","4":"1.5","5":"versicolor"},{"1":"6.0","2":"2.2","3":"4.0","4":"1.0","5":"versicolor"},{"1":"6.1","2":"2.9","3":"4.7","4":"1.4","5":"versicolor"},{"1":"5.6","2":"2.9","3":"3.6","4":"1.3","5":"versicolor"},{"1":"6.7","2":"3.1","3":"4.4","4":"1.4","5":"versicolor"},{"1":"5.6","2":"3.0","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.8","2":"2.7","3":"4.1","4":"1.0","5":"versicolor"},{"1":"6.2","2":"2.2","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.6","2":"2.5","3":"3.9","4":"1.1","5":"versicolor"},{"1":"5.9","2":"3.2","3":"4.8","4":"1.8","5":"versicolor"},{"1":"6.1","2":"2.8","3":"4.0","4":"1.3","5":"versicolor"},{"1":"6.3","2":"2.5","3":"4.9","4":"1.5","5":"versicolor"},{"1":"6.1","2":"2.8","3":"4.7","4":"1.2","5":"versicolor"},{"1":"6.4","2":"2.9","3":"4.3","4":"1.3","5":"versicolor"},{"1":"6.6","2":"3.0","3":"4.4","4":"1.4","5":"versicolor"},{"1":"6.8","2":"2.8","3":"4.8","4":"1.4","5":"versicolor"},{"1":"6.7","2":"3.0","3":"5.0","4":"1.7","5":"versicolor"},{"1":"6.0","2":"2.9","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.7","2":"2.6","3":"3.5","4":"1.0","5":"versicolor"},{"1":"5.5","2":"2.4","3":"3.8","4":"1.1","5":"versicolor"},{"1":"5.5","2":"2.4","3":"3.7","4":"1.0","5":"versicolor"},{"1":"5.8","2":"2.7","3":"3.9","4":"1.2","5":"versicolor"},{"1":"6.0","2":"2.7","3":"5.1","4":"1.6","5":"versicolor"},{"1":"5.4","2":"3.0","3":"4.5","4":"1.5","5":"versicolor"},{"1":"6.0","2":"3.4","3":"4.5","4":"1.6","5":"versicolor"},{"1":"6.7","2":"3.1","3":"4.7","4":"1.5","5":"versicolor"},{"1":"6.3","2":"2.3","3":"4.4","4":"1.3","5":"versicolor"},{"1":"5.6","2":"3.0","3":"4.1","4":"1.3","5":"versicolor"},{"1":"5.5","2":"2.5","3":"4.0","4":"1.3","5":"versicolor"},{"1":"5.5","2":"2.6","3":"4.4","4":"1.2","5":"versicolor"},{"1":"6.1","2":"3.0","3":"4.6","4":"1.4","5":"versicolor"},{"1":"5.8","2":"2.6","3":"4.0","4":"1.2","5":"versicolor"},{"1":"5.0","2":"2.3","3":"3.3","4":"1.0","5":"versicolor"},{"1":"5.6","2":"2.7","3":"4.2","4":"1.3","5":"versicolor"},{"1":"5.7","2":"3.0","3":"4.2","4":"1.2","5":"versicolor"},{"1":"5.7","2":"2.9","3":"4.2","4":"1.3","5":"versicolor"},{"1":"6.2","2":"2.9","3":"4.3","4":"1.3","5":"versicolor"},{"1":"5.1","2":"2.5","3":"3.0","4":"1.1","5":"versicolor"},{"1":"5.7","2":"2.8","3":"4.1","4":"1.3","5":"versicolor"},{"1":"6.3","2":"3.3","3":"6.0","4":"2.5","5":"virginica"},{"1":"5.8","2":"2.7","3":"5.1","4":"1.9","5":"virginica"},{"1":"7.1","2":"3.0","3":"5.9","4":"2.1","5":"virginica"},{"1":"6.3","2":"2.9","3":"5.6","4":"1.8","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.8","4":"2.2","5":"virginica"},{"1":"7.6","2":"3.0","3":"6.6","4":"2.1","5":"virginica"},{"1":"4.9","2":"2.5","3":"4.5","4":"1.7","5":"virginica"},{"1":"7.3","2":"2.9","3":"6.3","4":"1.8","5":"virginica"},{"1":"6.7","2":"2.5","3":"5.8","4":"1.8","5":"virginica"},{"1":"7.2","2":"3.6","3":"6.1","4":"2.5","5":"virginica"},{"1":"6.5","2":"3.2","3":"5.1","4":"2.0","5":"virginica"},{"1":"6.4","2":"2.7","3":"5.3","4":"1.9","5":"virginica"},{"1":"6.8","2":"3.0","3":"5.5","4":"2.1","5":"virginica"},{"1":"5.7","2":"2.5","3":"5.0","4":"2.0","5":"virginica"},{"1":"5.8","2":"2.8","3":"5.1","4":"2.4","5":"virginica"},{"1":"6.4","2":"3.2","3":"5.3","4":"2.3","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.5","4":"1.8","5":"virginica"},{"1":"7.7","2":"3.8","3":"6.7","4":"2.2","5":"virginica"},{"1":"7.7","2":"2.6","3":"6.9","4":"2.3","5":"virginica"},{"1":"6.0","2":"2.2","3":"5.0","4":"1.5","5":"virginica"},{"1":"6.9","2":"3.2","3":"5.7","4":"2.3","5":"virginica"},{"1":"5.6","2":"2.8","3":"4.9","4":"2.0","5":"virginica"},{"1":"7.7","2":"2.8","3":"6.7","4":"2.0","5":"virginica"},{"1":"6.3","2":"2.7","3":"4.9","4":"1.8","5":"virginica"},{"1":"6.7","2":"3.3","3":"5.7","4":"2.1","5":"virginica"},{"1":"7.2","2":"3.2","3":"6.0","4":"1.8","5":"virginica"},{"1":"6.2","2":"2.8","3":"4.8","4":"1.8","5":"virginica"},{"1":"6.1","2":"3.0","3":"4.9","4":"1.8","5":"virginica"},{"1":"6.4","2":"2.8","3":"5.6","4":"2.1","5":"virginica"},{"1":"7.2","2":"3.0","3":"5.8","4":"1.6","5":"virginica"},{"1":"7.4","2":"2.8","3":"6.1","4":"1.9","5":"virginica"},{"1":"7.9","2":"3.8","3":"6.4","4":"2.0","5":"virginica"},{"1":"6.4","2":"2.8","3":"5.6","4":"2.2","5":"virginica"},{"1":"6.3","2":"2.8","3":"5.1","4":"1.5","5":"virginica"},{"1":"6.1","2":"2.6","3":"5.6","4":"1.4","5":"virginica"},{"1":"7.7","2":"3.0","3":"6.1","4":"2.3","5":"virginica"},{"1":"6.3","2":"3.4","3":"5.6","4":"2.4","5":"virginica"},{"1":"6.4","2":"3.1","3":"5.5","4":"1.8","5":"virginica"},{"1":"6.0","2":"3.0","3":"4.8","4":"1.8","5":"virginica"},{"1":"6.9","2":"3.1","3":"5.4","4":"2.1","5":"virginica"},{"1":"6.7","2":"3.1","3":"5.6","4":"2.4","5":"virginica"},{"1":"6.9","2":"3.1","3":"5.1","4":"2.3","5":"virginica"},{"1":"5.8","2":"2.7","3":"5.1","4":"1.9","5":"virginica"},{"1":"6.8","2":"3.2","3":"5.9","4":"2.3","5":"virginica"},{"1":"6.7","2":"3.3","3":"5.7","4":"2.5","5":"virginica"},{"1":"6.7","2":"3.0","3":"5.2","4":"2.3","5":"virginica"},{"1":"6.3","2":"2.5","3":"5.0","4":"1.9","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.2","4":"2.0","5":"virginica"},{"1":"6.2","2":"3.4","3":"5.4","4":"2.3","5":"virginica"},{"1":"5.9","2":"3.0","3":"5.1","4":"1.8","5":"virginica"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="example-creating-a-tibble" class="level3">
+<h3 class="anchored" data-anchor-id="example-creating-a-tibble">Example: Creating a Tibble</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="dv">1</span>, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">z =</span> x <span class="sc">^</span> <span class="dv">2</span> <span class="sc">+</span> y</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["x"],"name":[1],"type":["int"],"align":["right"]},{"label":["y"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["z"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"1","3":"2"},{"1":"2","2":"1","3":"5"},{"1":"3","2":"1","3":"10"},{"1":"4","2":"1","3":"17"},{"1":"5","2":"1","3":"26"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="example-creating-tibbles-with-special-names" class="level3">
+<h3 class="anchored" data-anchor-id="example-creating-tibbles-with-special-names">Example: Creating Tibbles with Special Names</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">:)</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"smile"</span>, </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at"> </span><span class="st">`</span> <span class="ot">=</span> <span class="st">"space"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">2000</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"number"</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[":)"],"name":[1],"type":["chr"],"align":["left"]},{"label":[" "],"name":[2],"type":["chr"],"align":["left"]},{"label":["2000"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"smile","2":"space","3":"number"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tribble</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>x, <span class="sc">~</span>y, <span class="sc">~</span>z,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#--|--|----</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"a"</span>, <span class="dv">2</span>, <span class="fl">3.6</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"b"</span>, <span class="dv">1</span>, <span class="fl">8.5</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["x"],"name":[1],"type":["chr"],"align":["left"]},{"label":["y"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["z"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"a","2":"2","3":"3.6"},{"1":"b","2":"1","3":"8.5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="pipe-data-using" class="level3">
+<h3 class="anchored" data-anchor-id="pipe-data-using">Pipe Data using <code>%&gt;%</code></h3>
+<ul>
+<li>Use <code>%&gt;%</code> to emphasise a sequence of actions rather than the object being acted on</li>
+<li>Pronounce <code>%&gt;%</code> as “then” when reading code</li>
+<li>No need to create intermediate objects</li>
+<li><code>%&gt;%</code> should always have a space before it and is usually followed by a new line.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sepal.Length =</span> <span class="fu">mean</span>(Sepal.Length),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sepal.Width =</span> <span class="fu">mean</span>(Sepal.Width),</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Species =</span> <span class="fu">n_distinct</span>(Species)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["Species"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sepal.Length"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"5.006","3":"3.428"},{"1":"1","2":"5.936","3":"2.770"},{"1":"1","2":"6.588","3":"2.974"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="tibble-vs.-data-frame" class="level3">
+<h3 class="anchored" data-anchor-id="tibble-vs.-data-frame">Tibble vs.&nbsp;Data Frame</h3>
+<ul>
+<li><code>tibble()</code> does less:
+<ul>
+<li>it never changes the type of the inputs (e.g.&nbsp;it does not convert strings to factors)</li>
+<li>it never changes variable names</li>
+<li>it never creates row names</li>
+</ul></li>
+<li>Printing
+<ul>
+<li>tibbles show only the first 10 rows</li>
+<li>each column reports its type</li>
+<li>use <code>print()</code> to display more rows (<code>n</code>) and columns (<code>width</code>)</li>
+</ul></li>
+<li>Subsetting
+<ul>
+<li>extract a single variable using <code>$</code> (by name) or <code>[[ ]]</code> (by name or position)</li>
+<li>within a pipe <code>%&gt;%</code>, use the special placeholder <code>.</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="examples-extracting-variables-from-a-tibble" class="level3">
+<h3 class="anchored" data-anchor-id="examples-extracting-variables-from-a-tibble">Examples: Extracting Variables from a Tibble</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">runif</span>(<span class="dv">5</span>),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract by name</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.18690846 0.52058284 0.96921391 0.47226650 0.02916269</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">"x"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.18690846 0.52058284 0.96921391 0.47226650 0.02916269</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract by position</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>df[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.18690846 0.52058284 0.96921391 0.47226650 0.02916269</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> .<span class="sc">$</span>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.18690846 0.52058284 0.96921391 0.47226650 0.02916269</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> .[[<span class="st">"x"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.18690846 0.52058284 0.96921391 0.47226650 0.02916269</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="import-data" class="level2">
+<h2 class="anchored" data-anchor-id="import-data">Import Data</h2>
+<section id="import-data-1" class="level3">
+<h3 class="anchored" data-anchor-id="import-data-1">Import Data</h3>
+<ul>
+<li>Read <a href="https://rafalab.github.io/dsbook/importing-data.html">Introduction to Data Science</a>, Chapter 5</li>
+<li>Read <a href="https://r4ds.hadley.nz/">R for Data Science</a>, Chapter 7</li>
+</ul>
+</section>
+</section>
+<section id="tidy-data" class="level2">
+<h2 class="anchored" data-anchor-id="tidy-data">Tidy Data</h2>
+<section id="tidy-data-1" class="level3">
+<h3 class="anchored" data-anchor-id="tidy-data-1">Tidy Data</h3>
+<ul>
+<li>The same data can be organised in different ways.</li>
+<li>Tidy data is easier to work with.</li>
+<li>There are three interrelated rules that make a dataset tidy:
+<ul>
+<li>Each variable has its own column</li>
+<li>Each observation has its own row</li>
+<li>Each value has its own cell</li>
+</ul></li>
+<li>Practical guidelines:
+<ul>
+<li>Store each dataset as a tibble</li>
+<li>Store each variable in its own column</li>
+</ul></li>
+<li><code>dplyr</code>, <code>ggplot2</code>, and other <code>tidyverse</code> packages are designed to work with tidy data</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="pivoting-longer" class="level3">
+<h3 class="anchored" data-anchor-id="pivoting-longer">Pivoting: Longer</h3>
+<ul>
+<li>A common problem occurs when column names represent values rather than variables.<br>
+</li>
+<li>Example: <code>table4a</code>
+<ul>
+<li>Column names (1999, 2000) represent values of the <code>year</code> variable</li>
+<li>Values in these columns represent values of the <code>cases</code> variable</li>
+<li>Each row represents two observations, not one</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#table4a</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>table4a <span class="sc">%&gt;%</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">1999</span><span class="st">`</span>, <span class="st">`</span><span class="at">2000</span><span class="st">`</span>), <span class="at">names_to =</span> <span class="st">"year"</span>, <span class="at">values_to =</span> <span class="st">"cases"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["year"],"name":[2],"type":["chr"],"align":["left"]},{"label":["cases"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"1999","3":"745"},{"1":"Afghanistan","2":"2000","3":"2666"},{"1":"Brazil","2":"1999","3":"37737"},{"1":"Brazil","2":"2000","3":"80488"},{"1":"China","2":"1999","3":"212258"},{"1":"China","2":"2000","3":"213766"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="pivoting-wider" class="level3">
+<h3 class="anchored" data-anchor-id="pivoting-wider">Pivoting: Wider</h3>
+<ul>
+<li><code>pivot_wider()</code> is the opposite of <code>pivot_longer()</code></li>
+<li>Use it when a single observation is spread across multiple rows.</li>
+<li>Example: <code>table2</code>
+<ul>
+<li>Each observation is a country in a given year</li>
+<li>Data for each observation is spread across multiple rows</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>table2 <span class="sc">%&gt;%</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> type, <span class="at">values_from =</span> count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["year"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["cases"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["population"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"1999","3":"745","4":"19987071"},{"1":"Afghanistan","2":"2000","3":"2666","4":"20595360"},{"1":"Brazil","2":"1999","3":"37737","4":"172006362"},{"1":"Brazil","2":"2000","3":"80488","4":"174504898"},{"1":"China","2":"1999","3":"212258","4":"1272915272"},{"1":"China","2":"2000","3":"213766","4":"1280428583"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="separating" class="level3">
+<h3 class="anchored" data-anchor-id="separating">Separating</h3>
+<ul>
+<li><code>table3</code> has a different problem: one column (<code>rate</code>) contains two variables (<code>cases</code> and <code>population</code>).</li>
+<li><code>separate()</code> splits one column into multiple columns, by splitting wherever a separator character appears.</li>
+<li>By default, <code>separate()</code> splits values at non-alphanumeric characters (i.e.&nbsp;characters that are not numbers or letters).</li>
+<li>Use the <code>sep</code> argument to specify a custom separator.</li>
+</ul>
+</section>
+<section id="section" class="level3 continued">
+<h3 class="continued anchored" data-anchor-id="section"></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a> table3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["year"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["rate"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Afghanistan","2":"1999","3":"745/19987071"},{"1":"Afghanistan","2":"2000","3":"2666/20595360"},{"1":"Brazil","2":"1999","3":"37737/172006362"},{"1":"Brazil","2":"2000","3":"80488/174504898"},{"1":"China","2":"1999","3":"212258/1272915272"},{"1":"China","2":"2000","3":"213766/1280428583"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="example-using-separate" class="level3">
+<h3 class="anchored" data-anchor-id="example-using-separate">Example: Using <code>separate()</code></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>table3 <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(rate, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"cases"</span>, <span class="st">"population"</span>), <span class="at">sep =</span> <span class="st">"/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["year"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["cases"],"name":[3],"type":["chr"],"align":["left"]},{"label":["population"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Afghanistan","2":"1999","3":"745","4":"19987071"},{"1":"Afghanistan","2":"2000","3":"2666","4":"20595360"},{"1":"Brazil","2":"1999","3":"37737","4":"172006362"},{"1":"Brazil","2":"2000","3":"80488","4":"174504898"},{"1":"China","2":"1999","3":"212258","4":"1272915272"},{"1":"China","2":"2000","3":"213766","4":"1280428583"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#table3 %&gt;% </span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  separate(rate, into = c("cases", "population"), sep = "/", convert=TRUE)</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#table3 %&gt;% </span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#  separate(year, into = c("century", "year"), sep = 2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="unite" class="level3">
+<h3 class="anchored" data-anchor-id="unite">Unite</h3>
+<ul>
+<li><code>unite()</code> is the inverse of <code>separate()</code>: it combines multiple columns into a single column</li>
+<li>By default, it places an underscore (<code>_</code>) between values from different columns</li>
+<li>If no separator is desired, use <code>sep = ""</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>table5 <span class="sc">%&gt;%</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(new, century, year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["new"],"name":[2],"type":["chr"],"align":["left"]},{"label":["rate"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Afghanistan","2":"19_99","3":"745/19987071"},{"1":"Afghanistan","2":"20_00","3":"2666/20595360"},{"1":"Brazil","2":"19_99","3":"37737/172006362"},{"1":"Brazil","2":"20_00","3":"80488/174504898"},{"1":"China","2":"19_99","3":"212258/1272915272"},{"1":"China","2":"20_00","3":"213766/1280428583"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#table5 %&gt;% </span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  unite(new, century, year, sep = "")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="missing1" class="level3">
+<h3 class="anchored" data-anchor-id="missing1">Missing Values</h3>
+<ul>
+<li>A value can be missing in one of two ways:
+<ul>
+<li><strong>Explicitly</strong>: represented by <code>NA</code> – <em>the presence of an absence</em></li>
+<li><strong>Implicitly</strong>: not recorded in the dataset – <em>the absence of a presence</em></li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>  stocks <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">year   =</span> <span class="fu">c</span>(<span class="dv">2015</span>, <span class="dv">2015</span>, <span class="dv">2015</span>, <span class="dv">2015</span>, <span class="dv">2016</span>, <span class="dv">2016</span>, <span class="dv">2016</span>),</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">qtr    =</span> <span class="fu">c</span>(   <span class="dv">1</span>,    <span class="dv">2</span>,    <span class="dv">3</span>,    <span class="dv">4</span>,    <span class="dv">2</span>,    <span class="dv">3</span>,    <span class="dv">4</span>),</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">return =</span> <span class="fu">c</span>(<span class="fl">1.88</span>, <span class="fl">0.59</span>, <span class="fl">0.35</span>,   <span class="cn">NA</span>, <span class="fl">0.92</span>, <span class="fl">0.17</span>, <span class="fl">2.66</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="making-implicit-missing-values-explicit" class="level3">
+<h3 class="anchored" data-anchor-id="making-implicit-missing-values-explicit">Making Implicit Missing Values Explicit</h3>
+<ul>
+<li>Use <code>pivot_wider()</code></li>
+<li>Use <code>complete()</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> return)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["qtr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["2015"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2016"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"1.88","3":"NA"},{"1":"2","2":"0.59","3":"0.92"},{"1":"3","2":"0.35","3":"0.17"},{"1":"4","2":"NA","3":"2.66"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">#stocks %&gt;% </span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  complete(year, qtr)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="making-explicit-missing-values-implicit" class="level3">
+<h3 class="anchored" data-anchor-id="making-explicit-missing-values-implicit">Making Explicit Missing Values Implicit</h3>
+<ul>
+<li>Set <code>values_drop_na = TRUE</code> in <code>pivot_longer()</code> to convert explicit missing values into implicit ones</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> return) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">2015</span><span class="st">`</span>, <span class="st">`</span><span class="at">2016</span><span class="st">`</span>), </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"year"</span>, </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"return"</span>, </span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_drop_na =</span> <span class="cn">TRUE</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["qtr"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["year"],"name":[2],"type":["chr"],"align":["left"]},{"label":["return"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"2015","3":"1.88"},{"1":"2","2":"2015","3":"0.59"},{"1":"2","2":"2016","3":"0.92"},{"1":"3","2":"2015","3":"0.35"},{"1":"3","2":"2016","3":"0.17"},{"1":"4","2":"2016","3":"2.66"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="filling-missing-values-with-fill" class="level3">
+<h3 class="anchored" data-anchor-id="filling-missing-values-with-fill">Filling Missing Values with <code>fill()</code></h3>
+<ul>
+<li><code>fill()</code> replaces missing values with the most recent non-missing value (also known as last observation carried forward).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>treatment <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> person,           <span class="sc">~</span> treatment, <span class="sc">~</span>response,</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Derrick Whitmore"</span>, <span class="dv">1</span>,           <span class="dv">7</span>,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA</span>,                 <span class="dv">2</span>,           <span class="dv">10</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA</span>,                 <span class="dv">3</span>,           <span class="dv">9</span>,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Katherine Burke"</span>,  <span class="dv">1</span>,           <span class="dv">4</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>treatment <span class="sc">%&gt;%</span> </span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fill</span>(person)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["person"],"name":[1],"type":["chr"],"align":["left"]},{"label":["treatment"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["response"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Derrick Whitmore","2":"1","3":"7"},{"1":"Derrick Whitmore","2":"2","3":"10"},{"1":"Derrick Whitmore","2":"3","3":"9"},{"1":"Katherine Burke","2":"1","3":"4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="assessing-data-quality" class="level2">
+<h2 class="anchored" data-anchor-id="assessing-data-quality">Assessing Data Quality</h2>
+<section id="common-data-issues" class="level3">
+<h3 class="anchored" data-anchor-id="common-data-issues">Common Data Issues</h3>
+<ul>
+<li>Missing data</li>
+<li>Irregular data and outliers</li>
+<li>Uninformative data</li>
+<li>Censored and truncated data</li>
+<li>High cardinality features</li>
+<li>Imbalanced data</li>
+</ul>
+</section>
+<section id="diagnosing-missing-data" class="level3">
+<h3 class="anchored" data-anchor-id="diagnosing-missing-data">Diagnosing Missing Data</h3>
+<ul>
+<li>Descriptive statistics</li>
+<li>Visualisation (e.g.&nbsp;plots)</li>
+<li>See also: <a href="#missing1" class="button-link">Missing values in tidy data</a>; and <a href="#missing" class="button-link">Missing values in EDA</a></li>
+</ul>
+</section>
+<section id="missing-data" class="level3">
+<h3 class="anchored" data-anchor-id="missing-data">Missing Data</h3>
+<ul>
+<li>Understand why values are missing</li>
+<li>Distinguish between structurally missing values and other types
+<ul>
+<li>e.g.&nbsp;the number of children a man has given birth to</li>
+</ul></li>
+<li><strong>Informative missingness</strong>: the pattern of missing data is related to the outcome
+<ul>
+<li>e.g.&nbsp;in a drug study, side effects are so severe that patients drop out</li>
+</ul></li>
+</ul>
+</section>
+<section id="handling-missing-values" class="level3">
+<h3 class="anchored" data-anchor-id="handling-missing-values">Handling Missing Values</h3>
+<ul>
+<li>Include a missing indicator (dummy variable)
+<ul>
+<li>useful when the pattern of missingness is informative</li>
+</ul></li>
+<li>Some models can handle missing data (e.g.&nbsp;tree-based methods)</li>
+<li>Many models cannot handle missing values
+<ul>
+<li>linear models, neural networks, SVMs</li>
+</ul></li>
+<li>Remove observations or variables as a last resort
+<ul>
+<li>may be feasible for large dataset</li>
+</ul></li>
+<li>Impute missing values</li>
+</ul>
+</section>
+<section id="imputing-missing-values" class="level3">
+<h3 class="anchored" data-anchor-id="imputing-missing-values">Imputing Missing Values</h3>
+<ul>
+<li>Use information from other predictors in the training data to estimate missing values
+<ul>
+<li>simple methods: mean, median or mode</li>
+<li>model-based methods: e.g.&nbsp;k-nearest neighbours</li>
+</ul></li>
+<li>Imputation is extensively studied in the statistical literature for inference, but is often less critical in predictive modelling</li>
+</ul>
+</section>
+<section id="irregular-data-and-outliers" class="level3">
+<h3 class="anchored" data-anchor-id="irregular-data-and-outliers">Irregular Data and Outliers</h3>
+<ul>
+<li>Detection:
+<ul>
+<li>Descriptive statistics</li>
+<li>Visualisation (e.g.&nbsp;boxplots, scatter plots)</li>
+<li>Outlier detection methods</li>
+</ul></li>
+<li>Handling:
+<ul>
+<li>Data validation: ensure there are no recording errors</li>
+<li>Remove or adjust values</li>
+<li>Outliers may belong to a different population</li>
+<li>Use models that are robust to outliers (e.g.&nbsp;tree-based methods, SVMs)</li>
+<li>Apply transformations to reduce the impact of outliers, such as the <em>spatial sign</em> transformation
+<ul>
+<li>each observation is scaled by its norm</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example: <a href="#outliers" class="button-link">Outliers</a></p>
+</section>
+<section id="uninformative-data" class="level3">
+<h3 class="anchored" data-anchor-id="uninformative-data">Uninformative Data</h3>
+<ul>
+<li>Repetitive data</li>
+<li>Duplicate observations<br>
+</li>
+<li>Irrelevant variables</li>
+<li>Collinearity: two or more predictor variables are highly correlated
+<ul>
+<li>Redundant predictors increase model complexity</li>
+<li>Can lead to unstable models, numerical issues, and degraded predictive performance<br>
+</li>
+<li>For linear regression, measures such as the variance inflation factor (VIF) can be used to identify predictors that are highly correlated with others</li>
+</ul></li>
+</ul>
+</section>
+<section id="censored-data" class="level3">
+<h3 class="anchored" data-anchor-id="censored-data">Censored data</h3>
+<ul>
+<li>The value of an observation is only partially known</li>
+<li>For interpretation or inference
+<ul>
+<li>Typically handled using formal methods with assumptions about the censoring mechanism</li>
+</ul></li>
+<li>For prediction
+<ul>
+<li>Often treated as missing data or the censored value is used as observed</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Examples:">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Examples:
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>General insurance (policy limits); life insurance (age groups of mortality data)</p>
+</div>
+</div>
+</section>
+<section id="high-cardinality-features" class="level3">
+<h3 class="anchored" data-anchor-id="high-cardinality-features">High-Cardinality Features</h3>
+<ul>
+<li>Categorical predictors with many unique levels</li>
+<li>Examples: postcodes, medical condition codes, or similar variables</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled" title="Some references on handling high-cardinality features:">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Some references on handling high-cardinality features:
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://towardsdatascience.com/dealing-with-features-that-have-high-cardinality-1c9212d7ff1b">Dealing with features that have high cardinality</a></li>
+<li><a href="https://doi.org/10.1109/TKDE.2020.2992529">Encoding High-Cardinality String Categorical Variables</a></li>
+<li><a href="https://doi.org/10.1007/s10994-018-5724-2">Similarity Encoding for Learning with Dirty Categorical Variables</a></li>
+<li><a href="https://doi.org/10.2139/ssrn.3777526">Nonlife Insurance Risk Classification Using Categorical Embedding</a></li>
+<li><a href="https://proceedings.neurips.cc/paper/2021/file/d35b05a832e2bb91f110d54e34e2da79-Paper.pdf">Using Random Effects to Account for High-Cardinality Categorical Features and Repeated Measures in Deep Neural Networks</a></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="imbalanced-data" class="level3">
+<h3 class="anchored" data-anchor-id="imbalanced-data">Imbalanced Data</h3>
+<ul>
+<li>Imbalance between classes (e.g.&nbsp;control vs treatment) can cause modelling issues</li>
+<li>Construct a balanced training set to improve model performance
+<ul>
+<li><strong>Undersampling</strong>: reduce the number of observations in the majority class</li>
+<li><strong>Oversampling</strong>: generate additional observations in the minority class</li>
+</ul></li>
+</ul>
+</section>
+<section id="data-validation" class="level3">
+<h3 class="anchored" data-anchor-id="data-validation">Data Validation</h3>
+<ul>
+<li>Validate data against external sources and previous datasets</li>
+<li>Consult domain experts or data providers to assess data quality</li>
+</ul>
+</section>
+</section>
+<section id="exploratory-data-analysis-eda" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-data-analysis-eda">Exploratory Data Analysis (EDA)</h2>
+<section id="exploratory-data-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="exploratory-data-analysis">Exploratory Data Analysis</h3>
+<ul>
+<li><p>Generate questions about your data</p></li>
+<li><p>Search for answers by visualising, transforming, and modelling your data</p></li>
+<li><p>Use what you learn to refine your questions and/or generate new ones</p></li>
+<li><p>We combine <code>dplyr</code> and <code>ggplot2</code> to interactively ask questions, answer them with data, and then ask new questions</p></li>
+<li><p>Two types of questions are especially useful for making discoveries in your data:</p>
+<ul>
+<li>What type of variation occurs within variables?</li>
+<li>What type of covariation occurs between variables?</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Adapted from <span class="citation" data-cites="wickham2023r">Wickham, Çetinkaya-Rundel, and Grolemund (<a href="#ref-wickham2023r" role="doc-biblioref">2023</a>)</span>, see <a href="https://r4ds.hadley.nz/EDA.html">Chapter 10</a> of R for Data Science</em></p>
+</section>
+<section id="variation" class="level3">
+<h3 class="anchored" data-anchor-id="variation">Variation</h3>
+<ul>
+<li>Variation is the tendency of the values of a variable to change from measurement to measurement.</li>
+<li>Variables:
+<ul>
+<li>Continuous variable: can take any value within a range of possible values<br>
+</li>
+<li>Categorical variable: takes one of a fixed set of values</li>
+</ul></li>
+</ul>
+</section>
+<section id="cat_plot" class="level3">
+<h3 class="anchored" data-anchor-id="cat_plot">Visualising Distributios: Categorical Variables</h3>
+<ul>
+<li>To examine the distribution of a categorical variable, use a bar chart</li>
+<li>Data: <code>diamonds</code> (see <code>?diamonds</code> for details)</li>
+</ul>
+<p>See also: <a href="#cat_con" class="button-link">Covariation</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds) <span class="sc">+</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">#diamonds %&gt;% </span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  count(cut)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="visualising-distributions-continuous-variables" class="level3">
+<h3 class="anchored" data-anchor-id="visualising-distributions-continuous-variables">Visualising Distributions: Continuous Variables</h3>
+<ul>
+<li>To examine the distribution of a continuous variable, use a histogram</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds) <span class="sc">+</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> carat), <span class="at">binwidth =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">#diamonds %&gt;% </span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  count(cut_width(carat, 0.5))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercise-histogram-bin-widths" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-histogram-bin-widths">Exercise: Histogram Bin Widths</h3>
+<ul>
+<li>Plot a histogram of diamonds with size less than 3 carats (using <code>filter()</code>), and use a smaller binwidth of 0.1.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>smaller <span class="ot">&lt;-</span> diamonds <span class="sc">%&gt;%</span> </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(carat <span class="sc">&lt;</span> <span class="dv">3</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smaller, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> carat)) <span class="sc">+</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="freqpoly" class="level3">
+<h3 class="anchored" data-anchor-id="freqpoly">Exercise: Frequency Polygons by Group</h3>
+<ul>
+<li>Overlay multiple histograms in the same plot by <code>cut</code> using <code>geom_freqpoly()</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smaller, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> carat, <span class="at">colour =</span> cut)) <span class="sc">+</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_freqpoly</span>(<span class="at">binwidth =</span> <span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>See also: <a href="#cat_con" class="button-link">Covariation</a></p>
+</section>
+<section id="typical-values" class="level3">
+<h3 class="anchored" data-anchor-id="typical-values">Typical Values</h3>
+<ul>
+<li>In both bar charts and histograms, tall bars show common values of a variable, while shorter bars show less common values. Gaps indicate values that do not appear in the data.</li>
+<li>To turn this information into useful questions, look for anything unexpected:
+<ul>
+<li>Which values are most common? Why?</li>
+<li>Which values are rare? Why? Does that match your expectations?</li>
+<li>Can you see any unusual patterns? What might explain them?</li>
+</ul></li>
+</ul>
+</section>
+<section id="example-interpreting-a-histogram" class="level3">
+<h3 class="anchored" data-anchor-id="example-interpreting-a-histogram">Example: Interpreting a Histogram</h3>
+<div class="callout callout-style-default callout-tip callout-titled" title="Question:">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Question:
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Look at the histogram below. What questions can you ask?</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> smaller, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> carat)) <span class="sc">+</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="example-discussion" class="level3">
+<h3 class="anchored" data-anchor-id="example-discussion">Example: Discussion</h3>
+<ul>
+<li><p>Why are there more diamonds at whole carats and common fractional values?</p></li>
+<li><p>Why are there more diamonds just to the right of each peak than to the left?</p></li>
+<li><p>Why are there no diamonds larger than 3 carats?</p></li>
+</ul>
+</section>
+<section id="outliers" class="level3">
+<h3 class="anchored" data-anchor-id="outliers">Unusual Values (Outliers)</h3>
+<ul>
+<li>Outliers are observations that are unusual; data points that do not seem to fit the overall pattern</li>
+<li>Sometimes outliers are data entry errors; other times they may reveal important insights</li>
+<li>When you have a large dataset, outliers can be difficult to see in a histogram</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diamonds) <span class="sc">+</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> y), <span class="at">binwidth =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="288"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="visualising-outliers" class="level3">
+<h3 class="anchored" data-anchor-id="visualising-outliers">Visualising Outliers</h3>
+<ul>
+<li>To make unusual values easier to see, we can zoom in using <code>coord_cartesian()</code>, often together with <code>ylim()</code> or <code>xlim()</code>, to restrict the axis ranges.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diamonds) <span class="sc">+</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> y), <span class="at">binwidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="display-unusual-values" class="level3">
+<h3 class="anchored" data-anchor-id="display-unusual-values">Display Unusual Values</h3>
+<ul>
+<li>Extract them using <code>dplyr</code>.</li>
+<li>What questions might you ask about these observations?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>unusual <span class="ot">&lt;-</span> diamonds <span class="sc">%&gt;%</span> </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(y <span class="sc">&lt;</span> <span class="dv">3</span> <span class="sc">|</span> y <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(price, x, y, z) <span class="sc">%&gt;%</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(y)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>unusual</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["price"],"name":[1],"type":["int"],"align":["right"]},{"label":["x"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["y"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["z"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"5139","2":"0.00","3":"0.0","4":"0.00"},{"1":"6381","2":"0.00","3":"0.0","4":"0.00"},{"1":"12800","2":"0.00","3":"0.0","4":"0.00"},{"1":"15686","2":"0.00","3":"0.0","4":"0.00"},{"1":"18034","2":"0.00","3":"0.0","4":"0.00"},{"1":"2130","2":"0.00","3":"0.0","4":"0.00"},{"1":"2130","2":"0.00","3":"0.0","4":"0.00"},{"1":"2075","2":"5.15","3":"31.8","4":"5.12"},{"1":"12210","2":"8.09","3":"58.9","4":"8.06"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="deal-with-outliers-example" class="level3">
+<h3 class="anchored" data-anchor-id="deal-with-outliers-example">Deal with Outliers: Example</h3>
+<ul>
+<li>In the ‘Diamond’ example, the <code>y</code> variable measures one of the three dimensions of a diamond (in mm)</li>
+<li>Diamonds cannot have a width of 0 mm, so these values must be incorrect</li>
+<li>We might also suspect that measurements of 32mm and 59mm are implausible: such diamonds would be over an inch long, but do not cost hundreds of thousands of dollars</li>
+</ul>
+</section>
+<section id="deal-with-outliers" class="level3">
+<h3 class="anchored" data-anchor-id="deal-with-outliers">Deal with Outliers</h3>
+<ul>
+<li>Repeat your analysis with and without the outliers.</li>
+<li>If they have minimal impact on the results and the cause is unclear, it is reasonable to replace them with missing values and proceed</li>
+<li>If they have a substantial impact on your results, do not remove them without justification
+<ul>
+<li>Investigate the cause (e.g.&nbsp;data entry errors)</li>
+<li>Clearly document any decisions to remove them in your analysis</li>
+</ul></li>
+</ul>
+</section>
+<section id="missing" class="level3">
+<h3 class="anchored" data-anchor-id="missing">Missing Values</h3>
+<ul>
+<li>If you encounter unusual values in your dataset and want to proceed with your analysis, you have two options:
+<ul>
+<li>Drop the entire row containing the unusual values (not recommended — why?)</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>diamonds2 <span class="ot">&lt;-</span> diamonds <span class="sc">%&gt;%</span> </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">between</span>(y, <span class="dv">3</span>, <span class="dv">20</span>))</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="co">#diamonds2 </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Replace the unusual values with missing values (<code>NA</code>) using <code>mutate()</code> with <code>ifelse()</code> or <code>case_when()</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>diamonds2 <span class="ot">&lt;-</span> diamonds <span class="sc">%&gt;%</span> </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y =</span> <span class="fu">ifelse</span>(y <span class="sc">&lt;</span> <span class="dv">3</span> <span class="sc">|</span> y <span class="sc">&gt;</span> <span class="dv">20</span>, <span class="cn">NA</span>, y))</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="co">#diamonds2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><code>ggplot2</code> does not include missing values in plots, but it will display a warning that they have been removed</li>
+</ul>
+</section>
+<section id="covariation" class="level3">
+<h3 class="anchored" data-anchor-id="covariation">Covariation</h3>
+<ul>
+<li>If variation describes the behaviour within a variable, covariation describes behavior between variables.</li>
+<li>Covariation is the tendency for two or more variables to vary together in a related way</li>
+<li>The best way to identify covariation is to visualise relationships between variables.</li>
+<li>We consider three common cases:
+<ul>
+<li>A categorical and a continuous variable</li>
+<li>Two categorical variables</li>
+<li>Two continuous variables</li>
+</ul></li>
+</ul>
+</section>
+<section id="cat_con" class="level3">
+<h3 class="anchored" data-anchor-id="cat_con">A Categorical and a Continuous Variable</h3>
+<ul>
+<li>Explore the distribution of a continuous variable across levels of a categorical variable</li>
+<li>Use <code>geom_freqpoly()</code> (e.g.&nbsp;see <a href="#freqpoly" class="button-link">frequency polygon example</a>)</li>
+<li>It can be difficult to compare distributions when overall counts differ substantially (e.g.&nbsp;see <a href="#cat_plot" class="button-link">distribution of cut example</a>).</li>
+<li>Instead of displaying counts, we can display density, where the area under each curve is standardised to one</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> price, <span class="at">y =</span> ..density..)) <span class="sc">+</span> </span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_freqpoly</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">colour =</span> cut), <span class="at">binwidth =</span> <span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
+i Please use `after_stat(density)` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="boxplot" class="level3">
+<h3 class="anchored" data-anchor-id="boxplot">Boxplot</h3>
+<ul>
+<li>Another way to display the distribution of a continuous variable across categories is a <strong>boxplot</strong>.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/boxplot.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Diagram illustrating how a boxplot is constructed (Source: <em>R for Data Science</em> <span class="citation" data-cites="wickham2023r">(<a href="#ref-wickham2023r" role="doc-biblioref">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span>)</figcaption>
+</figure>
+</div>
+</section>
+<section id="example-diamond-prices-by-cut" class="level3">
+<h3 class="anchored" data-anchor-id="example-diamond-prices-by-cut">Example: Diamond Prices by Cut</h3>
+<ul>
+<li>Examine the distribution of diamond prices by <code>cut</code>. What do you observe?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">y =</span> price)) <span class="sc">+</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>This suggests the counterintuitive finding that higher-quality diamonds are cheaper on average. Why might this be the case?</li>
+</ul>
+</section>
+<section id="example-highway-mileage-by-vehicle-class" class="level3">
+<h3 class="anchored" data-anchor-id="example-highway-mileage-by-vehicle-class">Example: Highway Mileage by Vehicle Class</h3>
+<ul>
+<li>Consider the <code>mpg</code> dataset. We want to understand how highway mileage (<code>hwy</code>) varies across vehicle classes (<code>class</code>)</li>
+<li>To make patterns easier to see, reorder <code>class</code> by the median of <code>hwy</code> using <code>reorder(..., FUN = median)</code></li>
+<li>For long variable names, <code>geom_boxplot()</code> may be clearer when flipped using <code>coord_flip()</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(class, hwy, <span class="at">FUN =</span> median), <span class="at">y =</span> hwy)) <span class="co">#+</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  coord_flip()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="two-categorical-variables" class="level3">
+<h3 class="anchored" data-anchor-id="two-categorical-variables">Two Categorical Variables</h3>
+<ul>
+<li>To visualise covariation between categorical variables, count the number of observations for each combination.</li>
+<li>One approach is to use <code>geom_count()</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds) <span class="sc">+</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_count</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">y =</span> color))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="example-computing-counts-with-dplyr" class="level3">
+<h3 class="anchored" data-anchor-id="example-computing-counts-with-dplyr">Example: Computing Counts with dplyr</h3>
+<ul>
+<li>Another approach is to compute counts using <code>dplyr</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">%&gt;%</span> </span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(color, cut)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["color"],"name":[1],"type":["ord"],"align":["right"]},{"label":["cut"],"name":[2],"type":["ord"],"align":["right"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"D","2":"Fair","3":"163"},{"1":"D","2":"Good","3":"662"},{"1":"D","2":"Very Good","3":"1513"},{"1":"D","2":"Premium","3":"1603"},{"1":"D","2":"Ideal","3":"2834"},{"1":"E","2":"Fair","3":"224"},{"1":"E","2":"Good","3":"933"},{"1":"E","2":"Very Good","3":"2400"},{"1":"E","2":"Premium","3":"2337"},{"1":"E","2":"Ideal","3":"3903"},{"1":"F","2":"Fair","3":"312"},{"1":"F","2":"Good","3":"909"},{"1":"F","2":"Very Good","3":"2164"},{"1":"F","2":"Premium","3":"2331"},{"1":"F","2":"Ideal","3":"3826"},{"1":"G","2":"Fair","3":"314"},{"1":"G","2":"Good","3":"871"},{"1":"G","2":"Very Good","3":"2299"},{"1":"G","2":"Premium","3":"2924"},{"1":"G","2":"Ideal","3":"4884"},{"1":"H","2":"Fair","3":"303"},{"1":"H","2":"Good","3":"702"},{"1":"H","2":"Very Good","3":"1824"},{"1":"H","2":"Premium","3":"2360"},{"1":"H","2":"Ideal","3":"3115"},{"1":"I","2":"Fair","3":"175"},{"1":"I","2":"Good","3":"522"},{"1":"I","2":"Very Good","3":"1204"},{"1":"I","2":"Premium","3":"1428"},{"1":"I","2":"Ideal","3":"2093"},{"1":"J","2":"Fair","3":"119"},{"1":"J","2":"Good","3":"307"},{"1":"J","2":"Very Good","3":"678"},{"1":"J","2":"Premium","3":"808"},{"1":"J","2":"Ideal","3":"896"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="example-visualising-counts-with-geom_tile" class="level3">
+<h3 class="anchored" data-anchor-id="example-visualising-counts-with-geom_tile">Example: Visualising Counts with geom_tile()</h3>
+<ul>
+<li>Then visualise the counts using <code>geom_tile()</code> with the fill aesthetic</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">%&gt;%</span> </span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(color, cut) <span class="sc">%&gt;%</span>  </span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> color, <span class="at">y =</span> cut)) <span class="sc">+</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_tile</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="two-continuous-variables" class="level3">
+<h3 class="anchored" data-anchor-id="two-continuous-variables">Two Continuous Variables</h3>
+<ul>
+<li>A common way to visualise the covariation between two continuous variables is a <strong>scatter plot</strong> using <code>geom_point()</code></li>
+<li>Covariation appears as patterns in the points</li>
+<li>Example: visualise the relationship between carat size and price of diamonds</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds) <span class="sc">+</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> carat, <span class="at">y =</span> price))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="other-ways-to-visualise-the-relationship" class="level3">
+<h3 class="anchored" data-anchor-id="other-ways-to-visualise-the-relationship">Other Ways to Visualise the Relationship</h3>
+<ul>
+<li>Use the <code>alpha</code> aesthetic to add transparency</li>
+<li>Use <code>geom_bin2d()</code> or <code>geom_hex()</code> to bin observations in two dimensions</li>
+<li>Bin one continuous variable so that it behaves like a categorical variable</li>
+</ul>
+</section>
+<section id="example-add-transparency" class="level3">
+<h3 class="anchored" data-anchor-id="example-add-transparency">Example: Add Transparency</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds) <span class="sc">+</span> </span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> carat, <span class="at">y =</span> price), <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture-Import-Quality-Check-and-Cleaning_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="from-data-patterns-to-models" class="level3">
+<h3 class="anchored" data-anchor-id="from-data-patterns-to-models">From Data Patterns to Models</h3>
+<ul>
+<li>Patterns in your data provide clues about relationships</li>
+<li>Models are tools for extracting and formalising these patterns</li>
+</ul>
+</section>
+<section id="references" class="level3">
+
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-wickham2023r" class="csl-entry" role="listitem">
+Wickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. 2023. <em>R for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. 2nd ed. O’Reilly Media.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/datascience\.feihuang\.org");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.html" class="pagination-link" aria-label="Lecture: Data Manipulation and Transformation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lecture: Data Manipulation and Transformation</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" class="pagination-link" aria-label="Lecture: Modelling and Shrinkage techniques">
+        <span class="nav-page-text">Lecture: Modelling and Shrinkage techniques</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/feihuangFH/actuarial_data_science_course/blob/main/Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
