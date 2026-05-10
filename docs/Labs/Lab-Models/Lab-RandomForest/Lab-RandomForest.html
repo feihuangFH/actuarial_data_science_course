@@ -435,7 +435,7 @@ window.Quarto = {
   <li><a href="#conlusion" id="toc-conlusion" class="nav-link" data-scroll-target="#conlusion">Conlusion</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/feihuangFH/actuarial_data_science_course/blob/main/Labs/Lab-Models/Lab-RandomForest/Lab-RandomForest.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Lab-RandomForest.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/feihuangFH/actuarial_data_science_course/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Lab-RandomForest.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -1325,7 +1325,7 @@ Figure&nbsp;2: Feature importance using random forest
 <span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-  45.69    0.60   46.29 </code></pre>
+ 62.967   0.839  64.304 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Runtime for ranger</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(</span>
@@ -1338,7 +1338,7 @@ Figure&nbsp;2: Feature importance using random forest
 <span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-  52.36    0.35    4.39 </code></pre>
+ 40.531   0.345  20.991 </code></pre>
 </div>
 </div>
 <p>We train both models on the full dataset, with <code>mtry</code> set to <span class="math inline">\sqrt{p}</span> (the default for classification). The elapsed time represents the total execution time. In practice, <code>ranger</code> is typically much faster than <code>randomForest</code>, especially for larger datasets.</p>
@@ -1366,7 +1366,7 @@ Mtry:                             4
 Target node size:                 1 
 Variable importance mode:         none 
 Splitrule:                        gini 
-OOB prediction error:             18.20 % </code></pre>
+OOB prediction error:             18.13 % </code></pre>
 </div>
 </div>
 <p>By default, <code>ranger</code> does not compute variable importance. You must specify the importance measure explicitly using the <code>importance</code> argument. Available options include:</p>
@@ -1402,29 +1402,29 @@ OOB prediction error:             18.20 % </code></pre>
 <span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              ranger randomForest
-LIMIT_BAL  30.064625    24.068595
-SEX         4.233236     4.286581
-EDUCATION   4.223962     4.987413
-MARRIAGE   12.356556    18.025115
-AGE        25.667605    26.812222
-PAY_1     153.293543   124.065870
-PAY_2      45.817542    43.708972
-PAY_3      39.097396    40.706871
-PAY_4      40.788041    43.023584
-PAY_5      36.348328    32.526036
-PAY_6      41.271770    38.405227
-BILL_AMT1  41.991946    33.995107
-BILL_AMT2  50.485294    46.773287
-BILL_AMT3  55.637862    49.389492
-BILL_AMT4  54.781856    49.229094
-BILL_AMT5  48.017963    41.971126
-BILL_AMT6  45.593182    40.839558
-PAY_AMT1   42.581233    33.760591
-PAY_AMT2   36.042124    31.083372
-PAY_AMT3   47.043234    33.695102
-PAY_AMT4   39.001321    31.930488
-PAY_AMT5   41.842595    37.830876
-PAY_AMT6   38.125596    33.475603</code></pre>
+LIMIT_BAL  29.782161    24.068595
+SEX         5.082775     4.286581
+EDUCATION   4.276789     4.987413
+MARRIAGE   15.521780    18.025115
+AGE        23.991090    26.812222
+PAY_1     147.144676   124.065870
+PAY_2      50.723648    43.708972
+PAY_3      38.289303    40.706871
+PAY_4      39.174062    43.023584
+PAY_5      36.066466    32.526036
+PAY_6      40.834261    38.405227
+BILL_AMT1  43.716795    33.995107
+BILL_AMT2  48.512219    46.773287
+BILL_AMT3  57.489314    49.389492
+BILL_AMT4  54.202713    49.229094
+BILL_AMT5  47.490346    41.971126
+BILL_AMT6  50.190080    40.839558
+PAY_AMT1   39.966605    33.760591
+PAY_AMT2   37.566018    31.083372
+PAY_AMT3   42.860716    33.695102
+PAY_AMT4   40.387795    31.930488
+PAY_AMT5   45.643872    37.830876
+PAY_AMT6   35.563096    33.475603</code></pre>
 </div>
 </div>
 <p>The importance values obtained from <code>ranger</code> and <code>randomForest</code> are broadly similar, indicating consistent identification of influential predictors across implementations.</p>
@@ -2129,4 +2129,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/feihuangFH/actuarial_data_science_course/blob/main/Labs/Lab-Models/Lab-RandomForest/Lab-RandomForest.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/feihuangFH/actuarial_data_science_course/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

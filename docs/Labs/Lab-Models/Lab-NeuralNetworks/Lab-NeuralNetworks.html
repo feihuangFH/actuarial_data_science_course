@@ -408,7 +408,7 @@ window.Quarto = {
   <li><a href="#testing-the-accuracy-of-the-model-1" id="toc-testing-the-accuracy-of-the-model-1" class="nav-link" data-scroll-target="#testing-the-accuracy-of-the-model-1">Testing the Accuracy of the Model</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/feihuangFH/actuarial_data_science_course/blob/main/Labs/Lab-Models/Lab-NeuralNetworks/Lab-NeuralNetworks.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Lab-NeuralNetworks.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/feihuangFH/actuarial_data_science_course/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Lab-NeuralNetworks.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -695,7 +695,7 @@ Levels: Diesel Regular</code></pre>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["nn.mse"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["glm.mse"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.04930162","2":"0.0488829"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["nn.mse"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["glm.mse"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.04930968","2":"0.0488829"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -916,7 +916,7 @@ Advanced Installation Notes (Optional)
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>nn1_auc<span class="sc">$</span>auc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7692625</code></pre>
+<pre><code>[1] 0.7650731</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>nn1_pred <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(nn1_probpred <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -928,11 +928,11 @@ Advanced Installation Notes (Optional)
 </div>
 <p>Lastly, we evaluate the fitted model using the classification metrics introduced earlier. The resulting metrics for <code>nn1</code> are:</p>
 <ul>
-<li>Accuracy: 0.8186465</li>
-<li>AUC: 0.7692625</li>
-<li>Sensitivity: 0.3145729</li>
-<li>Specificity: 0.9617634</li>
-<li>F-score: 0.4341193</li>
+<li>Accuracy: 0.8197578</li>
+<li>AUC: 0.7650731</li>
+<li>Sensitivity: 0.3351759</li>
+<li>Specificity: 0.9573406</li>
+<li>F-score: 0.4512855</li>
 </ul>
 <p>It is important to note that this comparison may not be fully fair for determining the best-performing model. In this section, we trained the neural network using the complete dataset, whereas earlier models may have been trained using smaller subset samples for illustrative purposes. This distinction should be kept in mind when drawing conclusions about model performance.</p>
 </section>
@@ -1737,4 +1737,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/feihuangFH/actuarial_data_science_course/blob/main/Labs/Lab-Models/Lab-NeuralNetworks/Lab-NeuralNetworks.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/feihuangFH/actuarial_data_science_course/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

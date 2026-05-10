@@ -5,7 +5,147 @@
     <lastmod>2026-05-09T04:00:34.000Z</lastmod>
   </url>
   <url>
+    <loc>https://datascience.feihuang.org/Labs/Lab-EDA/Lab-DataManipulation/Lab-Data Manipulation_and_Cleaning.html</loc>
+    <lastmod>2026-05-09T03:39:11.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.slides.html</loc>
+    <lastmod>2026-05-10T21:03:24.390Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.html</loc>
+    <lastmod>2026-05-08T05:23:49.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.slides.html</loc>
+    <lastmod>2026-05-10T21:01:28.737Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.html</loc>
+    <lastmod>2026-05-08T06:11:09.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Labs/Lab-MarkdownIntroduction/Lab-R_Markdown_Introduction.html</loc>
+    <lastmod>2026-05-10T20:40:00.373Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Labs/Lab-Models/Lab-Modelling-Shrinkage/Lab-Modelling-Shrinkage.html</loc>
+    <lastmod>2026-05-09T02:09:18.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.slides.html</loc>
+    <lastmod>2026-05-10T20:57:40.772Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html</loc>
+    <lastmod>2026-04-26T23:08:33.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch6-Communication/Communication.slides.html</loc>
+    <lastmod>2026-05-10T20:57:33.149Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch6-Communication/Communication.html</loc>
+    <lastmod>2026-05-07T12:52:57.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch4-Modelling/Random_Forests.slides.html</loc>
+    <lastmod>2026-05-10T20:57:25.699Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch4-Modelling/Random_Forests.html</loc>
+    <lastmod>2026-04-19T05:24:23.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch4-Modelling/Gradient_Boosting_Machine.slides.html</loc>
+    <lastmod>2026-05-10T20:57:15.142Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html</loc>
+    <lastmod>2026-04-26T23:04:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html</loc>
+    <lastmod>2026-05-10T20:57:05.024Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch2-Problem Statement/Lecture-Problem Statement.html</loc>
+    <lastmod>2026-05-08T09:48:55.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html</loc>
+    <lastmod>2026-05-10T11:06:46.580Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch8-Ethics/Ethics.html</loc>
+    <lastmod>2026-05-08T04:34:36.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch8-Ethics/Ethics.slides.html</loc>
+    <lastmod>2026-05-10T20:56:49.343Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch1-Introduction/Lecture-Introduction.html</loc>
+    <lastmod>2026-05-08T08:46:01.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch1-Introduction/Lecture-Introduction.slides.html</loc>
+    <lastmod>2026-05-10T20:57:00.976Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch4-Modelling/GLM.html</loc>
+    <lastmod>2026-05-08T04:43:34.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch4-Modelling/GLM.slides.html</loc>
+    <lastmod>2026-05-10T20:57:10.399Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch4-Modelling/Neural_Networks.html</loc>
+    <lastmod>2026-04-26T23:47:59.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch4-Modelling/Neural_Networks.slides.html</loc>
+    <lastmod>2026-05-10T20:57:19.276Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.html</loc>
+    <lastmod>2026-05-09T00:04:31.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.slides.html</loc>
+    <lastmod>2026-05-10T20:57:29.818Z</lastmod>
+  </url>
+  <url>
     <loc>https://datascience.feihuang.org/index.html</loc>
     <lastmod>2026-05-10T20:41:09.657Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Labs/Lab-Evaluations/Lab-Evaluation.html</loc>
+    <lastmod>2026-05-09T03:50:13.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Labs/Lab-EDA/Lab-DataVisualisation/Lab-Data_Visualisation.html</loc>
+    <lastmod>2026-05-09T03:40:27.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Labs/Lab-Models/Lab-GradientBoostingMachine/Lab-GradientBoostingMachine.html</loc>
+    <lastmod>2026-05-09T01:31:30.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Labs/Lab-Models/Lab-NeuralNetworks/Lab-NeuralNetworks.html</loc>
+    <lastmod>2026-05-09T02:20:46.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.html</loc>
+    <lastmod>2026-05-08T06:11:21.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.slides.html</loc>
+    <lastmod>2026-05-10T21:03:33.253Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/Labs/Lab-Models/Lab-RandomForest/Lab-RandomForest.html</loc>
+    <lastmod>2026-05-10T21:08:19.108Z</lastmod>
   </url>
 </urlset>
