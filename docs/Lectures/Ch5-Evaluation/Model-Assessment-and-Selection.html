@@ -415,6 +415,8 @@ window.Quarto = {
   <li><a href="#model-assessment-and-selection-in-a-business-context" id="toc-model-assessment-and-selection-in-a-business-context" class="nav-link" data-scroll-target="#model-assessment-and-selection-in-a-business-context">Model Assessment and Selection in a Business Context</a>
   <ul class="collapse">
   <li><a href="#model-assessment-and-selection-in-a-business-context-1" id="toc-model-assessment-and-selection-in-a-business-context-1" class="nav-link" data-scroll-target="#model-assessment-and-selection-in-a-business-context-1">Model Assessment and Selection in a Business Context</a></li>
+  <li><a href="#sense-checks-and-business-knowledge" id="toc-sense-checks-and-business-knowledge" class="nav-link" data-scroll-target="#sense-checks-and-business-knowledge">Sense-checks and business knowledge</a></li>
+  <li><a href="#segmented-diagnostics" id="toc-segmented-diagnostics" class="nav-link" data-scroll-target="#segmented-diagnostics">Segmented diagnostics</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
@@ -938,6 +940,18 @@ L\big(y_i, \hat{f}^{*b}(\mathbf{x}_i)\big).
 <li>Which performance measure is most suitable?</li>
 <li>Which model selection method should be applied?</li>
 </ul></li>
+</ul>
+</section>
+<section id="sense-checks-and-business-knowledge" class="level3">
+<h3 class="anchored" data-anchor-id="sense-checks-and-business-knowledge">Sense-checks and business knowledge</h3>
+<ul>
+<li>Sense-check model performance using intuition and <em>business knowledge</em>: summary metrics do not replace domain judgment. Plausibility relative to product design, pricing strategy, and stakeholder expectations—and constraints such as regulation or fairness—helps catch misspecified models that still score well statistically.</li>
+</ul>
+</section>
+<section id="segmented-diagnostics" class="level3">
+<h3 class="anchored" data-anchor-id="segmented-diagnostics">Segmented diagnostics</h3>
+<ul>
+<li>Use <em>additional plots</em> by consumer or risk segments (e.g.&nbsp;region, tenure, channel, product line): a single global error or AUC can hide poor calibration or unstable predictions in commercially important subgroups, so segmented diagnostics are essential for both performance and responsible use.</li>
 </ul>
 </section>
 <section id="references" class="level3">

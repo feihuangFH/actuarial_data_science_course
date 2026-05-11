@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://datascience.feihuang.org/Labs/Lab-Models/Lab-GLM/Lab-GLM.html</loc>
-    <lastmod>2026-05-09T04:00:34.000Z</lastmod>
+    <lastmod>2026-05-11T02:13:08.187Z</lastmod>
   </url>
   <url>
     <loc>https://datascience.feihuang.org/Labs/Lab-EDA/Lab-DataManipulation/Lab-Data Manipulation_and_Cleaning.html</loc>
@@ -110,11 +110,11 @@
   </url>
   <url>
     <loc>https://datascience.feihuang.org/Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.html</loc>
-    <lastmod>2026-05-09T00:04:31.000Z</lastmod>
+    <lastmod>2026-05-11T02:22:02.949Z</lastmod>
   </url>
   <url>
     <loc>https://datascience.feihuang.org/Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.slides.html</loc>
-    <lastmod>2026-05-10T20:57:29.818Z</lastmod>
+    <lastmod>2026-05-11T02:22:34.879Z</lastmod>
   </url>
   <url>
     <loc>https://datascience.feihuang.org/index.html</loc>
@@ -142,7 +142,7 @@
   </url>
   <url>
     <loc>https://datascience.feihuang.org/Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.slides.html</loc>
-    <lastmod>2026-05-10T21:03:33.253Z</lastmod>
+    <lastmod>2026-05-11T02:08:33.756Z</lastmod>
   </url>
   <url>
     <loc>https://datascience.feihuang.org/Labs/Lab-Models/Lab-RandomForest/Lab-RandomForest.html</loc>
