@@ -213,5 +213,150 @@
       "Chapter 7 - Ethics",
       "Lecture: Ethics"
     ]
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#recommended-reading",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#recommended-reading",
+    "title": "Lecture: Communication",
+    "section": "Recommended Reading",
+    "text": "Recommended Reading\n\nThe Art of Data Science, Chapter 10.\nR for Data Science, Chapters 11, 28, 29 \nOther resources, such as videos in LinkedIn Learning related to business communication via UNSW Library (see the library tutorial)"
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#learning-objectives",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#learning-objectives",
+    "title": "Lecture: Communication",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nEffective communication turns a technically correct analysis into a recommendation that decision-makers can understand and act on. In this lecture, we examine what different audiences care about, how to tailor your message, and how tools such as reproducible reports can make your work clearer and more trustworthy.\n\nCommunicate modelling results to a range of business decision-making audiences, taking into account their needs and linking findings back to the original business objective(s).\nExplain the benefits of reproducible analysis, including good coding practices, version control, and data backup."
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#communication",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#communication",
+    "title": "Lecture: Communication",
+    "section": "Communication",
+    "text": "Communication\n\nEffective communication is essential in data science and actuarial work\nCommunication can be both formal and informal (routine)\nCommon formats include:\n\nWritten reports\n\nOral presentations\n\nEmails and other professional correspondence"
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#perception-of-actuaries-as-communicators",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#perception-of-actuaries-as-communicators",
+    "title": "Lecture: Communication",
+    "section": "Perception of Actuaries as Communicators",
+    "text": "Perception of Actuaries as Communicators\nComments from the Market Opportunity Research Study (Society of Actuaries 2002):\n\n“The challenge for the SOA and the actuarial profession is that employers, even traditional employers of actuaries, perceive that very few actuaries have both the quantitative skill and business savvy to analyze situations, and to create common sense strategic solutions that are easily communicated to all target audiences.”\n\nJohn Trowbridge, Presidential Address (1998) (Trowbridge 1998):\n\n“We are widely respected for our numeracy and intellectual capabilities, and also for our expertise in certain specialist areas. At the same time we are often regarded as academic and impractical, as obscure and indecisive. We can be seen as obsessed with detail without appreciating the ‘big picture’.”"
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#examples-of-objectives",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#examples-of-objectives",
+    "title": "Lecture: Communication",
+    "section": "Examples of Objectives",
+    "text": "Examples of Objectives\n\nTo communicate results to decision-makers, who are primarily interested in conclusions rather than the underlying code.\nTo prepare business reports for stakeholders.\nTo collaborate with other data scientists (including your future self), who are interested in both the conclusions and how you reached them (i.e. the code).\nTo answer focused questions, often technical in nature or aimed at gathering specific facts.\netc."
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#core-concepts",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#core-concepts",
+    "title": "Lecture: Communication",
+    "section": "Core Concepts",
+    "text": "Core Concepts\n\nAudience: Know your audience. When you have control over who the audience is, select the right audience for the type of feedback you are seeking.\nContent: Be focused and concise, while providing sufficient information for the audience to understand your message and the question(s) you are addressing.\nStyle: Avoid jargon. Unless you are communicating a highly technical issue to a highly technical audience, use language, figures, and tables that can be understood by a general audience.\nAttitude: For informal communication, adopt an open and collaborative attitude. Be prepared to engage in dialogue, and make it clear that your goal is not to “defend” your work, but to seek input and improve it."
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#communication-control-cycle",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#communication-control-cycle",
+    "title": "Lecture: Communication",
+    "section": "Communication Control Cycle",
+    "text": "Communication Control Cycle\n\nCommunication is an iterative process."
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#specify-the-communication-need",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#specify-the-communication-need",
+    "title": "Lecture: Communication",
+    "section": "Specify the Communication Need",
+    "text": "Specify the Communication Need\nTailor communication to the audience communication style\n\nGlobal vs specific\n\nEmotional vs logical\n\nTechnical vs general"
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#understand-the-audience",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#understand-the-audience",
+    "title": "Lecture: Communication",
+    "section": "Understand the Audience",
+    "text": "Understand the Audience\n\nUnderstand what the audience wants to take away.\nCommunicate in the language and terminology the audience uses."
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#develop-the-content-and-structure",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#develop-the-content-and-structure",
+    "title": "Lecture: Communication",
+    "section": "Develop the Content and Structure",
+    "text": "Develop the Content and Structure\n\nMatch the message to the audience\nBe congruent – align content, voice, and body language\nKeep it short and simple (the “grandma test”)\n\nUse a clear and logical structure\nRespect your audience\nMake the message memorable\nShow clear connections in what you are communicating"
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#monitor-audience-feedback",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#monitor-audience-feedback",
+    "title": "Lecture: Communication",
+    "section": "Monitor Audience Feedback",
+    "text": "Monitor Audience Feedback\n\nCommunication is defined by the response it receives\nIf it is not working, try a different approach\nActively gather and respond to feedback"
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#communication-in-an-actuarial-context",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#communication-in-an-actuarial-context",
+    "title": "Lecture: Communication",
+    "section": "Communication in an Actuarial Context",
+    "text": "Communication in an Actuarial Context\n\n“There are 3 stages in the education of a professional individual……the first is when the person is learning the meaning of the technical terms in order to be initiated into the mysteries of his profession. The second is when the person has learned to use these freely and can thus freely exchange ideas with professional colleagues. The third is when the person has learned not to use them and can thus communicate freely with the layman. Only at the third stage can the person claim to be a professional individual.”\n— Jim Peglar, 1969 IAA President"
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#business-report-structure",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#business-report-structure",
+    "title": "Lecture: Communication",
+    "section": "Business Report Structure",
+    "text": "Business Report Structure\n\nTitle Page: Include a clear and informative title, your name, and the date.\nExecutive Summary: Summarise the purpose of the report, the data and methods used, key findings, and main recommendations.\nTable of Contents: List the sections of the report.\nIntroduction: Briefly outline the purpose and scope of the report.\nMethods and Findings: Describe the data, methodology, and key findings. Detailed coding and calculations should generally be excluded.\nConclusions and Recommendations: Summarise the main conclusions and provide recommendations for action (if applicable).\nReferences: List all sources used in the report.\nAppendices: Include supporting materials (e.g. interview transcripts, raw data, detailed coding, and calculations) that is not essential to the main text."
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#reproducible-analysis",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#reproducible-analysis",
+    "title": "Lecture: Communication",
+    "section": "Reproducible Analysis",
+    "text": "Reproducible Analysis\n\nUse tools such as R Markdown\nSet a seed before processes that involve randomness\nEnsure each step of the analysis is transparent and reproducible"
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#good-coding-practices-and-version-control",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#good-coding-practices-and-version-control",
+    "title": "Lecture: Communication",
+    "section": "Good Coding Practices and Version Control",
+    "text": "Good Coding Practices and Version Control\n\nWrite clear and meaningful comments\n\nInclude details and reasoning behind key steps\n\nUse consistent and intuitive file names and project structures\nUse functions to avoid excessive repetition\n\nMaintain a separate file for (reusable) functions and a main script for analysis\n\nVersion control\n\nSave stable versions of your work\nUse Git for version control\n\netc."
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.slides.html#references",
+    "href": "Lectures/Ch6-Communication/Communication.slides.html#references",
+    "title": "Lecture: Communication",
+    "section": "References",
+    "text": "References\n\n\n\n\n\n\n\n\n\nSociety of Actuaries. 2002. “Market Opportunity Research Study.” https://www.soa.org/globalassets/assets/files/soa/market_opportunity_research_final_report.pdf.\n\n\nTrowbridge, John. 1998. “Presidential Address.” Institute of Actuaries of Australia; https://content.actuaries.asn.au/resources/resource-ce6yyqn64sx3-2093352434-28323."
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.html",
+    "href": "Lectures/Ch6-Communication/Communication.html",
+    "title": "Lecture: Communication",
+    "section": "",
+    "text": "The Art of Data Science, Chapter 10.\nR for Data Science, Chapters 11, 28, 29 \nOther resources, such as videos in LinkedIn Learning related to business communication via UNSW Library (see the library tutorial)",
+    "crumbs": [
+      "Chapter 6 - Communication",
+      "Lecture: Communication"
+    ]
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.html#communication-principles",
+    "href": "Lectures/Ch6-Communication/Communication.html#communication-principles",
+    "title": "Lecture: Communication",
+    "section": "Communication Principles",
+    "text": "Communication Principles\n\nCommunication\n\nEffective communication is essential in data science and actuarial work\nCommunication can be both formal and informal (routine)\nCommon formats include:\n\nWritten reports\n\nOral presentations\n\nEmails and other professional correspondence\n\n\n\n\nPerception of Actuaries as Communicators\nComments from the Market Opportunity Research Study (Society of Actuaries 2002):\n\n“The challenge for the SOA and the actuarial profession is that employers, even traditional employers of actuaries, perceive that very few actuaries have both the quantitative skill and business savvy to analyze situations, and to create common sense strategic solutions that are easily communicated to all target audiences.”\n\nJohn Trowbridge, Presidential Address (1998) (Trowbridge 1998):\n\n“We are widely respected for our numeracy and intellectual capabilities, and also for our expertise in certain specialist areas. At the same time we are often regarded as academic and impractical, as obscure and indecisive. We can be seen as obsessed with detail without appreciating the ‘big picture’.”\n\n\n\nExamples of Objectives\n\nTo communicate results to decision-makers, who are primarily interested in conclusions rather than the underlying code.\nTo prepare business reports for stakeholders.\nTo collaborate with other data scientists (including your future self), who are interested in both the conclusions and how you reached them (i.e. the code).\nTo answer focused questions, often technical in nature or aimed at gathering specific facts.\netc.\n\n\n\nCore Concepts\n\nAudience: Know your audience. When you have control over who the audience is, select the right audience for the type of feedback you are seeking.\nContent: Be focused and concise, while providing sufficient information for the audience to understand your message and the question(s) you are addressing.\nStyle: Avoid jargon. Unless you are communicating a highly technical issue to a highly technical audience, use language, figures, and tables that can be understood by a general audience.\nAttitude: For informal communication, adopt an open and collaborative attitude. Be prepared to engage in dialogue, and make it clear that your goal is not to “defend” your work, but to seek input and improve it.\n\n\n\nCommunication Control Cycle\n\n\n\nCommunication is an iterative process.\n\n\n\n\nSpecify the Communication Need\nTailor communication to the audience communication style\n\nGlobal vs specific\n\nEmotional vs logical\n\nTechnical vs general\n\n\n\nUnderstand the Audience\n\nUnderstand what the audience wants to take away.\nCommunicate in the language and terminology the audience uses.\n\n\n\nDevelop the Content and Structure\n\nMatch the message to the audience\nBe congruent – align content, voice, and body language\nKeep it short and simple (the “grandma test”)\n\nUse a clear and logical structure\nRespect your audience\nMake the message memorable\nShow clear connections in what you are communicating\n\n\n\nMonitor Audience Feedback\n\nCommunication is defined by the response it receives\nIf it is not working, try a different approach\nActively gather and respond to feedback\n\n\n\nCommunication in an Actuarial Context\n\n“There are 3 stages in the education of a professional individual……the first is when the person is learning the meaning of the technical terms in order to be initiated into the mysteries of his profession. The second is when the person has learned to use these freely and can thus freely exchange ideas with professional colleagues. The third is when the person has learned not to use them and can thus communicate freely with the layman. Only at the third stage can the person claim to be a professional individual.”\n— Jim Peglar, 1969 IAA President\n\n\n\nBusiness Report Structure\n\nTitle Page: Include a clear and informative title, your name, and the date.\nExecutive Summary: Summarise the purpose of the report, the data and methods used, key findings, and main recommendations.\nTable of Contents: List the sections of the report.\nIntroduction: Briefly outline the purpose and scope of the report.\nMethods and Findings: Describe the data, methodology, and key findings. Detailed coding and calculations should generally be excluded.\nConclusions and Recommendations: Summarise the main conclusions and provide recommendations for action (if applicable).\nReferences: List all sources used in the report.\nAppendices: Include supporting materials (e.g. interview transcripts, raw data, detailed coding, and calculations) that is not essential to the main text.",
+    "crumbs": [
+      "Chapter 6 - Communication",
+      "Lecture: Communication"
+    ]
+  },
+  {
+    "objectID": "Lectures/Ch6-Communication/Communication.html#reproducible-analysis-and-coding-practices",
+    "href": "Lectures/Ch6-Communication/Communication.html#reproducible-analysis-and-coding-practices",
+    "title": "Lecture: Communication",
+    "section": "Reproducible Analysis and Coding Practices",
+    "text": "Reproducible Analysis and Coding Practices\n\nReproducible Analysis\n\nUse tools such as R Markdown\nSet a seed before processes that involve randomness\nEnsure each step of the analysis is transparent and reproducible\n\n\n\nGood Coding Practices and Version Control\n\nWrite clear and meaningful comments\n\nInclude details and reasoning behind key steps\n\nUse consistent and intuitive file names and project structures\nUse functions to avoid excessive repetition\n\nMaintain a separate file for (reusable) functions and a main script for analysis\n\nVersion control\n\nSave stable versions of your work\nUse Git for version control\n\netc.",
+    "crumbs": [
+      "Chapter 6 - Communication",
+      "Lecture: Communication"
+    ]
   }
 ]
