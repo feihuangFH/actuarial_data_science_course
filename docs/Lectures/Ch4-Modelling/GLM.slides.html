@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.5.57">
+
+  <meta name="author" content="Fei Huang, UNSW Sydney">
+  <title>Actuarial Data Science – Lecture: GLM</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-F11HECZVN7"></script>
+
+  <script type="text/javascript">
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-F11HECZVN7', { 'anonymize_ip': true});
+  </script>
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+  <script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Lecture: GLM</h1>
+  <p class="subtitle">Actuarial Data Science - Open Learning Resource</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Fei Huang, UNSW Sydney 
+</div>
+</div>
+</div>
+
+</section><section id="TOC">
+<nav role="doc-toc"> 
+<h2 id="toc-title">Table of contents</h2>
+<ul>
+<li><a href="#/generalized-linear-models-review-from-prior-courses" id="/toc-generalized-linear-models-review-from-prior-courses">Generalized Linear Models (Review from Prior Courses)</a></li>
+<li><a href="#/models-for-count-responses" id="/toc-models-for-count-responses">Models for Count Responses</a></li>
+<li><a href="#/models-for-binary-responses" id="/toc-models-for-binary-responses">Models for Binary Responses</a></li>
+<li><a href="#/models-for-continuous-responses" id="/toc-models-for-continuous-responses">Models for Continuous Responses</a></li>
+<li><a href="#/models-for-a-mixture-of-discrete-and-continuous-responses" id="/toc-models-for-a-mixture-of-discrete-and-continuous-responses">Models for a Mixture of Discrete and Continuous Responses</a></li>
+<li><a href="#/other-considerations" id="/toc-other-considerations">Other Considerations</a></li>
+<li><a href="#/using-r" id="/toc-using-r">Using R</a></li>
+<li><a href="#/examples" id="/toc-examples">Examples</a></li>
+</ul>
+</nav>
+</section>
+<section id="recommended-reading" class="slide level2 center">
+<h2>Recommended Reading</h2>
+<ul>
+<li>Generalized Linear Models for Insurance Data: Review Chapter 5 (covered in ACTL 3162/5106)</li>
+<li>Generalized Linear Models for Insurance Data: Read Chapters 6, 7 (excluding Sections 7.7–7.9), and 8</li>
+</ul>
+</section>
+<section id="learning-objectives" class="slide level2 center">
+<h2>Learning Objectives</h2>
+<ul>
+<li><p>GLMs are one of the core workhorses of actuarial modelling, especially in pricing and reserving. In this lecture, we revisit the GLM framework and connect it to the broader statistical learning ideas you have seen, so that you understand <em>when</em> and <em>why</em> a GLM is an appropriate choice, not just how to fit one in software.</p></li>
+<li><p>Perform data analytics modelling using GLM for response variables of the following types:</p>
+<ul>
+<li>count data</li>
+<li>binary data</li>
+<li>continuous data</li>
+<li>a mixture of discrete and continuous data</li>
+</ul></li>
+<li><p>Understand the specification of GLMs and their model assumptions.</p></li>
+<li><p>Select and validate a GLM appropriately.</p></li>
+<li><p>Compare GLMs with other modelling techniques.</p></li>
+</ul>
+</section>
+<section>
+<section id="generalized-linear-models-review-from-prior-courses" class="title-slide slide level1 center">
+<h1>Generalized Linear Models (Review from Prior Courses)</h1>
+
+</section>
+<section id="linear-model" class="slide level2 center">
+<h2>Linear Model</h2>
+<p>A Linear model assumes <span class="math display">
+Y \mid X \sim \mathcal{N}(\mu(X), \sigma^2 I).
+</span> And <span class="math display">
+\mathbb{E}(Y \mid X) = \mu(X) = X^T \beta,
+</span> where <span class="math inline">X = (1, x_1, x_2, \ldots, x_p)^T</span> and <span class="math inline">\beta = (\beta_0, \beta_1, \ldots, \beta_p)^T</span>.</p>
+<ul>
+<li>Normal errors</li>
+<li>Constant variance</li>
+<li>Additive linear relationship</li>
+</ul>
+</section>
+<section id="components-of-a-linear-model" class="slide level2 center">
+<h2>Components of a Linear Model</h2>
+<p>The main components (that we are going to relax) are:</p>
+<ol type="1">
+<li><strong>Random component</strong>: the response variable <span class="math inline">Y \mid X</span> is <em>continuous</em> and <em>normally distributed</em> with mean <span class="math inline">\mu = \mu(X) = \mathbb{E}(Y \mid X)</span>.</li>
+<li><strong>Link</strong>: the relationship between the random component and the covariates <span class="math inline">X = (1, x_1, x_2, \ldots, x_p)^T</span> <span class="math display">
+\mu(X) = X^T \beta
+</span></li>
+<li><strong>Model fitting and inference</strong>: least squares, maximum likelihood estimation, and weighted least squares</li>
+</ol>
+</section>
+<section id="insurance-applications" class="slide level2 center">
+<h2>Insurance Applications</h2>
+<p>In insurance settings, most variables are non-normal in nature. Models used are often multiplicative, hence linear on the log scale.</p>
+<ul>
+<li>In general insurance, claim numbers (frequency) are typically Poisson, or Poisson with over-dispersion. These distributions are not symmetric, and their variance is proportional to the mean.</li>
+<li>In general insurance, claim amounts (severity) are right-skewed, often following distributions such as the Gamma.<br>
+</li>
+<li>In mortality studies, the aim is to explain the number of deaths in terms of variables such as age, gender, and lifestyle.</li>
+<li>In health insurance, we may wish to explain the number of claims made by different individuals or groups of individuals in terms of explanatory variables such as age, gender and occupation.</li>
+</ul>
+</section>
+<section id="how-to-solve-the-problem" class="slide level2 center">
+<h2>How to Solve the Problem?</h2>
+<ul>
+<li>Transformations on linear models (e.g., log-transformed response)?
+<ul>
+<li>If using a log-transformed response, then the target variable must be non-negative and will be lognormally distributed.<br>
+</li>
+<li>It does not solve all problems.<br>
+</li>
+</ul></li>
+<li>GLMs provide more flexibility and cover a wider range of distributions.</li>
+</ul>
+</section>
+<section id="generalisation" class="slide level2 center">
+<h2>Generalisation</h2>
+<p>A generalized linear model (GLM) generalises normal linear regression models in the following directions:</p>
+<ol type="1">
+<li><p><strong>Random component</strong>: <span class="math display">
+Y \sim \text{some exponential family distribution}
+</span></p></li>
+<li><p><strong>Link</strong>: between the random component and covariates: <span class="math display">
+g(\mu(X)) = X^T \beta = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p
+</span> where <span class="math inline">g</span> is the link function and <span class="math inline">\mu = \mathbb{E}(Y \mid X)</span>. The link function can be any monotonic function (allowing inversion): <span class="math display">
+\mu(X) = g^{-1}(X^T \beta) = g^{-1}(\beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p)
+</span></p></li>
+<li><p><strong>Model fitting and inferences</strong>: maximum likelihood estimation</p>
+<ul>
+<li>Newton-Raphson Method</li>
+<li>Fisher scoring Method</li>
+</ul></li>
+</ol>
+</section>
+<section id="one-parameter-canonical-exponential-family" class="slide level2 center">
+<h2>One-Parameter Canonical Exponential Family</h2>
+<ul>
+<li><p><em>Canonical exponential family</em> for <span class="math inline">k = 1</span>, <span class="math inline">y \in \mathbb{R}</span>: <span class="math display">
+f_\theta(y) = \exp\left(\frac{y\theta - b(\theta)}{\phi} + c(y, \phi)\right)
+</span> for some <em>known</em> functions <span class="math inline">b(\cdot)</span> and <span class="math inline">c(\cdot, \cdot)</span>.</p></li>
+<li><p>If <span class="math inline">\phi</span> is known, this is a one-parameter exponential family with <span class="math inline">\theta</span> being the canonical parameter.<br>
+</p></li>
+<li><p>If <span class="math inline">\phi</span> is unknown, this may or may not be a two-parameter exponential family. <span class="math inline">\phi</span> is called the <em>dispersion parameter</em>.</p></li>
+<li><p>In this class, we always assume that <span class="math inline">\phi</span> is known.</p></li>
+</ul>
+</section>
+<section id="example-normal-distribution" class="slide level2 center">
+<h2>Example: Normal Distribution</h2>
+<ul>
+<li>Consider the following normal density function with known variance <span class="math inline">\sigma^2</span>:</li>
+</ul>
+<p><span class="math display">
+\begin{aligned}
+f_\theta(y) &amp;= \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(y - \mu)^2}{2\sigma^2}\right) \\
+&amp;= \exp\left\{ \frac{y\mu - \frac{1}{2}\mu^2}{\sigma^2}
+- \frac{1}{2} \left( \frac{y^2}{\sigma^2} + \log(2\pi\sigma^2) \right) \right\}
+\end{aligned}
+</span></p>
+<ul>
+<li>Therefore <span class="math inline">\theta = \mu</span>, <span class="math inline">\phi = \sigma^2</span>, <span class="math inline">b(\theta) = \frac{\theta^2}{2}</span>, and <span class="math display">
+c(y, \phi) = -\frac{1}{2} \left( \frac{y^2}{\phi} + \log(2\pi \phi) \right).
+</span></li>
+</ul>
+</section>
+<section id="other-distributions" class="slide level2 center">
+<h2>Other distributions</h2>
+<p>The exponential family includes a rich class of distributions, such as normal, Poisson, binomial, Gamma, and inverse Gaussian distributions.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Normal</th>
+<th>Poisson</th>
+<th>Bernoulli</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Notation</td>
+<td><span class="math inline">\mathcal{N}(\mu, \sigma^2)</span></td>
+<td><span class="math inline">\mathcal{P}(\mu)</span></td>
+<td><span class="math inline">\mathcal{B}(p)</span></td>
+</tr>
+<tr class="even">
+<td>Range of <span class="math inline">y</span></td>
+<td><span class="math inline">(-\infty, \infty)</span></td>
+<td><span class="math inline">\{0, 1, 2, \ldots\}</span></td>
+<td><span class="math inline">\{0, 1\}</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\phi</span></td>
+<td><span class="math inline">\sigma^2</span></td>
+<td><span class="math inline">1</span></td>
+<td><span class="math inline">1</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">b(\theta)</span></td>
+<td><span class="math inline">\dfrac{\theta^2}{2}</span></td>
+<td><span class="math inline">e^\theta</span></td>
+<td><span class="math inline">\log(1 + e^\theta)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">c(y,\phi)</span></td>
+<td><span class="math inline">-\dfrac{1}{2}\left(\dfrac{y^2}{\phi} + \log(2\pi\phi)\right)</span></td>
+<td><span class="math inline">-\log(y!)</span></td>
+<td><span class="math inline">0</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-to-select-the-responsetarget-distribution" class="slide level2 center">
+<h2>How to Select the Response/Target Distribution?</h2>
+<p>We should choose the response distribution that is consistent with the characteristics of the response variable.</p>
+<div title="Examples">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Examples</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Count response variables, such as the number of claims (frequency) and the number of deaths in mortality studies.
+<ul>
+<li>Poisson distribution (mean = variance)</li>
+<li>Quasi-Poisson and Negative Binomial (variance &gt; mean)</li>
+</ul></li>
+<li>Binary response variables, such as fraud detection, email spam detection, and whether a client is credible or not.
+<ul>
+<li>Bernoulli distribution (binomial distribution with <span class="math inline">n=1</span>)</li>
+</ul></li>
+<li>Positive continuous response variables, such as claim amounts (severity) and insurance coverage.
+<ul>
+<li>Gamma and inverse Gaussian distributions</li>
+</ul></li>
+<li>A mixture of discrete and continuous response variables, such as aggregate loss in general insurance.
+<ul>
+<li>Tweedie distribution</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mean-and-variance" class="slide level2 center">
+<h2>Mean and Variance</h2>
+<p>The mean <span class="math inline">\mathbb{E}(Y)</span> and the variance <span class="math inline">\mathrm{Var}(Y)</span> can be derived as follows:</p>
+<p><span class="math display">
+\mathbb{E}(Y) = \mu = b'(\theta).
+</span></p>
+<p><span class="math display">
+\mathrm{Var}(Y) = V(\mu)\,\phi = b''(\theta)\,\phi.
+</span> <span class="math inline">V(\mu)</span> is called the variance function.</p>
+</section>
+<section id="examples-of-mean" class="slide level2 center">
+<h2>Examples of Mean</h2>
+<ul>
+<li>Note that <span class="math inline">\mu = b'(\theta)</span>, so the mean <span class="math inline">\mu</span> depends on the canonical (location) parameter <span class="math inline">\theta</span>, or equivalently <span class="math inline">\theta</span> depends on <span class="math inline">\mu</span>. Hence, we sometimes write <span class="math inline">\theta = \theta(\mu)</span>.</li>
+</ul>
+<div title="Examples">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Examples</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>Normal <span class="math inline">N(\mu, \sigma^2)</span>: <span class="math inline">\theta = \mu</span>, and hence <span class="math inline">\theta(\mu) = \mu</span>.</p></li>
+<li><p>Gamma<span class="math inline">(\alpha, \beta)</span>: <span class="math inline">\theta = -\beta/\alpha = -\frac{1}{\mu}</span>, and hence <span class="math inline">\theta(\mu) = -\frac{1}{\mu}</span>.</p></li>
+<li><p>Inverse Gaussian<span class="math inline">(\alpha, \beta)</span>: <span class="math inline">\theta = -\frac{1}{2}\frac{\beta^2}{\alpha^2} = -\frac{1}{2\mu^2}</span>, and hence <span class="math inline">\theta(\mu) = -\frac{1}{2\mu^2}</span>.</p></li>
+<li><p>Poisson<span class="math inline">(\mu)</span>: <span class="math inline">\theta = \log \mu</span>, and hence <span class="math inline">\theta(\mu) = \log \mu</span>.</p></li>
+<li><p>Binomial<span class="math inline">(m, p)</span>: <span class="math inline">\theta = \log\!\left(\frac{p}{1-p}\right) = \log\!\left(\frac{\mu}{m-\mu}\right)</span>, and hence <span class="math inline">\theta(\mu) = \log\!\left(\frac{\mu}{m-\mu}\right)</span>.</p></li>
+<li><p>Negative Binomial<span class="math inline">(r, p)</span>: <span class="math inline">\theta = \log(1-p) = \log\!\left(\frac{\mu p}{r}\right)</span>, and hence <span class="math inline">\theta(\mu) = \log(1-p) = \log\!\left(\frac{\mu p}{r}\right)</span>.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-poisson-distribution" class="slide level2 center">
+<h2>Example: Poisson Distribution</h2>
+<p>Consider a Poisson likelihood, <span class="math display">
+f(y) = \frac{\mu^y}{y!} e^{-\mu} = \exp\!\left(y \log \mu - \mu - \log(y!)\right),
+</span> Thus, <span class="math display">
+\theta = \log \mu, \quad b(\theta) = \mu, \quad c(y, \phi) = -\log(y!),
+</span> <span class="math display">
+\phi = 1,
+</span> <span class="math display">
+\mu = e^\theta,
+</span></p>
+<p><span class="math display">
+b(\theta) = e^\theta,
+</span> <span class="math display">
+b''(\theta) = e^\theta = \mu.
+</span></p>
+</section>
+<section id="variance-function" class="slide level2 center">
+<h2>Variance Function</h2>
+<ul>
+<li>The variance is sometimes expressed as <span class="math inline">\mathrm{Var}(Y) = \phi V(\mu)</span>, where <span class="math display">
+V(\mu) = b''\!\left(\theta(\mu)\right)
+</span> and is called the <em>variance function</em>.</li>
+</ul>
+<div title="Examples">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Examples</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>Normal <span class="math inline">N(\mu, \sigma^2)</span> with <span class="math inline">V(\mu) = 1</span></p></li>
+<li><p>Gamma<span class="math inline">(\alpha, \beta)</span> with <span class="math inline">V(\mu) = \mu^2</span></p></li>
+<li><p>Inverse Gaussian<span class="math inline">(\alpha, \beta)</span> with <span class="math inline">V(\mu) = \mu^3</span></p></li>
+<li><p>Poisson<span class="math inline">(\mu)</span> with <span class="math inline">V(\mu) = \mu</span></p></li>
+<li><p>Binomial<span class="math inline">(m, p)</span> with <span class="math inline">V(\mu) = \mu\left(1 - \mu/m\right)</span></p></li>
+<li><p>Negative Binomial<span class="math inline">(r, p)</span> with <span class="math inline">V(\mu) = \mu\left(1 + \mu/r\right)</span></p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mean-variance-relationship-1" class="slide level2 center">
+<h2>Mean-variance relationship (1)</h2>
+
+<img data-src="plot/mean_var_rel.png" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Mean–Variance Relationships Across Distributions</p></section>
+<section id="link-function" class="slide level2 center">
+<h2>Link function</h2>
+<ul>
+<li><span class="math inline">\beta</span> is the parameter of interest and needs to appear in the likelihood function to enable maximum likelihood estimation.</li>
+<li>A link function <span class="math inline">g</span> relates the linear predictor <span class="math inline">X^T\beta</span> to the mean parameter <span class="math inline">\mu</span>: <span class="math display">
+X^T\beta = g(\mu).
+</span></li>
+<li>The function <span class="math inline">g</span> is required to be monotone increasing and differentiable: <span class="math display">
+\mu = g^{-1}(X^T\beta).
+</span></li>
+</ul>
+</section>
+<section id="examples-of-link-functions" class="slide level2 center">
+<h2>Examples of Link Functions</h2>
+<div title="Examples of Link Functions">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Examples of Link Functions</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>For linear regression, <span class="math inline">g(\cdot)</span> is the identity.</li>
+<li>Poisson data. Suppose <span class="math inline">Y \mid X \sim \text{Poisson}(\mu(X))</span>.
+<ul>
+<li><span class="math inline">\mu(X) &gt; 0</span>;</li>
+<li><span class="math inline">\log(\mu(X)) = X^T\beta</span>;</li>
+<li>In general, a link function for count data should map <span class="math inline">(0, +\infty)</span> to <span class="math inline">\mathbb{R}</span>;</li>
+<li>The log link is a natural choice.</li>
+</ul></li>
+<li>Bernoulli/Binomial data.
+<ul>
+<li><span class="math inline">0 &lt; \mu &lt; 1</span>;</li>
+<li><span class="math inline">g</span> should map <span class="math inline">(0,1)</span> to <span class="math inline">\mathbb{R}</span>;</li>
+<li>Three choices:
+<ol type="1">
+<li>logit: <span class="math inline">\log\!\left(\frac{\mu(X)}{1-\mu(X)}\right) = X^T\beta</span>;</li>
+<li>probit: <span class="math inline">\Phi^{-1}(\mu(X)) = X^T\beta</span>, where <span class="math inline">\Phi(\cdot)</span> is the normal CDF;</li>
+<li>complementary log-log: <span class="math inline">\log\!\left(-\log(1-\mu(X))\right) = X^T\beta</span>;</li>
+</ol></li>
+<li>The logit link is the natural choice.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="examples-of-link-functions-for-bernoulli-response-1" class="slide level2 center">
+<h2>Examples of Link Functions for Bernoulli Response (1)</h2>
+
+<img data-src="plot/link1.png" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Comparison of logit and probit link functions</p><ul>
+<li>Blue: <span class="math inline">f_1(x) = \dfrac{e^x}{1 + e^x}</span> (logit link)</li>
+<li>Red: <span class="math inline">f_2(x) = \Phi(x)</span> (probit link, Gaussian CDF)</li>
+</ul>
+</section>
+<section id="examples-of-link-functions-for-bernoulli-response-2" class="slide level2 center">
+<h2>Examples of Link Functions for Bernoulli Response (2)</h2>
+
+<img data-src="plot/link2.png" style="width:40.0%" class="r-stretch quarto-figure-center"><p class="caption">Inverse link functions: logit (blue) and probit (red)</p><ul>
+<li>Blue: <span class="math inline">g_1(x) = f_1^{-1}(x) = \log\!\left(\frac{x}{1-x}\right)</span> (logit link)</li>
+<li>Red: <span class="math inline">g_2(x) = f_2^{-1}(x) = \Phi^{-1}(x)</span> (probit link)</li>
+</ul>
+</section>
+<section id="canonical-link" class="slide level2 center">
+<h2>Canonical Link</h2>
+<ul>
+<li>The function <span class="math inline">g</span> that links the mean <span class="math inline">\mu</span> to the canonical parameter <span class="math inline">\theta</span> is called the <em>canonical link</em>: <span class="math display">
+g(\mu) = \theta.
+</span></li>
+<li>Since <span class="math inline">\mu = b'(\theta)</span>, the canonical link is given by <span class="math display">
+g(\mu) = (b')^{-1}(\mu).
+</span></li>
+<li>The canonical link function creates an identity link between <span class="math inline">\theta</span> and the <span class="math inline">X^T\beta</span>: <span class="math display">
+g(\mu) = \theta = X^T\beta.
+</span></li>
+</ul>
+</section>
+<section id="example-the-bernoulli-distribution" class="slide level2 center">
+<h2>Example: The Bernoulli Distribution</h2>
+<ul>
+<li>We can check that <span class="math display">
+b(\theta) = \log(1 + e^\theta).
+</span></li>
+<li>Hence we solve <span class="math display">
+b'(\theta) = \frac{e^\theta}{1 + e^\theta} = \mu,
+</span> <span class="math display">
+\theta = \log\!\left(\frac{\mu}{1-\mu}\right).
+</span></li>
+<li>The canonical link for the Bernoulli distribution is the <em>logit link</em>.</li>
+</ul>
+</section>
+<section id="other-examples-of-canonical-links" class="slide level2 center">
+<h2>Other Examples of Canonical Links</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Distribution</th>
+<th><span class="math inline">b(\theta)</span></th>
+<th><span class="math inline">g(\mu)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Normal</td>
+<td><span class="math inline">\dfrac{\theta^2}{2}</span></td>
+<td><span class="math inline">\mu</span></td>
+</tr>
+<tr class="even">
+<td>Poisson</td>
+<td><span class="math inline">e^\theta</span></td>
+<td><span class="math inline">\log \mu</span></td>
+</tr>
+<tr class="odd">
+<td>Bernoulli</td>
+<td><span class="math inline">\log(1 + e^\theta)</span></td>
+<td><span class="math inline">\log\!\left(\dfrac{\mu}{1-\mu}\right)</span></td>
+</tr>
+<tr class="even">
+<td>Gamma</td>
+<td><span class="math inline">-\log(-\theta)</span></td>
+<td><span class="math inline">-\dfrac{1}{\mu}</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-to-select-the-link-function" class="slide level2 center">
+<h2>How to Select the Link Function?</h2>
+<ol type="1">
+<li>Consistent with the range of the response data, for example
+<ul>
+<li>for response variables with positive means, a <em>log</em> link can be appropriate for Poisson, gamma, and inverse Gaussian distributions;</li>
+<li>for binary response variables (only taking values of 0 or 1), the mean should be bounded between 0 and 1. Hence, a <em>logit</em> link is appropriate.</li>
+</ul></li>
+<li>Easy to interpret.
+<ul>
+<li>Interpret the effects of the predictors on the mean of the response variable (i.e., interpret the coefficients).</li>
+<li>For example, the <em>log</em> link is easy to interpret, as it generates a multiplicative model for the mean of the response variable.<br>
+</li>
+<li>Interpretability is an important advantage of GLMs.</li>
+</ul></li>
+</ol>
+</section>
+<section id="how-to-select-the-link-function-continued" class="slide level2 continued center">
+<h2>How to Select the Link Function? (continued)</h2>
+<ol start="3" type="1">
+<li>Easy to compute.
+<ul>
+<li>Canonical links simplify the likelihood function and make the optimisation procedure easier.</li>
+<li>This is a less important point compared to the first two, so canonical links are not always preferred.</li>
+</ul></li>
+</ol>
+</section>
+<section id="glm-model-structure" class="slide level2 center">
+<h2>GLM Model Structure</h2>
+<ul>
+<li>Let <span class="math inline">(X_i, Y_i) \in \mathbb{R}^p \times \mathbb{R}</span>, <span class="math inline">i = 1,2,\ldots,n</span>, be independent random pairs such that the conditional distribution of <span class="math inline">Y_i</span> given <span class="math inline">X_i</span> has a density in the canonical exponential family: <span class="math display">
+f_{\theta_i}(y_i) = \exp\left\{ \frac{y_i \theta_i - b(\theta_i)}{\phi} + c(y_i, \phi) \right\}.
+</span></li>
+<li><span class="math inline">\mathbf{Y} = (Y_1, \ldots, Y_n)^T</span>, <span class="math inline">\mathbf{X} = (X_1^T, \ldots, X_n^T)^T</span></li>
+<li>The mean <span class="math inline">\mu_i</span> is related to the canonical parameter <span class="math inline">\theta_i</span> via <span class="math display">
+\mu_i = b'(\theta_i).
+</span></li>
+<li>The mean <span class="math inline">\mu_i</span> depends on the covariates through a link function <span class="math inline">g</span>: <span class="math display">
+g(\mu_i) = X_i^T \beta.
+</span></li>
+</ul>
+</section>
+<section id="beta-and-theta" class="slide level2 center">
+<h2><span class="math inline">\beta</span> and <span class="math inline">\theta</span></h2>
+<ul>
+<li><p>Given a link function <span class="math inline">g</span>, note the following relationship between <span class="math inline">\beta</span> and <span class="math inline">\theta</span>: <span class="math display">
+\begin{aligned}
+\theta_i
+&amp;= (b')^{-1}(\mu_i) \\
+&amp;= (b')^{-1}\big(g^{-1}(X_i^T \beta)\big) \equiv h(X_i^T \beta)
+\end{aligned}
+</span></p></li>
+<li><p>where <span class="math inline">h</span> is defined as <span class="math display">
+h = (b')^{-1} \circ g^{-1} = (g \circ b')^{-1}.
+</span></p></li>
+<li><p>Remark: if <span class="math inline">g</span> is the <em>canonical</em> link function, then <span class="math inline">h</span> is the <em>identity</em>.</p></li>
+</ul>
+</section>
+<section id="model-interpretation-quantitative-predictors" class="slide level2 center">
+<h2>Model Interpretation: Quantitative Predictors</h2>
+<p>The link function is closely related to the interpretation of coefficients.</p>
+<ul>
+<li><em>Log link</em>: <span class="math inline">\ln(\mu) = X^T\beta = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p</span> <span class="math display">
+\mu = e^{X^T\beta} = e^{\beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p}
+= e^{\beta_0} \times e^{\beta_1 X_1} \times \cdots \times e^{\beta_p X_p}
+</span>
+<ul>
+<li>When there is a unit change in a predictor <span class="math inline">X_j</span> (all others fixed), there is a multiplicative change (<span class="math inline">e^{\beta_j}</span>) in the mean <span class="math inline">\mu</span>, and the percentage change in <span class="math inline">\mu</span> is <span class="math inline">(e^{\beta_j} - 1)</span>.</li>
+<li>When <span class="math inline">\beta_j</span> is positive, <span class="math inline">e^{\beta_j} &gt; 1</span> and <span class="math inline">\mu</span> increases; when <span class="math inline">\beta_j</span> is negative, <span class="math inline">e^{\beta_j} &lt; 1</span> and <span class="math inline">\mu</span> decreases.</li>
+</ul></li>
+<li><em>Logit link</em>: <span class="math inline">\ln\!\left(\frac{\mu}{1-\mu}\right) = \ln(\text{odds}) = X^T\beta</span>
+<ul>
+<li>Similar interpretations.</li>
+</ul></li>
+</ul>
+</section>
+<section id="model-interpretation-qualitative-predictors" class="slide level2 center">
+<h2>Model Interpretation: Qualitative Predictors</h2>
+<p>For qualitative (categorical) predictors, the interpretation depends on the choice of the reference level.</p>
+<p>Suppose a categorical variable has a reference category. Then:</p>
+<ul>
+<li>The intercept typically corresponds to the expected response for the reference category.</li>
+<li>The coefficient associated with another category measures the difference relative to the reference category.</li>
+<li>Under a log link, exponentiating the coefficient gives the multiplicative effect (i.e., multiplicative relativities) relative to the reference category.</li>
+<li>Under a logit link, exponentiating the coefficient gives the odds ratio relative to the reference category.</li>
+</ul>
+<p>See the GLM lab materials for more detailed examples and interpretations.</p>
+</section>
+<section id="log-likelihood" class="slide level2 center">
+<h2>Log-likelihood</h2>
+<ul>
+<li><p>The log-likelihood is given by <span class="math display">
+\begin{aligned}
+\ell_n(\beta; \mathbf{Y}, \mathbf{X})
+&amp;= \sum_i \frac{Y_i \theta_i - b(\theta_i)}{\phi} \\
+&amp;= \sum_i \frac{Y_i\, h(X_i^T \beta) - b\!\left(h(X_i^T \beta)\right)}{\phi}
+\end{aligned}
+</span> up to a constant term.</p></li>
+<li><p>Note that when we use the <em>canonical</em> link function, we obtain the simpler expression <span class="math display">
+\ell_n(\beta, \phi; \mathbf{Y}, \mathbf{X})
+= \sum_i \frac{Y_i X_i^T \beta - b(X_i^T \beta)}{\phi}.
+</span></p></li>
+</ul>
+</section>
+<section id="maximum-likelihood-estimation-mle" class="slide level2 center">
+<h2>Maximum Likelihood Estimation (MLE)</h2>
+<ul>
+<li>For linear models, the MLE and the ordinary least squares method are equivalent.<br>
+</li>
+<li>For GLMs, we use MLE for parameter estimation.</li>
+<li>The log-likelihood <span class="math inline">\ell(\theta)</span> is <em>strictly concave</em> when using the canonical link function and <span class="math inline">\phi &gt; 0</span>. As a consequence, the maximum likelihood estimator is <em>unique</em>.</li>
+<li>On the other hand, if another parameterisation is used, the likelihood function may not be strictly concave, leading to <em>several local maxima</em>. The following methods can be used for optimisation:
+<ul>
+<li>Newton–Raphson method</li>
+<li>Fisher scoring method</li>
+</ul></li>
+<li>The coefficient estimates and the fitted mean response are given by: <span class="math display">
+\hat{\mu}_i = g^{-1}\!\left(\hat{\beta}_0 + \hat{\beta}_1 x_{i1} + \cdots + \hat{\beta}_p x_{ip}\right).
+</span></li>
+</ul>
+</section>
+<section id="goodness-of-fit-measures-deviance" class="slide level2 center">
+<h2>Goodness-of-Fit Measures: Deviance</h2>
+<ul>
+<li><p>Deviance is a likelihood-based goodness-of-fit measure on the training set. It plays much the same role for GLMs as RSS does for ordinary linear models.<br>
+</p></li>
+<li><p><em>Null model</em>: only the constant term is included.<br>
+</p></li>
+<li><p><em>Full model (saturated model)</em>: each fitted value is equal to the observation, so the saturated model fits perfectly. The full model is the case when <span class="math inline">\mu_i = y_i</span> for all <span class="math inline">i = 1,2,\ldots,n</span>, so that the log-likelihood in the full model gives <span class="math display">
+\ell_{\text{full}}
+= \sum_{i=1}^{n} \left[ \frac{y_i \tilde{\theta}_i - b(\tilde{\theta}_i)}{\phi} + c(y_i, \phi) \right]
+</span> where <span class="math inline">\tilde{\theta}_i</span> are the canonical parameter values corresponding to <span class="math inline">\mu_i = y_i</span> for all <span class="math inline">i = 1,2,\ldots,n</span>.</p></li>
+<li><p>We define the <strong>deviance</strong> of the chosen GLM (with log-likelihood <span class="math inline">\ell</span>) as <span class="math inline">D \equiv 2(\ell_{\text{full}} - \ell).</span></p></li>
+<li><p>Note: for a linear model with Gaussian errors, the deviance is just the RSS on the training set. The null deviance is <span class="math inline">2(\ell_{\text{full}} - \ell_{\text{null}})</span>.</p></li>
+</ul>
+</section>
+<section id="model-comparison" class="slide level2 center">
+<h2>Model Comparison</h2>
+<ul>
+<li><p>Consider two models:</p>
+<ul>
+<li>Model 1: <span class="math inline">q</span> parameters, with deviance <span class="math inline">D_1</span>;</li>
+<li>Model 2: <span class="math inline">p</span> parameters (<span class="math inline">p &gt; q</span>), with deviance <span class="math inline">D_2</span>. <span class="math display">
+D_1 - D_2 \sim \chi^2(p - q).
+</span></li>
+</ul></li>
+<li><p>Model 2 is a significant improvement over Model 1 (the more parsimonious model) if <span class="math inline">D_1 - D_2</span> exceeds the critical value from a <span class="math inline">\chi^2(p - q)</span> distribution.</p></li>
+<li><p>Since <span class="math display">
+\Pr\!\left[ \chi^2(\nu) &gt; 2\nu \right] \approx 5\%,
+</span> the following rule of thumb can be used as an approximation: <span class="math display">
+\text{Model 2 is preferred if } D_1 - D_2 &gt; 2(p - q).
+</span></p></li>
+</ul>
+</section>
+<section id="example" class="slide level2 center">
+<h2>Example</h2>
+<p>Let <span class="math inline">Y_{ij}</span> denote the number of claims for the <span class="math inline">j</span>th male driver in group <span class="math inline">i</span> (<span class="math inline">i=1,2,3</span>, <span class="math inline">j=1,2,\cdots</span>). Three models are fitted, with deviances as shown below:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 44%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Link function</th>
+<th>Deviance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model 1</td>
+<td><span class="math inline">\log(\mu_{ij}) = \alpha_i,\ i = 1,2,3</span></td>
+<td>60.40</td>
+</tr>
+<tr class="even">
+<td>Model 2</td>
+<td><span class="math inline">\log(\mu_{ij}) = \begin{cases} \alpha, &amp; \text{if } i = 1,2 \\ \beta, &amp; \text{if } i = 3 \end{cases}</span></td>
+<td>61.64</td>
+</tr>
+<tr class="odd">
+<td>Model 3</td>
+<td><span class="math inline">\log(\mu_{ij}) = \alpha</span></td>
+<td>72.53</td>
+</tr>
+</tbody>
+</table>
+<p>Determine whether or not<br>
+(a) model 2 is a significant improvement over model 3;<br>
+(b) model 1 is a significant improvement over model 2;<br>
+(c) model 1 is a significant improvement over model 3.</p>
+</section>
+<section id="exponential-distributions-and-their-deviances" class="slide level2 center">
+<h2>Exponential Distributions and Their Deviances</h2>
+<ul>
+<li><p>We drop the subscript <span class="math inline">i = 1,2,\ldots,n</span></p></li>
+<li><p>Deviances are:</p></li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 59%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Distribution</th>
+<th>Deviance <span class="math inline">D(y, \hat{\mu})</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Normal</td>
+<td><span class="math inline">\sum (y - \hat{\mu})^2</span></td>
+</tr>
+<tr class="even">
+<td>Poisson</td>
+<td><span class="math inline">2 \sum \left[ y \log\!\left(\frac{y}{\hat{\mu}}\right) - (y - \hat{\mu}) \right]</span></td>
+</tr>
+<tr class="odd">
+<td>Binomial</td>
+<td><span class="math inline">2 \sum \left[ y \log\!\left(\frac{y}{\hat{\mu}}\right) + (m - y)\log\!\left(\frac{m - y}{m - \hat{\mu}}\right) \right]</span></td>
+</tr>
+<tr class="even">
+<td>Gamma</td>
+<td><span class="math inline">2 \sum \left[ -\log\!\left(\frac{y}{\hat{\mu}}\right) + \frac{y - \hat{\mu}}{\hat{\mu}} \right]</span></td>
+</tr>
+<tr class="odd">
+<td>Inverse Gaussian</td>
+<td><span class="math inline">\sum \frac{(y - \hat{\mu})^2}{\hat{\mu}^2 y}</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="deviance-residuals-1" class="slide level2 center">
+<h2>Deviance Residuals (1)</h2>
+<ul>
+<li><p>Residuals are a primary tool for assessing how well a model fits the data.</p></li>
+<li><p>They can also help detect the form of the variance function and diagnose problem observations.</p></li>
+<li><p>Response residuals (<span class="math inline">y_i - \hat{\mu}_i</span>) are not very helpful, as they are not normally distributed and do not have constant variance.</p></li>
+</ul>
+</section>
+<section id="deviance-residuals-1-continued" class="slide level2 continued center">
+<h2>Deviance Residuals (1) (continued)</h2>
+<ul>
+<li>We consider the <strong>deviance residuals</strong> instead: <span class="math display">
+r_i^D = \text{sign}(y_i - \hat{\mu}_i)\sqrt{d_i}
+</span>
+<ul>
+<li>where <span class="math inline">d_i</span> is the contribution of the <span class="math inline">i</span>th observation to the deviance (drawing on the idea that deviance is akin to RSS).</li>
+<li><span class="math inline">\text{sign}(y_i - \hat{\mu}_i) = 1</span> if <span class="math inline">y_i &gt; \hat{\mu}_i</span>, and <span class="math inline">\text{sign}(y_i - \hat{\mu}_i) = -1</span> if <span class="math inline">y_i &lt; \hat{\mu}_i</span>.</li>
+<li>For example, for a Poisson distribution, we have <span class="math display">
+r_i^D = \text{sign}(y_i - \hat{\mu}_i)\sqrt{2\left[ y_i \log\!\left(\frac{y_i}{\hat{\mu}_i}\right) - (y_i - \hat{\mu}_i) \right]}.
+</span></li>
+</ul></li>
+<li><span class="math inline">\sum_{i=1}^{n}(r_{i}^{D})^2=\sum_{i=1}^{n}d_i=D</span>.</li>
+</ul>
+</section>
+<section id="deviance-residuals-2" class="slide level2 center">
+<h2>Deviance Residuals (2)</h2>
+<ul>
+<li>Deviance residuals are approximately normally distributed for most response distributions.
+<ul>
+<li>We can use a QQ plot of the standardised deviance residuals as a diagnostic tool.</li>
+</ul></li>
+<li>Deviance residuals should have no systematic patterns with respect to the predictors.</li>
+<li>Standardised deviance residuals have approximately constant variance.</li>
+</ul>
+</section>
+<section id="aic-and-bic" class="slide level2 center">
+<h2>AIC and BIC</h2>
+<ul>
+<li><p>Similar to the RSS of a linear model, deviance always decreases as the number of predictors increases.</p></li>
+<li><p>AIC and BIC are penalised likelihood measures, which balance the goodness of fit on the training set and model complexity.<br>
+</p></li>
+<li><p>When a log-likelihood loss function is used, we have</p>
+<ul>
+<li><span class="math inline">\text{AIC} = -2 \, \text{loglik} + 2d</span></li>
+<li><span class="math inline">\text{BIC} = -2 \, \text{loglik} + (\log n)d</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="procedure-of-constructing-a-glm" class="slide level2 center">
+<h2>Procedure of Constructing a GLM</h2>
+<ul>
+<li>Choose a response distribution <span class="math inline">f(y_i)</span> and hence choose <span class="math inline">b(\theta)</span>.</li>
+<li>Choose a link <span class="math inline">g(\mu)</span>.</li>
+<li>Choose explanatory variables <span class="math inline">X</span> in terms of which <span class="math inline">g(\mu)</span> is to be modelled.</li>
+<li>Collect observations <span class="math inline">y_1,\cdots,y_n</span> on the response <span class="math inline">y</span> and corresponding values <span class="math inline">x_1,\cdots,x_n</span> on the explanatory variables <span class="math inline">x</span>.</li>
+<li>Fit the model by estimating <span class="math inline">\beta</span> (and, if unknown, <span class="math inline">\phi</span>).</li>
+<li>Given the estimate of <span class="math inline">\beta</span>, generate predictions (or fitted values) of <span class="math inline">y</span> for different settings of <span class="math inline">x</span>, and examine how well the model fits. The estimated values of <span class="math inline">\beta</span> can also be used to assess whether the explanatory variables are important in determining <span class="math inline">\mu</span>.</li>
+</ul>
+</section></section>
+<section>
+<section id="models-for-count-responses" class="title-slide slide level1 center">
+<h1>Models for Count Responses</h1>
+
+</section>
+<section id="count-response-poisson-regression" class="slide level2 center">
+<h2>Count Response: Poisson Regression</h2>
+<ul>
+<li><span class="math inline">Y_i \sim \text{Poisson}(\lambda_i)</span>: <span class="math inline">\dfrac{\lambda_i^{y_i}}{y_i!} e^{-\lambda_i}</span>,
+<ul>
+<li><span class="math inline">g(\mu_i) = X_i^T \beta \quad \Rightarrow \quad \log(\lambda_i) = X_i^T \beta</span> (canonical link = log link; log-linear model)</li>
+</ul></li>
+</ul>
+<p>Model assumptions:</p>
+<ul>
+<li><strong>Poisson Response</strong>: The response variable is a count per unit of time or space, described by a Poisson distribution.</li>
+<li><strong>Independence</strong>: The observations must be independent of one another.</li>
+<li><strong>Mean = Variance</strong>: By definition, the mean of a Poisson random variable is equal to its variance.</li>
+<li><strong>Linearity</strong>: The log of the mean rate, <span class="math inline">\log(\lambda_i)</span>, must be a linear function of <span class="math inline">x</span>.</li>
+</ul>
+</section>
+<section id="offsets" class="slide level2 center">
+<h2>Offsets</h2>
+<ul>
+<li>If <span class="math inline">\mu</span> is the mean of the count <span class="math inline">Y</span>, then the occurrence rate <span class="math inline">\mu / n</span> is of interest, and <span class="math display">
+g\!\left(\frac{\mu}{n}\right) = X^T \beta.
+</span></li>
+<li>When <span class="math inline">g</span> is the log function, we have <span class="math display">
+\log\!\left(\frac{\mu}{n}\right) = X^T \beta
+\quad \Rightarrow \quad
+\log \mu = \log n + X^T \beta.
+</span></li>
+<li>The variable <span class="math inline">n</span> is called the <em>exposure</em>, and <span class="math inline">\log n</span> is called an <em>offset</em>.</li>
+<li>With the offset, <span class="math inline">Y</span> has expected value directly proportional to exposure: <span class="math display">
+\mu = n e^{X^T \beta}.
+</span></li>
+<li>Offsets are used to correct for group size or differing time periods of observation.</li>
+</ul>
+</section>
+<section id="overdispersion" class="slide level2 center">
+<h2>Overdispersion</h2>
+<ul>
+<li>Overdispersion suggests that there is more variation in the response than the model implies.</li>
+</ul>
+<p>How to solve it?</p>
+<ol type="1">
+<li><strong>Quasi-Poisson</strong> and <strong>quasi-likelihood</strong>: use an estimated dispersion factor to inflate standard errors: <span class="math inline">\sqrt{\hat{\phi}} \times \mathrm{SE}(\hat{\beta})</span>. <span class="math inline">\hat{\phi} = \frac{\sum (\text{Pearson residuals})^2}{n - p},</span> where <span class="math inline">p</span> is the number of model parameters. <span class="math inline">\hat{\phi}</span> will be larger than 1 in the presence of overdispersion.
+<ul>
+<li>Pearson residuals: <span class="math display">
+r_i^{P} = \dfrac{y_i - \hat{\mu}_i}{\sqrt{V(\hat{\mu}_i)}}.
+</span></li>
+</ul></li>
+<li>Use a negative binomial regression model.</li>
+</ol>
+</section>
+<section id="negative-binomial-regression" class="slide level2 center">
+<h2>Negative Binomial Regression</h2>
+<p>If <span class="math inline">Y \sim \text{Poisson}(\lambda)</span> and <span class="math inline">\lambda \sim \text{Gamma}\!\left(r, \frac{1-p}{p}\right)</span>, then <span class="math display">
+Y \sim \text{NegBinom}(r, p).
+</span></p>
+<ul>
+<li><span class="math inline">\mathbb{E}(Y) = \dfrac{pr}{1 - p} = \mu</span> and <span class="math inline">\mathrm{Var}(Y) = \dfrac{pr}{(1 - p)^2} = \mu + \dfrac{\mu^2}{r}</span></li>
+<li>The overdispersion in this case is given by <span class="math inline">\dfrac{\mu^2}{r}</span> (so smaller values of <span class="math inline">r</span> indicate greater overdispersion).</li>
+</ul>
+</section></section>
+<section>
+<section id="models-for-binary-responses" class="title-slide slide level1 center">
+<h1>Models for Binary Responses</h1>
+<p>Review: <em>An Introduction to Statistical Learning</em> <span class="citation" data-cites="james2013introduction">(<a href="#/references" role="doc-biblioref" onclick="">James et al. 2013</a>)</span>, Sections 4.3 and 4.6.2</p>
+</section>
+<section id="binary-response-logistic-regression" class="slide level2 center">
+<h2>Binary Response: Logistic Regression</h2>
+<p>A <em>binary</em> target variable with the <em>logit</em> link is called a logistic regression model.</p>
+<ul>
+<li><span class="math inline">Y_i \sim \text{Binomial}(1, \pi_i)</span>
+<ul>
+<li><span class="math inline">g(\mu_i) = g(\pi_i) = \ln\!\left(\frac{\pi_i}{1-\pi_i}\right) = X_i^T \beta</span> (canonical link = logit link)</li>
+<li><span class="math inline">\pi_i = \dfrac{e^{X_i^T \beta}}{1 + e^{X_i^T \beta}}</span></li>
+<li>The logit link ensures predictions of <span class="math inline">\pi_i</span> using <span class="math inline">X_i</span> are in the interval <span class="math inline">(0,1)</span> for all <span class="math inline">\beta</span> and <span class="math inline">X_i</span>.</li>
+</ul></li>
+<li>Other links
+<ul>
+<li>probit link: <span class="math inline">\Phi^{-1}(\pi_i)</span></li>
+<li>complementary log-log (c-log-log) link: <span class="math inline">\log\!\left(-\log(1 - \pi_i)\right)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="performance-measures" class="slide level2 center">
+<h2>Performance Measures</h2>
+<ul>
+<li>We need a <em>cut-off</em> to translate the predicted probabilities into classifications.<br>
+</li>
+<li>Confusion matrix corresponding to the cut-off:</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div title="Performance Measures">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Performance Measures</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><span class="math inline">\text{Sensitivity / Recall / True Positive Rate} = \dfrac{TP}{TP + FN}</span>
+<ul>
+<li>The ratio of <span class="math inline">TP</span> to the total number of positive events.</li>
+</ul></li>
+<li><span class="math inline">\text{Specificity} = \dfrac{TN}{TN + FP}</span>
+<ul>
+<li>The ratio of <span class="math inline">TN</span> to the total number of negative events.</li>
+</ul></li>
+<li><span class="math inline">\text{False Positive Rate} = \dfrac{FP}{TN + FP} = 1 - \text{Specificity}</span></li>
+<li>The confusion matrix can be computed on both the training and testing sets.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="plot/confusion.png" style="width:80.0%"></p>
+<figcaption>Confusion Matrix.</figcaption>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="how-to-choose-the-correct-cut-off" class="slide level2 center">
+<h2>How to Choose the Correct Cut-off</h2>
+<ul>
+<li>Depends on the business objective.</li>
+<li>For fraud detection, a low cut-off is preferred to avoid the high cost of undetected fraud.<br>
+</li>
+<li>In other cases, if the profits and costs associated with correct and incorrect classifications are known, an optimal cut-off can be chosen to maximise overall profit or minimise overall cost.</li>
+</ul>
+</section>
+<section id="roc-and-auc" class="slide level2 center">
+<h2>ROC and AUC</h2>
+
+<img data-src="plot/rocauc.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">ROC Curve</p><div title="ROC and AUC">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>ROC and AUC</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>The Receiver Operating Characteristic (ROC) curve plots the True Positive Rate against the False Positive Rate.</li>
+<li>Each point on the ROC curve corresponds to a certain cut-off.</li>
+<li>A good model will have its ROC curve bend towards the top-left corner.</li>
+<li>AUC is the area under the ROC curve.</li>
+<li>The <em>relative</em> value of the AUC can be used for quantitative assessment of a classifier: the higher, the better.
+<ul>
+<li><span class="math inline">\text{AUC} = 1</span>: perfect classifier.</li>
+<li><span class="math inline">\text{AUC} = 0.5</span>: random classifier. The ROC curve lies on the <span class="math inline">45^\circ</span> diagonal line.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="models-for-continuous-responses" class="title-slide slide level1 center">
+<h1>Models for Continuous Responses</h1>
+
+</section>
+<section id="continuous-response-gaussian-and-gamma-regression" class="slide level2 center">
+<h2>Continuous Response: Gaussian and Gamma Regression</h2>
+<ul>
+<li><strong>Gaussian</strong> response: linear regression</li>
+</ul>
+<p><strong>Positive right-skewed continuous response:</strong></p>
+<ul>
+<li><strong>Gamma</strong> response: <span class="math display">
+Y_i \sim \text{Gamma}(\mu_i, \nu)
+</span>
+<ul>
+<li><span class="math inline">g(\mu_i) = \log(\mu_i) = X_i^T \beta</span></li>
+<li>The canonical link is the inverse function. Since parameters from a model with the inverse link are difficult to interpret, the <em>log</em> link is usually regarded as more useful.</li>
+</ul></li>
+</ul>
+</section>
+<section id="continuous-response-gaussian-and-gamma-regression-continued" class="slide level2 continued center">
+<h2>Continuous Response: Gaussian and Gamma Regression (continued)</h2>
+<ul>
+<li><strong>Inverse Gaussian</strong> response: <span class="math display">
+Y_i \sim \text{IG}(\mu_i, \sigma^2)
+</span>
+<ul>
+<li><span class="math inline">g(\mu_i) = \log(\mu_i) = X_i^T \beta</span> (log link)</li>
+<li>The canonical link is <span class="math inline">g(\mu) = \mu^{-2}</span>. However, the log link is usually preferred.</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="models-for-a-mixture-of-discrete-and-continuous-responses" class="title-slide slide level1 center">
+<h1>Models for a Mixture of Discrete and Continuous Responses</h1>
+
+</section>
+<section id="tweedie-regression" class="slide level2 center">
+<h2>Tweedie Regression</h2>
+<p>Assume <span class="math inline">c</span> is the number of claims on a policy and <span class="math inline">z_1, \ldots, z_c</span> are the individual claim sizes. Then the total claim size is <span class="math display">
+Y = \sum_{i=1}^{c} z_i = z_1 + \cdots + z_c.
+</span></p>
+<ul>
+<li>If <span class="math inline">c</span> is <strong>Poisson</strong> and <span class="math inline">z_j</span> are independent <strong>Gamma</strong> random variables, then <span class="math inline">Y</span> has a <strong>Tweedie</strong> distribution.</li>
+<li>This distribution has a non-zero probability at <span class="math inline">Y = 0</span>, equal to the Poisson probability of no claims. The rest of the distribution is similar to the Gamma distribution.</li>
+</ul>
+</section>
+<section id="tweedie-regression-continued" class="slide level2 continued center">
+<h2>Tweedie Regression (continued)</h2>
+<ul>
+<li><p>The Tweedie distribution is a member of the exponential family and <span class="math display">
+\mathrm{Var}(Y) = \phi \mu^p,
+</span> where <span class="math inline">1 &lt; p &lt; 2</span>. Here, <span class="math inline">p</span> is the power of the variance function.</p></li>
+<li><p>Note:</p>
+<ul>
+<li><span class="math inline">p = 0</span>: Normal<br>
+</li>
+<li><span class="math inline">p = 1</span>: Poisson<br>
+</li>
+<li><span class="math inline">p = 2</span>: Gamma<br>
+</li>
+<li><span class="math inline">p = 3</span>: Inverse Gaussian</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="other-considerations" class="title-slide slide level1 center">
+<h1>Other Considerations</h1>
+
+</section>
+<section id="interaction-terms" class="slide level2 center">
+<h2>Interaction terms</h2>
+<ul>
+<li><p>In many applications, the effect of one predictor may depend on another predictor.</p></li>
+<li><p>We can include <em>interaction terms</em> in a GLM: <span class="math display">
+g(\mu) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1 X_2
+</span></p></li>
+<li><p>Interpretation:</p>
+<ul>
+<li>The effect of <span class="math inline">X_1</span> on the response depends on the value/level of <span class="math inline">X_2</span></li>
+<li>Interaction terms allow for <em>non-additive</em> effects</li>
+</ul></li>
+<li><p>Types of interactions:</p>
+<ul>
+<li>Continuous × Continuous (captures non-linear joint effects)<br>
+</li>
+<li>Categorical × Categorical (different group combinations)<br>
+</li>
+<li>Continuous × Categorical (slope differs across groups)</li>
+</ul></li>
+</ul>
+</section>
+<section id="basis-extensions" class="slide level2 center">
+<h2>Basis Extensions</h2>
+<ul>
+<li><p>Extend linear predictors using basis functions: <span class="math display">
+g(\mu) = \beta_0 + \beta_1 b_1(X) + \cdots + \beta_K b_K(X)
+</span></p></li>
+<li><p>Here:</p>
+<ul>
+<li><span class="math inline">b_k(X)</span> are <strong>basis functions</strong> (transformations of X)<br>
+</li>
+<li>e.g.&nbsp;<span class="math inline">X, X^2, \text{splines}, \log X</span></li>
+</ul></li>
+<li><p>Basis functions can capture non-linear relationships and improve predictive performance</p></li>
+<li><p>These ideas form the basis of more flexible models such as <em>Generalised Additive Models (GAMs)</em></p></li>
+</ul>
+</section>
+<section id="penalized-glm-shrinkage-techniques" class="slide level2 center">
+<h2>Penalized GLM (Shrinkage Techniques)</h2>
+<ul>
+<li><p>Penalised GLMs add a penalty to the likelihood: <span class="math display">
+\text{Loss} = -\ell(\beta) + \lambda \cdot \text{Penalty}(\beta)
+</span></p></li>
+<li><p>Common choices of penalties:</p>
+<ul>
+<li>Lasso<br>
+</li>
+<li>Ridge<br>
+</li>
+<li>Elastic Net</li>
+</ul></li>
+<li><p>Refer to the topic of <strong>Modelling and Shrage Techniques</strong> discussed earlier</p></li>
+</ul>
+</section></section>
+<section>
+<section id="using-r" class="title-slide slide level1 center">
+<h1>Using R</h1>
+
+</section>
+<section id="using-r-glm" class="slide level2 center">
+<h2>Using R: glm()</h2>
+<ul>
+<li><code>glm()</code> function
+<ul>
+<li><code>glm(formula, family = familytype(link = linkfunction), data = )</code></li>
+</ul></li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Family</th>
+<th>Default (canonical) link</th>
+<th>Other / preferred link(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>binomial</td>
+<td>(link = “logit”)</td>
+<td>“probit”, “cloglog”</td>
+</tr>
+<tr class="even">
+<td>gaussian</td>
+<td>(link = “identity”)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>gamma</td>
+<td>(link = “inverse”)</td>
+<td>“log”</td>
+</tr>
+<tr class="even">
+<td>inverse.gaussian</td>
+<td>(link = “1/mu^2”)</td>
+<td>“log”</td>
+</tr>
+<tr class="odd">
+<td>poisson</td>
+<td>(link = “log”)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>quasipoisson</td>
+<td>(link = “log”)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>quasibinomial</td>
+<td>(link = “logit”)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="other-useful-r-functions" class="slide level2 center">
+<h2>Other Useful R Functions</h2>
+<ul>
+<li><code>library(statmod)</code> and <code>library(tweedie)</code></li>
+<li><code>glm.nb()</code> (from <strong>MASS</strong>): fit a Negative Binomial regression</li>
+<li><code>tweedie.profile()</code>: maximum likelihood estimation of the Tweedie index parameter <span class="math inline">p</span></li>
+<li><code>step()</code>: stepwise model selection</li>
+<li><code>summary()</code></li>
+<li><code>AIC()</code></li>
+<li><code>BIC()</code></li>
+<li>etc.</li>
+</ul>
+</section></section>
+<section>
+<section id="examples" class="title-slide slide level1 center">
+<h1>Examples</h1>
+
+</section>
+<section id="example-1-question" class="slide level2 center">
+<h2>Example 1: Question</h2>
+<p>You are working as an actuarial analyst for a general insurer. You are given a dataset with the following information:</p>
+<ul>
+<li>NumClaims: number of claims of a policyholder over a period of time<br>
+</li>
+<li>Time: the number of years a policyholder is observed<br>
+</li>
+<li>Age: age of a policyholder<br>
+</li>
+<li>Gender: gender of a policyholder<br>
+</li>
+<li>RiskCat: risk category to which a policyholder belongs</li>
+</ul>
+</section>
+<section id="example-1-question-continued" class="slide level2 continued center">
+<h2>Example 1: Question (continued)</h2>
+<p>You are asked to examine the effects of various factors on the number of claims that a policyholder is observed over a period of time. Please specify: 1. the distribution of the target variable<br>
+2. the predictors<br>
+3. the link function<br>
+4. the offset (if any)<br>
+5. write down the key R command to fit such a GLM</p>
+</section>
+<section id="example-1-solution" class="slide level2 center">
+<h2>Example 1: Solution</h2>
+<ol type="1">
+<li>Poisson distribution</li>
+<li>Age, Gender and RiskCat</li>
+<li>log link</li>
+<li><span class="math inline">\log(\text{Time})</span></li>
+<li><code>modPossion &lt;- glm(NumClaims ~ Age + Gender + RiskCat, family=poisson, offet = log(Time))</code></li>
+</ol>
+</section>
+<section id="example-2-question" class="slide level2 center">
+<h2>Example 2: Question</h2>
+<p>We analyse 4624 claims from Australian automobile insurance to understand the factors that affect claim severity and to predict claim severity.</p>
+<ul>
+<li>ClaimAmount: the sum of claim payments<br>
+</li>
+<li>VehValue: the vehicle value in thousands of Australian dollars<br>
+</li>
+<li>Gender: the gender of the policyholder (Female = 1, Male = 0)</li>
+</ul>
+</section>
+<section id="example-2-question-continued" class="slide level2 continued center">
+<h2>Example 2: Question (continued)</h2>
+
+<img data-src="plot/GLM_E2.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">R output for fitted GLM</p></section>
+<section id="example-2-question-continued-1" class="slide level2 continued center">
+<h2>Example 2: Question (continued)</h2>
+<ol type="1">
+<li>Specify the distribution and the link function used in this model.<br>
+</li>
+<li>Explain why they are selected for this example.<br>
+</li>
+<li>Write down the mathematical form of the link function <span class="math inline">g(\mu) = X^T \beta</span> for this model.<br>
+</li>
+<li>Interpret the GLM coefficients related to VehValue and Female.<br>
+</li>
+<li>Discuss how to perform diagnostic checking for this model.</li>
+</ol>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+
+<div class="quarto-auto-generated-content">
+<p><img src="../../unsw-logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-james2013introduction" class="csl-entry" role="listitem">
+James, Gareth, Daniela Witten, Trevor Hastie, Robert Tibshirani, et al. 2013. <em>An Introduction to Statistical Learning: With Applications in r</em>. Vol. 103. Springer.
+</div>
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true,"boardmarkerWidth":3,"grid":false,"background":["rgba(255,255,255,0.0)","https://github.com/rajgoel/reveal.js-plugins/raw/master/chalkboard/img/blackboard.png"]},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1000,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp("https:\/\/datascience\.feihuang\.org");
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
