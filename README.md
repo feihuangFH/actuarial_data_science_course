@@ -20,4 +20,4 @@ HOW TO CITE
 
 If you are using this textbook in your academic work, please find below an example for referencing it using the APA citation style.
   
-Huang, F. (2026). *Actuarial Data Science: An open learning resource for end-to-end actuarial data science*. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6955338 
+Huang, F. (2026). *Actuarial Data Science: An Open Learning Resource*. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6955338 

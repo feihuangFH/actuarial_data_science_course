@@ -4061,7 +4061,7 @@
     "href": "index.html#how-to-cite",
     "title": "Actuarial Data Science",
     "section": "How to cite",
-    "text": "How to cite\nIf you are using this textbook in your academic work, please find below an example for referencing it using the APA citation style.\nHuang, F. (2026). Actuarial Data Science: An open learning resource for end-to-end actuarial data science. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6955338\n\nBibTeX\n\n\n\n\n\n\nShow BibTeX\n\n\n\n\n\n@misc{huang2026actuarialdatascience,\n  title     = {Actuarial Data Science: An Open Learning Resource for\n               End-to-End Actuarial Data Science},\n  author    = {Huang, Fei},\n  year      = {2026},\n  publisher = {SSRN},\n  doi       = {10.2139/ssrn.6955338},\n  url       = {https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6955338}\n}",
+    "text": "How to cite\nIf you are using this textbook in your academic work, please find below an example for referencing it using the APA citation style.\nHuang, F. (2026). Actuarial Data Science: An Open Learning Resource. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6955338\n\nBibTeX\n\n\n\n\n\n\nShow BibTeX\n\n\n\n\n\n@misc{huang2026actuarialdatascience,\n  title     = {Actuarial Data Science: An Open Learning Resource},\n  author    = {Huang, Fei},\n  year      = {2026},\n  publisher = {SSRN},\n  doi       = {10.2139/ssrn.6955338},\n  url       = {https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6955338}\n}",
     "crumbs": [
       "Home"
     ]
