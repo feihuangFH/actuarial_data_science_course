@@ -101,49 +101,6 @@ gtag('js', new Date());
 gtag('config', 'G-F11HECZVN7', { 'anonymize_ip': true});
 </script>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
-  <script>document.addEventListener("DOMContentLoaded", function () {
- var mathElements = document.getElementsByClassName("math");
- var macros = [];
- for (var i = 0; i < mathElements.length; i++) {
-  var texText = mathElements[i].firstChild;
-  if (mathElements[i].tagName == "SPAN") {
-   katex.render(texText.data, mathElements[i], {
-    displayMode: mathElements[i].classList.contains('display'),
-    throwOnError: false,
-    macros: macros,
-    fleqn: false
-   });
-}}});
-  </script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -613,21 +570,13 @@ Figure&nbsp;2: Data Science Lifecycle
 </tr>
 </tbody>
 </table>
-<section id="modelling-chapter-4" class="level5" data-number="3.1.1">
-<h5 data-number="3.1.1" class="anchored" data-anchor-id="modelling-chapter-4"><span class="header-section-number">3.1.1</span> Modelling (Chapter 4)</h5>
-<p>Chapter 4 is the technical core of the OLR. The shrinkage lecture opens with a conceptual map of statistical machine learning, distinguishing supervised, unsupervised, semi-supervised, and reinforcement learning, before moving through the iterative modelling process. A polynomial curve-fitting example grounds the bias-variance trade-off concretely before shrinkage techniques are introduced.</p>
-<p>Shrinkage coverage includes ridge (L2) and lasso (L1) regularisation, their Bayesian interpretations as Gaussian and Laplace priors respectively, the limitations of lasso under grouped variables and when <span class="math inline">p &gt; n</span>, and the elastic net as a remedy. The chapter extends these ideas to regularised GLMs, sparse PCA, regularised clustering, and regularised random forests. Practical R implementation uses the <code>glmnet</code> package throughout.</p>
-<p>Subsequent lectures in Chapter 4 cover GLMs for insurance (Poisson, Gamma, Tweedie), tree-based methods (random forests, gradient boosting), and neural networks, each with worked insurance examples.</p>
-</section>
-<section id="evaluation-chapter-5" class="level5" data-number="3.1.2">
-<h5 data-number="3.1.2" class="anchored" data-anchor-id="evaluation-chapter-5"><span class="header-section-number">3.1.2</span> Evaluation (Chapter 5)</h5>
-<p>Chapter 5 addresses the practical question of which model to trust and how to estimate its performance on unseen data. Coverage includes the No Free Lunch theorem and Occam’s Razor as orienting principles, the full bias-variance decomposition, in-sample error estimates (<span class="math inline">C_p</span>, AIC, BIC, adjusted <span class="math inline">R^2</span>), and extra-sample error estimates through cross-validation and bootstrap methods (including the .632 and .632+ bootstrap estimators). Classification performance measures (accuracy, precision, recall, F1, and AUC/ROC) are treated alongside regression metrics.</p>
-<p>The chapter closes with model assessment in a business context, including sense-checking model outputs against domain knowledge and segmented diagnostics by consumer or risk subgroup. This last point is particularly relevant for insurance, where global metrics can mask poor calibration in commercially important segments.</p>
-</section>
-<section id="ethics-chapter-7" class="level5" data-number="3.1.3">
-<h5 data-number="3.1.3" class="anchored" data-anchor-id="ethics-chapter-7"><span class="header-section-number">3.1.3</span> Ethics (Chapter 7)</h5>
-<p>The ethics chapter revisits the Data Science Lifecycle and introduces the Ethical AI Lifecycle, a six-stage framework spanning problem definition through deployment <span class="citation" data-cites="huang2025checkyourai">(<a href="#ref-huang2025checkyourai" role="doc-biblioref">Huang 2025</a>)</span>. Coverage includes major principles of AI ethics (fairness, transparency, accountability, privacy), discrimination and fairness in insurance, approaches to mitigating bias, quantitative fairness criteria, and regulatory responses to AI in insurance pricing.</p>
-</section>
+<p>Chapter 1 introduces actuarial data science as an end-to-end discipline. It presents the Actuarial Control Cycle and the Data Science Lifecycle, explains how the OLR is aligned with the Actuaries Institute Part II syllabus, and sets out the interdisciplinary foundations of the field.</p>
+<p>Chapter 2 focuses on problem framing. It shows how to turn a vague business concern into a clear, answerable data science question, and why business objectives, constraints, and operating context must be understood before any data work begins.</p>
+<p>Chapter 3 covers data work across three lectures. Data visualisation introduces exploratory graphics and the grammar of graphics. Data manipulation and transformation covers tidy data workflows in R. Data collection and cleaning addresses import, quality checks, and preparing analysis-ready datasets.</p>
+<p>Chapter 4 is the technical core of the OLR. It opens with a map of statistical machine learning and the bias-variance trade-off, then covers shrinkage techniques (ridge, lasso, elastic net), generalised linear models for insurance, and tree-based and neural network methods, with worked examples throughout.</p>
+<p>Chapter 5 introduces model assessment and selection. It covers bias-variance decomposition, in-sample and out-of-sample error estimates (including cross-validation and bootstrap methods), classification and regression metrics, and model assessment in a business context with segmented diagnostics.</p>
+<p>Chapter 6 addresses communication. It explains how to present modelling results to different stakeholder audiences, link findings back to business objectives, and produce reproducible reports that support transparent, trustworthy analysis.</p>
+<p>Chapter 7 covers ethics and responsible AI. It revisits the Data Science Lifecycle through the Ethical AI Lifecycle <span class="citation" data-cites="huang2025checkyourai">(<a href="#ref-huang2025checkyourai" role="doc-biblioref">Huang 2025</a>)</span>, including fairness, transparency, accountability, discrimination in insurance pricing, and regulatory responses to algorithmic systems.</p>
 </section>
 <section id="labs" class="level4" data-number="3.2">
 <h4 data-number="3.2" class="anchored" data-anchor-id="labs"><span class="header-section-number">3.2</span> Labs</h4>
