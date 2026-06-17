@@ -20,4 +20,4 @@ HOW TO CITE
 
 If you are using this textbook in your academic work, please find below an example for referencing it using the APA citation style.
   
-Huang, F. (2026). Actuarial Data Science - Open Learning Resource. https://datascience.feihuang.org (GitHub Pages mirror: https://feihuangfh.github.io/actuarial_data_science_course; source: https://github.com/feihuangFH/actuarial_data_science_course). 
+Huang, F. (2026). *Actuarial Data Science: An open learning resource for end-to-end actuarial data science*. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6955338 

@@ -118,7 +118,7 @@
   </url>
   <url>
     <loc>https://datascience.feihuang.org/index.html</loc>
-    <lastmod>2026-06-16T13:36:52.545Z</lastmod>
+    <lastmod>2026-06-17T00:17:09.914Z</lastmod>
   </url>
   <url>
     <loc>https://datascience.feihuang.org/Labs/Lab-Evaluations/Lab-Evaluation.html</loc>
@@ -147,5 +147,9 @@
   <url>
     <loc>https://datascience.feihuang.org/Labs/Lab-Models/Lab-RandomForest/Lab-RandomForest.html</loc>
     <lastmod>2026-05-11T02:01:50.965Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datascience.feihuang.org/report.html</loc>
+    <lastmod>2026-06-17T00:17:12.737Z</lastmod>
   </url>
 </urlset>
