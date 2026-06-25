@@ -4061,7 +4061,7 @@
     "href": "index.html#how-to-cite",
     "title": "Actuarial Data Science",
     "section": "How to cite",
-    "text": "How to cite\nIf you are using this textbook in your academic work, please find below an example for referencing it using the APA citation style.\nHuang, F. (2026). Actuarial Data Science: An Open Learning Resource. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6955338\n\nBibTeX\n\n\n\n\n\n\nShow BibTeX\n\n\n\n\n\n@misc{huang2026actuarialdatascience,\n  title     = {Actuarial Data Science: An Open Learning Resource},\n  author    = {Huang, Fei},\n  year      = {2026},\n  publisher = {SSRN},\n  doi       = {10.2139/ssrn.6955338},\n  url       = {https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6955338}\n}",
+    "text": "How to cite\n\nCiting the website\nHuang, F. (2026). Actuarial Data Science: An Open Learning Resource. Retrieved June 2026, from https://datascience.feihuang.org\n\n\n\n\n\n\nShow BibTeX\n\n\n\n\n\n@misc{huang2026actuarialdatascience_website,\n  title        = {Actuarial Data Science: An Open Learning Resource},\n  author       = {Huang, Fei},\n  year         = {2026},\n  howpublished = {\\url{https://datascience.feihuang.org}},\n  note         = {Retrieved June 2026}\n}\n\n\n\n\n\nCiting the report\nHuang, F. (2026). Actuarial Data Science: An Open Learning Resource. SSRN. https://doi.org/10.2139/ssrn.6955338\n\n\n\n\n\n\nShow BibTeX\n\n\n\n\n\n@misc{huang2026actuarialdatascience,\n  title     = {Actuarial Data Science: An Open Learning Resource},\n  author    = {Huang, Fei},\n  year      = {2026},\n  publisher = {SSRN},\n  doi       = {10.2139/ssrn.6955338},\n  url       = {https://doi.org/10.2139/ssrn.6955338}\n}",
     "crumbs": [
       "Home"
     ]
