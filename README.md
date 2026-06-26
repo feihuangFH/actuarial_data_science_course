@@ -13,6 +13,17 @@ Developed by [Fei Huang](https://www.feihuang.org), UNSW Sydney.
 
 This repository includes references from other open books, each subject to their respective licenses. All materials created by me are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). For more details, please refer to the LICENSE file included in this repository.
 
+## Reproduce locally
+
+```bash
+git clone https://github.com/feihuangFH/actuarial_data_science_course.git
+cd actuarial_data_science_course
+make render   # uses CRAN R at /usr/local/bin/R
+make preview
+```
+
+Requires [Quarto](https://quarto.org/docs/get-started/) and R 4.x from [CRAN](https://cran.r-project.org). The `Makefile` ensures the correct R installation is used.
+
 ## How to cite
 
 Huang, F. (2026). *Actuarial Data Science: Open Learning Resource* (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.20718647
