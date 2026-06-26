@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this resource, please cite it as below."
+authors:
+  - family-names: Huang
+    given-names: Fei
+    orcid: https://orcid.org/0000-0003-3406-5948
+    affiliation: "School of Risk and Actuarial Studies, UNSW Business School, UNSW Sydney"
+title: "Actuarial Data Science: Open Learning Resource"
+version: "1.0.0"
+date-released: 2026-06-16
+url: "https://datascience.feihuang.org"
+repository-code: "https://github.com/feihuangFH/actuarial_data_science_course"
+license: CC-BY-4.0
+doi: 10.5281/zenodo.20718647
+abstract: >
+  An open learning resource for actuarial data science, covering an end-to-end
+  problem solving process with data science techniques to tackle various data
+  problems in a business context. Topics include generalised linear models,
+  machine learning, model selection, and responsible AI.
+keywords:
+  - actuarial data science
+  - machine learning
+  - generalised linear models
+  - model selection
+  - responsible AI
+  - open learning resource

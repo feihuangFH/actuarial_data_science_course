@@ -1,23 +1,20 @@
-Actuarial Data Science Online Textbook
-===========
+# Actuarial Data Science: Open Learning Resource
 
-This is the repo for the course *Actuarial Data Science Applications* developed by
-[Fei Huang](https://www.feihuang.org) at UNSW Sydney.
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20718647-blue)](https://doi.org/10.5281/zenodo.20718647)
 
-Please open the site at **[datascience.feihuang.org](https://datascience.feihuang.org)** (GitHub Pages mirror: [feihuangfh.github.io/actuarial_data_science_course](https://feihuangfh.github.io/actuarial_data_science_course)).
+An open learning resource for actuarial data science, covering an end-to-end problem solving process with data science techniques for business applications.
 
+**Live site: [datascience.feihuang.org](https://datascience.feihuang.org)**
 
-LICENSE
---------
+Developed by [Fei Huang](https://www.feihuang.org), UNSW Sydney.
 
-This repository includes references from other open books, each subject to their respective licenses. 
-All materials created by me are licensed under the [Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/legalcode.en)
-license. For more details, please refer to the LICENSE file included in this repository.
+## License
 
+This repository includes references from other open books, each subject to their respective licenses. All materials created by me are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). For more details, please refer to the LICENSE file included in this repository.
 
-HOW TO CITE
----------
+## How to cite
 
-If you are using this textbook in your academic work, please find below an example for referencing it using the APA citation style.
-  
-Huang, F. (2026). *Actuarial Data Science: An Open Learning Resource*. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6955338 
+Huang, F. (2026). *Actuarial Data Science: Open Learning Resource* (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.20718647
+
+A `CITATION.cff` file is included for one-click citation from the GitHub interface.
