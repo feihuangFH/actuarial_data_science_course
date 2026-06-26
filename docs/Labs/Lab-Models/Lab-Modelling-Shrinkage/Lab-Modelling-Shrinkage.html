@@ -65,6 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
+<link href="../../../Labs/Lab-Models/Lab-GLM/Lab-GLM.html" rel="next">
+<link href="../../../Lectures/Ch4-Modelling/Neural_Networks.html" rel="prev">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -168,9 +170,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
-      Actuarial Data Science
-      </li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html">Chapter 4 · Modelling</a></li><li class="breadcrumb-item"><a href="../../../Labs/Lab-Models/Lab-Modelling-Shrinkage/Lab-Modelling-Shrinkage.html">Labs</a></li><li class="breadcrumb-item"><a href="../../../Labs/Lab-Models/Lab-Modelling-Shrinkage/Lab-Modelling-Shrinkage.html">Lab · Shrinkage</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -195,33 +195,50 @@ window.Quarto = {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Home</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../index.html#datathon" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Industry datathon</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../index.html#teaching-in-tune" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Teaching in Tune</span></a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Chapter 1 - Introduction</span></a>
+ <span class="menu-text">Introduction</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Report</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../index.html#datathon" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Industry Datathon</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../index.html#teaching-in-tune" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Teaching in Tune</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 1 · Introduction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../Lectures/Ch1-Introduction/Introduction to Actuarial Data Science.html" class="sidebar-item-text sidebar-link">
@@ -231,61 +248,32 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../Lectures/Ch1-Introduction/Lecture-Introduction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Introduction to Actuarial Data Science</span></a>
+ <span class="menu-text">Lecture Slides</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Labs</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Labs/Lab-MarkdownIntroduction/Lab-R_Markdown_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab · R Markdown Introduction</span></a>
   </div>
 </li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Chapter 2 - Problem Statement</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../Lectures/Ch2-Problem Statement/Lecture-Problem Statement.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Problem Statement</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Chapter 3 - Data</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Data Visualisation</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Data Manipulation and Transformation</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Data Quality Check and Cleaning</span></a>
-  </div>
-</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Chapter 4 - Modelling</span></a>
+ <span class="menu-text">Chapter 2 · Problem Statement</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -293,32 +281,8 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Modelling and Shrinkage techniques</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../Lectures/Ch4-Modelling/GLM.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: GLM</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../Lectures/Ch4-Modelling/Random_Forests.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Random Forests</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Gradient Boosting Machine</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../Lectures/Ch4-Modelling/Neural_Networks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Neural Networks</span></a>
+  <a href="../../../Lectures/Ch2-Problem Statement/Lecture-Problem Statement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Problem Statement</span></a>
   </div>
 </li>
       </ul>
@@ -326,7 +290,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
- <span class="menu-text">Chapter 5 - Evaluations</span></a>
+ <span class="menu-text">Chapter 3 · Data</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -334,33 +298,51 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Model Assessment and Selection</span></a>
+  <a href="../../../Lectures/Ch3-Data/Ch3-1-DataVisualisation/Lecture-Data-Visualisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch3-Data/Ch3-2-DataManipulation/Lecture-Data Manipulation and Transformation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Manipulation and Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch3-Data/Ch3-3-DataCleaning/Lecture-Import-Quality-Check-and-Cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Labs</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Labs/Lab-EDA/Lab-DataVisualisation/Lab-Data_Visualisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab · Data Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Labs/Lab-EDA/Lab-DataManipulation/Lab-Data Manipulation_and_Cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab · Data Manipulation and Cleaning</span></a>
   </div>
 </li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
- <span class="menu-text">Chapter 6 - Communication</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../Lectures/Ch6-Communication/Communication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Communication</span></a>
-  </div>
-</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text">Chapter 7 - Ethics</span></a>
+ <span class="menu-text">Chapter 4 · Modelling</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -368,8 +350,141 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Shrinkage Techniques</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch4-Modelling/GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Generalised Linear Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch4-Modelling/Random_Forests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Random Forests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch4-Modelling/Gradient_Boosting_Machine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gradient Boosting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch4-Modelling/Neural_Networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Neural Networks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Labs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Labs/Lab-Models/Lab-Modelling-Shrinkage/Lab-Modelling-Shrinkage.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lab · Shrinkage</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Labs/Lab-Models/Lab-GLM/Lab-GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab · GLM</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Labs/Lab-Models/Lab-RandomForest/Lab-RandomForest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab · Random Forests</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Labs/Lab-Models/Lab-GradientBoostingMachine/Lab-GradientBoostingMachine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab · Gradient Boosting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Labs/Lab-Models/Lab-NeuralNetworks/Lab-NeuralNetworks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab · Neural Networks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 5 · Evaluation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch5-Evaluation/Model-Assessment-and-Selection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Assessment and Selection</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
+ <span class="menu-text">Labs</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Labs/Lab-Evaluations/Lab-Evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab · Evaluation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 6 · Communication</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../Lectures/Ch6-Communication/Communication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Communication</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true">
+ <span class="menu-text">Chapter 7 · Ethics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../../Lectures/Ch8-Ethics/Ethics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture: Ethics</span></a>
+ <span class="menu-text">Ethics</span></a>
   </div>
 </li>
       </ul>
@@ -417,7 +532,7 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../Lectures/Ch4-Modelling/Modelling_and_Shrinkage_Techniques.html">Chapter 4 · Modelling</a></li><li class="breadcrumb-item"><a href="../../../Labs/Lab-Models/Lab-Modelling-Shrinkage/Lab-Modelling-Shrinkage.html">Labs</a></li><li class="breadcrumb-item"><a href="../../../Labs/Lab-Models/Lab-Modelling-Shrinkage/Lab-Modelling-Shrinkage.html">Lab · Shrinkage</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Lab: Modelling and Shrinkage Techniques</h1>
 <p class="subtitle lead">Actuarial Data Science - Open Learning Resource</p>
@@ -1485,6 +1600,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../Lectures/Ch4-Modelling/Neural_Networks.html" class="pagination-link" aria-label="Neural Networks">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Neural Networks</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../Labs/Lab-Models/Lab-GLM/Lab-GLM.html" class="pagination-link" aria-label="Lab · GLM">
+        <span class="nav-page-text">Lab · GLM</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
