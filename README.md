@@ -9,6 +9,10 @@ An open learning resource for actuarial data science, covering an end-to-end pro
 
 Developed by [Fei Huang](https://www.feihuang.org), UNSW Sydney.
 
+## Development notes
+
+This project was developed with support from AI coding assistants (Claude Code and Cursor). All analysis, content decisions, and conclusions are the author's own and her responsibility.
+
 ## License
 
 This repository includes references from other open books, each subject to their respective licenses. All materials created by me are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). For more details, please refer to the LICENSE file included in this repository.
