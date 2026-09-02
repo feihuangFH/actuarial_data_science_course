@@ -10,7 +10,7 @@ version: "1.0.0"
 date-released: 2026-06-16
 url: "https://datascience.feihuang.org"
 repository-code: "https://github.com/feihuangFH/actuarial_data_science_course"
-license: CC-BY-4.0
+license: CC-BY-NC-ND-4.0
 doi: 10.5281/zenodo.20718647
 abstract: >
   An open learning resource for actuarial data science, covering an end-to-end
