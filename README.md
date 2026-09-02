@@ -1,6 +1,6 @@
 # Actuarial Data Science: Open Learning Resource
 
-[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20718647-blue)](https://doi.org/10.5281/zenodo.20718647)
 
 An open learning resource for actuarial data science, covering an end-to-end problem solving process with data science techniques for business applications.
@@ -15,7 +15,7 @@ This project was developed with support from AI coding assistants (Claude Code a
 
 ## License
 
-This repository includes references from other open books, each subject to their respective licenses. All materials created by me are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). For more details, please refer to the LICENSE file included in this repository.
+This repository includes references from other open books, each subject to their respective licenses. All materials created by me are licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/). For more details, please refer to the LICENSE file included in this repository.
 
 ## Reproduce locally
 
