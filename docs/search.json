@@ -5137,7 +5137,7 @@
     "href": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#wolf-or-husky",
     "title": "Lecture: Problem Statement",
     "section": "Wolf or Husky?",
-    "text": "Wolf or Husky?\n\n\n\n\n\nWolf\n\n\n\n\n\n\nHusky\n\n\n\n\nA classifier trained to distinguish wolves from huskies reached high accuracy, but for the wrong reason (Ribeiro et al. 2016)\nIt had learned to detect snow in the background, since wolf photos in the training data were mostly taken in snowy settings, not the animal itself\nThe signal was real and predictive. It was still not what anyone wanted the model to learn"
+    "text": "Wolf or Husky?\n\n\n\n\n\n\n\nA classifier trained to distinguish wolves from huskies reached high accuracy, but for the wrong reason (Ribeiro et al. 2016)\nIt had learned to detect snow in the background, since wolf photos in the training data were mostly taken in snowy settings, not the animal itself\nThe signal was real and predictive. It was still not what anyone wanted the model to learn"
   },
   {
     "objectID": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#ai-systems-for-covid-19-detection-which-x-ray-features-matter",
@@ -5158,7 +5158,7 @@
     "href": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#how-australian-law-regulates-insurance-discrimination",
     "title": "Lecture: Problem Statement",
     "section": "How Australian Law Regulates Insurance Discrimination?",
-    "text": "How Australian Law Regulates Insurance Discrimination?\n\nInsurance exemptions: insurers may charge different prices based on age, disability or sex when supported by reasonable actuarial or statistical evidence\nEvidence standard: data must be current, complete, credible, sufficiently large, and relevant to the individual risk\nNo racial exemption: race, colour, descent, ethnicity, and immigrant status are protected under the Racial Discrimination Act\nRemoving a protected attribute from a dataset is not enough on its own. Other data may still act as a proxy for it"
+    "text": "How Australian Law Regulates Insurance Discrimination?\n\nInsurance exemptions: insurers may charge different prices based on age, disability or sex when supported by reasonable actuarial or statistical evidence\nEvidence standard: data must be current, complete, credible, sufficiently large, and relevant to the individual risk\nNo racial exemption: race, colour, descent, ethnicity, and immigrant status are protected under the Racial Discrimination Act\nBroader protections: state and territory laws may also protect other attributes, such as religious belief\nRemoving a protected attribute from a dataset is not enough on its own. Other data may still act as a proxy for it"
   },
   {
     "objectID": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#transparency",
@@ -5186,6 +5186,13 @@
     "href": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#algorithmic-pricing",
     "title": "Lecture: Problem Statement",
     "section": "Algorithmic Pricing",
-    "text": "Algorithmic Pricing\n\n\n\n\n\n\nTraditional rating factors and third-party data both feed an opaque pricing model, and anti-discrimination regulation and fairness criteria both have to constrain it. Before we can ask how to price fairly, we need to understand the business environment those pricing decisions actually sit inside."
+    "text": "Algorithmic Pricing"
+  },
+  {
+    "objectID": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#discussion",
+    "href": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#discussion",
+    "title": "Lecture: Problem Statement",
+    "section": "Discussion",
+    "text": "Discussion\n\n\n\n\n\n\n\nQuestion\n\n\nIs insurance pricing a pure predictive task?"
   }
 ]

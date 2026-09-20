@@ -544,32 +544,22 @@ Fei Huang, UNSW Sydney
 <h2>Wolf or Husky?</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
 <p><img data-src="plot/wolf.png" style="height:2.3in"></p>
-<figcaption>Wolf</figcaption>
-</figure>
-</div>
 </div><div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="plot/husky.jpg" style="height:2.3in"></p>
-<figcaption>Husky</figcaption>
-</figure>
-</div>
+<p><img data-src="plot/husky.png" style="height:2.3in"></p>
 </div></div>
 <ul>
-<li>A classifier trained to distinguish wolves from huskies reached high accuracy, but for the wrong reason <span class="citation" data-cites="ribeiro2016trust">(<a href="#/references" role="doc-biblioref" onclick="">Ribeiro et al. 2016</a>)</span></li>
-<li>It had learned to detect <strong>snow in the background</strong>, since wolf photos in the training data were mostly taken in snowy settings, not the animal itself</li>
-<li>The signal was real and predictive. It was still not what anyone wanted the model to learn</li>
+<li class="fragment">A classifier trained to distinguish wolves from huskies reached high accuracy, but for the wrong reason <span class="citation" data-cites="ribeiro2016trust">(<a href="#/references" role="doc-biblioref" onclick="">Ribeiro et al. 2016</a>)</span></li>
+<li class="fragment">It had learned to detect <strong>snow in the background</strong>, since wolf photos in the training data were mostly taken in snowy settings, not the animal itself</li>
+<li class="fragment">The signal was real and predictive. It was still not what anyone wanted the model to learn</li>
 </ul>
 </section>
 <section id="ai-systems-for-covid-19-detection-which-x-ray-features-matter" class="slide level2 center">
 <h2>AI Systems for COVID-19 Detection: Which X-Ray Features Matter?</h2>
 
 <img data-src="plot/covid_ai_shortcut.jpg" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Illustration generated using AI</p><ul>
-<li>AI systems trained to detect COVID-19 from chest X-rays have been found to learn hospital- or dataset-specific shortcuts, such as image artifacts and acquisition differences, instead of genuine signs of disease <span class="citation" data-cites="degrave2021ai">(<a href="#/references" role="doc-biblioref" onclick="">DeGrave et al. 2021</a>)</span></li>
-<li>They can perform well on familiar data and still generalise poorly to a new hospital</li>
+<li class="fragment">AI systems trained to detect COVID-19 from chest X-rays have been found to learn hospital- or dataset-specific shortcuts, such as image artifacts and acquisition differences, instead of genuine signs of disease <span class="citation" data-cites="degrave2021ai">(<a href="#/references" role="doc-biblioref" onclick="">DeGrave et al. 2021</a>)</span></li>
+<li class="fragment">They can perform well on familiar data and still generalise poorly to a new hospital</li>
 </ul>
 </section>
 <section id="what-do-we-mean-by-fair" class="slide level2 center">
@@ -608,6 +598,7 @@ Fei Huang, UNSW Sydney
 <li><strong>Insurance exemptions</strong>: insurers may charge different prices based on age, disability or sex when supported by reasonable actuarial or statistical evidence</li>
 <li><strong>Evidence standard</strong>: data must be current, complete, credible, sufficiently large, and relevant to the individual risk</li>
 <li><strong>No racial exemption</strong>: race, colour, descent, ethnicity, and immigrant status are protected under the Racial Discrimination Act</li>
+<li><strong>Broader protections</strong>: state and territory laws may also protect other attributes, such as religious belief</li>
 <li>Removing a protected attribute from a dataset is not enough on its own. Other data may still act as a proxy for it</li>
 </ul>
 </section>
@@ -659,7 +650,24 @@ Fei Huang, UNSW Sydney
 </div><div class="column" style="width:30%;">
 <p><img data-src="plot/algorithmic_pricing.png" style="width:100.0%"></p>
 </div></div>
-<p>Traditional rating factors and third-party data both feed an opaque pricing model, and anti-discrimination regulation and fairness criteria both have to constrain it. Before we can ask <em>how</em> to price fairly, we need to understand the business environment those pricing decisions actually sit inside.</p>
+</section>
+<section id="discussion" class="slide level2 center">
+<h2>Discussion</h2>
+<div title="Question">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Question</strong></p>
+</div>
+<div class="callout-content">
+<p>Is insurance pricing a pure predictive task?</p>
+</div>
+</div>
+</div>
+</div>
 </section></section>
 <section>
 <section id="business-environment-and-constraints" class="title-slide slide level1 center">
