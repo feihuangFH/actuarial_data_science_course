@@ -180,6 +180,7 @@ Fei Huang, UNSW Sydney
 <li><a href="#/the-data-science-lifecycle" id="/toc-the-data-science-lifecycle">The Data Science Lifecycle</a></li>
 <li><a href="#/question-types-and-good-questions" id="/toc-question-types-and-good-questions">Question Types and Good Questions</a></li>
 <li><a href="#/translating-questions-into-data-problems" id="/toc-translating-questions-into-data-problems">Translating Questions into Data Problems</a></li>
+<li><a href="#/trust-fairness-and-ai-in-insurance-pricing" id="/toc-trust-fairness-and-ai-in-insurance-pricing">Trust, Fairness, and AI in Insurance Pricing</a></li>
 <li><a href="#/business-environment-and-constraints" id="/toc-business-environment-and-constraints">Business Environment and Constraints</a></li>
 </ul>
 </nav>
@@ -527,6 +528,124 @@ Fei Huang, UNSW Sydney
 </ul>
 </section></section>
 <section>
+<section id="trust-fairness-and-ai-in-insurance-pricing" class="title-slide slide level1 center">
+<h1>Trust, Fairness, and AI in Insurance Pricing</h1>
+
+</section>
+<section id="when-ai-identifies-a-predictive-signal-can-we-trust-it" class="slide level2 center">
+<h2>When AI Identifies a Predictive Signal, Can We Trust It?</h2>
+<ul>
+<li>A model can find a real, statistically strong pattern in your data and still have learned the wrong thing</li>
+<li>Before trusting a predictive signal, ask <em>what</em> the model actually picked up on, not just <em>how well</em> it predicts</li>
+<li>Two examples make this concrete</li>
+</ul>
+</section>
+<section id="wolf-or-husky" class="slide level2 center">
+<h2>Wolf or Husky?</h2>
+
+<img data-src="plot/wolf_husky.png" style="width:40.0%" class="r-stretch"><ul>
+<li>A classifier trained to distinguish wolves from huskies reached high accuracy, but for the wrong reason <span class="citation" data-cites="ribeiro2016trust">(<a href="#/references" role="doc-biblioref" onclick="">Ribeiro et al. 2016</a>)</span></li>
+<li>It had learned to detect <strong>snow in the background</strong>, since wolf photos in the training data were mostly taken in snowy settings, not the animal itself</li>
+<li>The signal was real and predictive. It was still not what anyone wanted the model to learn</li>
+</ul>
+</section>
+<section id="ai-systems-for-covid-19-detection-which-x-ray-features-matter" class="slide level2 center">
+<h2>AI Systems for COVID-19 Detection: Which X-Ray Features Matter?</h2>
+
+<img data-src="plot/covid_ai_shortcut.jpg" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Illustration generated using AI</p><ul>
+<li>AI systems trained to detect COVID-19 from chest X-rays have been found to learn hospital- or dataset-specific shortcuts, such as image artifacts and acquisition differences, instead of genuine signs of disease</li>
+<li>They can perform well on familiar data and still generalise poorly to a new hospital</li>
+</ul>
+</section>
+<section id="what-do-we-mean-by-fair" class="slide level2 center">
+<h2>What Do We Mean by “Fair”?</h2>
+<p><em>“Fairness” is an overloaded concept.</em></p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>Anti-discrimination</strong></p>
+<p>Legal obligation</p>
+<ul>
+<li>Direct discrimination</li>
+<li>Indirect discrimination</li>
+<li>The legal standard</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<p><strong>Competing notions</strong></p>
+<p>Contested ethical terrain</p>
+<ul>
+<li>Actuarial fairness</li>
+<li>Social justice</li>
+<li>Choice-sensitive fairness</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<p><strong>Consumer trust</strong></p>
+<p>Contractual commitment</p>
+<ul>
+<li>Codes of practice</li>
+<li>Consumer promises</li>
+<li>Product disclosure</li>
+</ul>
+</div></div>
+</section>
+<section id="how-australian-law-regulates-insurance-discrimination" class="slide level2 center">
+<h2>How Australian Law Regulates Insurance Discrimination?</h2>
+<ul>
+<li><strong>Insurance exemptions</strong>: insurers may charge different prices based on age, disability or sex when supported by reasonable actuarial or statistical evidence</li>
+<li><strong>Evidence standard</strong>: data must be current, complete, credible, sufficiently large, and relevant to the individual risk</li>
+<li><strong>No racial exemption</strong>: race, colour, descent, ethnicity, and immigrant status are protected under the Racial Discrimination Act</li>
+<li>Removing a protected attribute from a dataset is not enough on its own. Other data may still act as a proxy for it</li>
+</ul>
+</section>
+<section id="transparency" class="slide level2 center">
+<h2>Transparency</h2>
+<div title="2026 ASIC review">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>2026 ASIC review</strong></p>
+</div>
+<div class="callout-content">
+<p>A review of five motor vehicle insurance providers found none had explained, in their quote and renewal documents, the key factors that affected the calculation of the premium, or why the premium had changed from the previous year.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="privacy" class="slide level2 center">
+<h2>Privacy</h2>
+<p>The proposed <em>Privacy Amendment (Personal Data Protection) Bill 2026</em> introduces a new “fair and reasonable” test for personal-data collection, use, and disclosure, assessed against reasonable expectations, transparency, data minimisation, genuine choice, proportionality, and individual impact.</p>
+<ul>
+<li>Expect stronger justification and documentation for using third-party, inferred, or sensitive data in underwriting, pricing, and claims</li>
+<li>Expect greater transparency and explanation on customer notices, consent processes, data requests, and usage</li>
+</ul>
+</section>
+<section id="ai-doesnt-create-a-new-problem" class="slide level2 center">
+<h2>AI Doesn’t Create a New Problem</h2>
+<div title="The takeaway">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>The takeaway</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>AI doesn’t create a new problem. It amplifies an existing one.</strong></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="algorithmic-pricing" class="slide level2 center">
+<h2>Algorithmic Pricing</h2>
+
+<img data-src="plot/algorithmic_pricing.png" style="width:30.0%" class="r-stretch"><p>Anti-discrimination regulation and fairness criteria both feed into the same pricing model. Before we can ask <em>how</em> to price fairly, we need to understand the business environment those pricing decisions actually sit inside.</p>
+</section></section>
+<section>
 <section id="business-environment-and-constraints" class="title-slide slide level1 center">
 <h1>Business Environment and Constraints</h1>
 
@@ -655,6 +774,9 @@ Leek, Jeffery T, and Roger D Peng. 2015. <span>“What Is the Question?”</span
 </div>
 <div id="ref-peng2015art" class="csl-entry" role="listitem">
 Peng, Roger D, and Elizabeth Matsui. 2015. <em>The Art of Data Science: A Guide for Anyone Who Works with Data</em>. Skybrude Consulting, LLC.
+</div>
+<div id="ref-ribeiro2016trust" class="csl-entry" role="listitem">
+Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. <span>“"Why Should i Trust You?" Explaining the Predictions of Any Classifier.”</span> <em>Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</em>, 1135–44.
 </div>
 </div>
 </section></section>
