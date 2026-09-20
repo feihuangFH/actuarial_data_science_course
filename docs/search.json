@@ -2560,7 +2560,7 @@
     "href": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#references",
     "title": "Lecture: Problem Statement",
     "section": "References",
-    "text": "References\n\n\n\n\nLeek, Jeffery T, and Roger D Peng. 2015. “What Is the Question?” Science 347 (6228): 1314–15.\n\n\nPeng, Roger D, and Elizabeth Matsui. 2015. The Art of Data Science: A Guide for Anyone Who Works with Data. Skybrude Consulting, LLC.\n\n\nRibeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “\"Why Should i Trust You?\" Explaining the Predictions of Any Classifier.” Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, 1135–44."
+    "text": "References\n\n\n\n\nDeGrave, Alex J, Joseph D Janizek, and Su-In Lee. 2021. “AI for Radiographic COVID-19 Detection Selects Shortcuts over Signal.” Nature Machine Intelligence 3: 610–19. https://doi.org/10.1038/s42256-021-00338-7.\n\n\nLeek, Jeffery T, and Roger D Peng. 2015. “What Is the Question?” Science 347 (6228): 1314–15.\n\n\nPeng, Roger D, and Elizabeth Matsui. 2015. The Art of Data Science: A Guide for Anyone Who Works with Data. Skybrude Consulting, LLC.\n\n\nRibeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. “\"Why Should i Trust You?\" Explaining the Predictions of Any Classifier.” Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, 1135–44."
   },
   {
     "objectID": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.html",
@@ -5137,14 +5137,14 @@
     "href": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#wolf-or-husky",
     "title": "Lecture: Problem Statement",
     "section": "Wolf or Husky?",
-    "text": "Wolf or Husky?\n\n\nA classifier trained to distinguish wolves from huskies reached high accuracy, but for the wrong reason (Ribeiro et al. 2016)\nIt had learned to detect snow in the background, since wolf photos in the training data were mostly taken in snowy settings, not the animal itself\nThe signal was real and predictive. It was still not what anyone wanted the model to learn"
+    "text": "Wolf or Husky?\n\n\n\n\n\nWolf\n\n\n\n\n\n\nHusky\n\n\n\n\nA classifier trained to distinguish wolves from huskies reached high accuracy, but for the wrong reason (Ribeiro et al. 2016)\nIt had learned to detect snow in the background, since wolf photos in the training data were mostly taken in snowy settings, not the animal itself\nThe signal was real and predictive. It was still not what anyone wanted the model to learn"
   },
   {
     "objectID": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#ai-systems-for-covid-19-detection-which-x-ray-features-matter",
     "href": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#ai-systems-for-covid-19-detection-which-x-ray-features-matter",
     "title": "Lecture: Problem Statement",
     "section": "AI Systems for COVID-19 Detection: Which X-Ray Features Matter?",
-    "text": "AI Systems for COVID-19 Detection: Which X-Ray Features Matter?\n\nIllustration generated using AI\nAI systems trained to detect COVID-19 from chest X-rays have been found to learn hospital- or dataset-specific shortcuts, such as image artifacts and acquisition differences, instead of genuine signs of disease\nThey can perform well on familiar data and still generalise poorly to a new hospital"
+    "text": "AI Systems for COVID-19 Detection: Which X-Ray Features Matter?\n\nIllustration generated using AI\nAI systems trained to detect COVID-19 from chest X-rays have been found to learn hospital- or dataset-specific shortcuts, such as image artifacts and acquisition differences, instead of genuine signs of disease (DeGrave et al. 2021)\nThey can perform well on familiar data and still generalise poorly to a new hospital"
   },
   {
     "objectID": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#what-do-we-mean-by-fair",
@@ -5172,7 +5172,7 @@
     "href": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#privacy",
     "title": "Lecture: Problem Statement",
     "section": "Privacy",
-    "text": "Privacy\nThe proposed Privacy Amendment (Personal Data Protection) Bill 2026 introduces a new “fair and reasonable” test for personal-data collection, use, and disclosure, assessed against reasonable expectations, transparency, data minimisation, genuine choice, proportionality, and individual impact.\n\nExpect stronger justification and documentation for using third-party, inferred, or sensitive data in underwriting, pricing, and claims\nExpect greater transparency and explanation on customer notices, consent processes, data requests, and usage"
+    "text": "Privacy\nThe proposed Privacy Amendment (Personal Data Protection) Bill 2026 introduces a new “fair and reasonable” test for personal-data collection, use, and disclosure, assessed against reasonable expectations, transparency, data minimisation, genuine choice, proportionality, and individual impact."
   },
   {
     "objectID": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#ai-doesnt-create-a-new-problem",
@@ -5186,6 +5186,6 @@
     "href": "Lectures/Ch2-Problem Statement/Lecture-Problem Statement.slides.html#algorithmic-pricing",
     "title": "Lecture: Problem Statement",
     "section": "Algorithmic Pricing",
-    "text": "Algorithmic Pricing\n\nAnti-discrimination regulation and fairness criteria both feed into the same pricing model. Before we can ask how to price fairly, we need to understand the business environment those pricing decisions actually sit inside."
+    "text": "Algorithmic Pricing\n\n\n\n\n\n\nTraditional rating factors and third-party data both feed an opaque pricing model, and anti-discrimination regulation and fairness criteria both have to constrain it. Before we can ask how to price fairly, we need to understand the business environment those pricing decisions actually sit inside."
   }
 ]

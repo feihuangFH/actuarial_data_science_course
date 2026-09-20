@@ -542,8 +542,23 @@ Fei Huang, UNSW Sydney
 </section>
 <section id="wolf-or-husky" class="slide level2 center">
 <h2>Wolf or Husky?</h2>
-
-<img data-src="plot/wolf_husky.png" style="width:40.0%" class="r-stretch"><ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="plot/wolf.png" style="height:2.3in"></p>
+<figcaption>Wolf</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="plot/husky.jpg" style="height:2.3in"></p>
+<figcaption>Husky</figcaption>
+</figure>
+</div>
+</div></div>
+<ul>
 <li>A classifier trained to distinguish wolves from huskies reached high accuracy, but for the wrong reason <span class="citation" data-cites="ribeiro2016trust">(<a href="#/references" role="doc-biblioref" onclick="">Ribeiro et al. 2016</a>)</span></li>
 <li>It had learned to detect <strong>snow in the background</strong>, since wolf photos in the training data were mostly taken in snowy settings, not the animal itself</li>
 <li>The signal was real and predictive. It was still not what anyone wanted the model to learn</li>
@@ -553,7 +568,7 @@ Fei Huang, UNSW Sydney
 <h2>AI Systems for COVID-19 Detection: Which X-Ray Features Matter?</h2>
 
 <img data-src="plot/covid_ai_shortcut.jpg" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Illustration generated using AI</p><ul>
-<li>AI systems trained to detect COVID-19 from chest X-rays have been found to learn hospital- or dataset-specific shortcuts, such as image artifacts and acquisition differences, instead of genuine signs of disease</li>
+<li>AI systems trained to detect COVID-19 from chest X-rays have been found to learn hospital- or dataset-specific shortcuts, such as image artifacts and acquisition differences, instead of genuine signs of disease <span class="citation" data-cites="degrave2021ai">(<a href="#/references" role="doc-biblioref" onclick="">DeGrave et al. 2021</a>)</span></li>
 <li>They can perform well on familiar data and still generalise poorly to a new hospital</li>
 </ul>
 </section>
@@ -617,10 +632,6 @@ Fei Huang, UNSW Sydney
 <section id="privacy" class="slide level2 center">
 <h2>Privacy</h2>
 <p>The proposed <em>Privacy Amendment (Personal Data Protection) Bill 2026</em> introduces a new “fair and reasonable” test for personal-data collection, use, and disclosure, assessed against reasonable expectations, transparency, data minimisation, genuine choice, proportionality, and individual impact.</p>
-<ul>
-<li>Expect stronger justification and documentation for using third-party, inferred, or sensitive data in underwriting, pricing, and claims</li>
-<li>Expect greater transparency and explanation on customer notices, consent processes, data requests, and usage</li>
-</ul>
 </section>
 <section id="ai-doesnt-create-a-new-problem" class="slide level2 center">
 <h2>AI Doesn’t Create a New Problem</h2>
@@ -642,8 +653,13 @@ Fei Huang, UNSW Sydney
 </section>
 <section id="algorithmic-pricing" class="slide level2 center">
 <h2>Algorithmic Pricing</h2>
-
-<img data-src="plot/algorithmic_pricing.png" style="width:30.0%" class="r-stretch"><p>Anti-discrimination regulation and fairness criteria both feed into the same pricing model. Before we can ask <em>how</em> to price fairly, we need to understand the business environment those pricing decisions actually sit inside.</p>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img data-src="plot/algorithmic_pricing_datasources.png" style="width:100.0%"></p>
+</div><div class="column" style="width:30%;">
+<p><img data-src="plot/algorithmic_pricing.png" style="width:100.0%"></p>
+</div></div>
+<p>Traditional rating factors and third-party data both feed an opaque pricing model, and anti-discrimination regulation and fairness criteria both have to constrain it. Before we can ask <em>how</em> to price fairly, we need to understand the business environment those pricing decisions actually sit inside.</p>
 </section></section>
 <section>
 <section id="business-environment-and-constraints" class="title-slide slide level1 center">
@@ -769,6 +785,9 @@ Fei Huang, UNSW Sydney
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-degrave2021ai" class="csl-entry" role="listitem">
+DeGrave, Alex J, Joseph D Janizek, and Su-In Lee. 2021. <span>“AI for Radiographic COVID-19 Detection Selects Shortcuts over Signal.”</span> <em>Nature Machine Intelligence</em> 3: 610–19. <a href="https://doi.org/10.1038/s42256-021-00338-7">https://doi.org/10.1038/s42256-021-00338-7</a>.
+</div>
 <div id="ref-leek2015question" class="csl-entry" role="listitem">
 Leek, Jeffery T, and Roger D Peng. 2015. <span>“What Is the Question?”</span> <em>Science</em> 347 (6228): 1314–15.
 </div>
