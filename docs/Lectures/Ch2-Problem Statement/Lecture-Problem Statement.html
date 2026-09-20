@@ -467,6 +467,19 @@ gtag('config', 'G-F11HECZVN7', { 'anonymize_ip': true});
   <li><a href="#example-checking-the-refined-question-for-pitfalls" id="toc-example-checking-the-refined-question-for-pitfalls" class="nav-link" data-scroll-target="#example-checking-the-refined-question-for-pitfalls">Example: Checking the Refined Question for Pitfalls</a></li>
   <li><a href="#activity-3-refining-a-question-from-the-case" id="toc-activity-3-refining-a-question-from-the-case" class="nav-link" data-scroll-target="#activity-3-refining-a-question-from-the-case">Activity 3: Refining a Question from the Case</a></li>
   </ul></li>
+  <li><a href="#trust-fairness-and-ai-in-insurance-pricing" id="toc-trust-fairness-and-ai-in-insurance-pricing" class="nav-link" data-scroll-target="#trust-fairness-and-ai-in-insurance-pricing">Trust, Fairness, and AI in Insurance Pricing</a>
+  <ul class="collapse">
+  <li><a href="#when-ai-identifies-a-predictive-signal-can-we-trust-it" id="toc-when-ai-identifies-a-predictive-signal-can-we-trust-it" class="nav-link" data-scroll-target="#when-ai-identifies-a-predictive-signal-can-we-trust-it">When AI Identifies a Predictive Signal, Can We Trust It?</a></li>
+  <li><a href="#wolf-or-husky" id="toc-wolf-or-husky" class="nav-link" data-scroll-target="#wolf-or-husky">Wolf or Husky?</a></li>
+  <li><a href="#ai-systems-for-covid-19-detection-which-x-ray-features-matter" id="toc-ai-systems-for-covid-19-detection-which-x-ray-features-matter" class="nav-link" data-scroll-target="#ai-systems-for-covid-19-detection-which-x-ray-features-matter">AI Systems for COVID-19 Detection: Which X-Ray Features Matter?</a></li>
+  <li><a href="#what-do-we-mean-by-fair" id="toc-what-do-we-mean-by-fair" class="nav-link" data-scroll-target="#what-do-we-mean-by-fair">What Do We Mean by “Fair”?</a></li>
+  <li><a href="#how-australian-law-regulates-insurance-discrimination" id="toc-how-australian-law-regulates-insurance-discrimination" class="nav-link" data-scroll-target="#how-australian-law-regulates-insurance-discrimination">How Australian Law Regulates Insurance Discrimination?</a></li>
+  <li><a href="#transparency" id="toc-transparency" class="nav-link" data-scroll-target="#transparency">Transparency</a></li>
+  <li><a href="#privacy" id="toc-privacy" class="nav-link" data-scroll-target="#privacy">Privacy</a></li>
+  <li><a href="#ai-doesnt-create-a-new-problem" id="toc-ai-doesnt-create-a-new-problem" class="nav-link" data-scroll-target="#ai-doesnt-create-a-new-problem">AI Doesn’t Create a New Problem</a></li>
+  <li><a href="#algorithmic-pricing" id="toc-algorithmic-pricing" class="nav-link" data-scroll-target="#algorithmic-pricing">Algorithmic Pricing</a></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  </ul></li>
   <li><a href="#business-environment-and-constraints" id="toc-business-environment-and-constraints" class="nav-link" data-scroll-target="#business-environment-and-constraints">Business Environment and Constraints</a>
   <ul class="collapse">
   <li><a href="#business-environment" id="toc-business-environment" class="nav-link" data-scroll-target="#business-environment">Business Environment</a></li>
@@ -837,6 +850,152 @@ gtag('config', 'G-F11HECZVN7', { 'anonymize_ip': true});
 </ul>
 </section>
 </section>
+<section id="trust-fairness-and-ai-in-insurance-pricing" class="level2">
+<h2 class="anchored" data-anchor-id="trust-fairness-and-ai-in-insurance-pricing">Trust, Fairness, and AI in Insurance Pricing</h2>
+<section id="when-ai-identifies-a-predictive-signal-can-we-trust-it" class="level3">
+<h3 class="anchored" data-anchor-id="when-ai-identifies-a-predictive-signal-can-we-trust-it">When AI Identifies a Predictive Signal, Can We Trust It?</h3>
+<ul>
+<li>A model can find a real, statistically strong pattern in your data and still have learned the wrong thing</li>
+<li>Before trusting a predictive signal, ask <em>what</em> the model actually picked up on, not just <em>how well</em> it predicts</li>
+<li>Two examples make this concrete</li>
+</ul>
+</section>
+<section id="wolf-or-husky" class="level3">
+<h3 class="anchored" data-anchor-id="wolf-or-husky">Wolf or Husky?</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img src="plot/wolf.png" style="height:2.3in"></p>
+</div><div class="column" style="width:50%;">
+<p><img src="plot/husky.png" style="height:2.3in"></p>
+</div>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>A classifier trained to distinguish wolves from huskies reached high accuracy, but for the wrong reason <span class="citation" data-cites="ribeiro2016trust">(<a href="#ref-ribeiro2016trust" role="doc-biblioref">Ribeiro et al. 2016</a>)</span></li>
+<li>It had learned to detect <strong>snow in the background</strong>, since wolf photos in the training data were mostly taken in snowy settings, not the animal itself</li>
+<li>The signal was real and predictive. It was still not what anyone wanted the model to learn</li>
+</ul>
+</div>
+</section>
+<section id="ai-systems-for-covid-19-detection-which-x-ray-features-matter" class="level3">
+<h3 class="anchored" data-anchor-id="ai-systems-for-covid-19-detection-which-x-ray-features-matter">AI Systems for COVID-19 Detection: Which X-Ray Features Matter?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot/covid_ai_shortcut.jpg" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Illustration generated using AI</figcaption>
+</figure>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>AI systems trained to detect COVID-19 from chest X-rays have been found to learn hospital- or dataset-specific shortcuts, such as image artifacts and acquisition differences, instead of genuine signs of disease <span class="citation" data-cites="degrave2021ai">(<a href="#ref-degrave2021ai" role="doc-biblioref">DeGrave et al. 2021</a>)</span></li>
+<li>They can perform well on familiar data and still generalise poorly to a new hospital</li>
+</ul>
+</div>
+</section>
+<section id="what-do-we-mean-by-fair" class="level3">
+<h3 class="anchored" data-anchor-id="what-do-we-mean-by-fair">What Do We Mean by “Fair”?</h3>
+<p><em>“Fairness” is an overloaded concept.</em></p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>Anti-discrimination</strong></p>
+<p>Legal obligation</p>
+<ul>
+<li>Direct discrimination</li>
+<li>Indirect discrimination</li>
+<li>The legal standard</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<p><strong>Competing notions</strong></p>
+<p>Contested ethical terrain</p>
+<ul>
+<li>Actuarial fairness</li>
+<li>Social justice</li>
+<li>Choice-sensitive fairness</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<p><strong>Consumer trust</strong></p>
+<p>Contractual commitment</p>
+<ul>
+<li>Codes of practice</li>
+<li>Consumer promises</li>
+<li>Product disclosure</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="how-australian-law-regulates-insurance-discrimination" class="level3">
+<h3 class="anchored" data-anchor-id="how-australian-law-regulates-insurance-discrimination">How Australian Law Regulates Insurance Discrimination?</h3>
+<ul>
+<li><strong>Insurance exemptions</strong>: insurers may charge different prices based on age, disability or sex when supported by reasonable actuarial or statistical evidence</li>
+<li><strong>Evidence standard</strong>: data must be current, complete, credible, sufficiently large, and relevant to the individual risk</li>
+<li><strong>No racial exemption</strong>: race, colour, descent, ethnicity, and immigrant status are protected under the Racial Discrimination Act</li>
+<li><strong>Broader protections</strong>: state and territory laws may also protect other attributes, such as religious belief</li>
+<li>Removing a protected attribute from a dataset is not enough on its own. Other data may still act as a proxy for it</li>
+</ul>
+</section>
+<section id="transparency" class="level3">
+<h3 class="anchored" data-anchor-id="transparency">Transparency</h3>
+<div class="callout callout-style-default callout-important callout-titled" title="2026 ASIC review">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>2026 ASIC review
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A review of five motor vehicle insurance providers found none had explained, in their quote and renewal documents, the key factors that affected the calculation of the premium, or why the premium had changed from the previous year.</p>
+</div>
+</div>
+</section>
+<section id="privacy" class="level3">
+<h3 class="anchored" data-anchor-id="privacy">Privacy</h3>
+<p>The proposed <em>Privacy Amendment (Personal Data Protection) Bill 2026</em> introduces a new “fair and reasonable” test for personal-data collection, use, and disclosure, assessed against reasonable expectations, transparency, data minimisation, genuine choice, proportionality, and individual impact.</p>
+</section>
+<section id="ai-doesnt-create-a-new-problem" class="level3">
+<h3 class="anchored" data-anchor-id="ai-doesnt-create-a-new-problem">AI Doesn’t Create a New Problem</h3>
+<div class="callout callout-style-default callout-tip callout-titled" title="The takeaway">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The takeaway
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>AI doesn’t create a new problem. It amplifies an existing one.</strong></p>
+</div>
+</div>
+</section>
+<section id="algorithmic-pricing" class="level3">
+<h3 class="anchored" data-anchor-id="algorithmic-pricing">Algorithmic Pricing</h3>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img src="plot/algorithmic_pricing_datasources.png" class="img-fluid" style="width:100.0%"></p>
+</div><div class="column" style="width:30%;">
+<p><img src="plot/algorithmic_pricing.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+</section>
+<section id="discussion" class="level3">
+<h3 class="anchored" data-anchor-id="discussion">Discussion</h3>
+<div class="callout callout-style-default callout-tip callout-titled" title="Question">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Question
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Is insurance pricing a pure predictive task?</p>
+</div>
+</div>
+</section>
+</section>
 <section id="business-environment-and-constraints" class="level2">
 <h2 class="anchored" data-anchor-id="business-environment-and-constraints">Business Environment and Constraints</h2>
 <section id="business-environment" class="level3">
@@ -960,11 +1119,17 @@ gtag('config', 'G-F11HECZVN7', { 'anonymize_ip': true});
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-degrave2021ai" class="csl-entry" role="listitem">
+DeGrave, Alex J, Joseph D Janizek, and Su-In Lee. 2021. <span>“AI for Radiographic COVID-19 Detection Selects Shortcuts over Signal.”</span> <em>Nature Machine Intelligence</em> 3: 610–19. <a href="https://doi.org/10.1038/s42256-021-00338-7">https://doi.org/10.1038/s42256-021-00338-7</a>.
+</div>
 <div id="ref-leek2015question" class="csl-entry" role="listitem">
 Leek, Jeffery T, and Roger D Peng. 2015. <span>“What Is the Question?”</span> <em>Science</em> 347 (6228): 1314–15.
 </div>
 <div id="ref-peng2015art" class="csl-entry" role="listitem">
 Peng, Roger D, and Elizabeth Matsui. 2015. <em>The Art of Data Science: A Guide for Anyone Who Works with Data</em>. Skybrude Consulting, LLC.
+</div>
+<div id="ref-ribeiro2016trust" class="csl-entry" role="listitem">
+Ribeiro, Marco Tulio, Sameer Singh, and Carlos Guestrin. 2016. <span>“"Why Should i Trust You?" Explaining the Predictions of Any Classifier.”</span> <em>Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</em>, 1135–44.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
