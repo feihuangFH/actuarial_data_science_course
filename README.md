@@ -11,7 +11,7 @@ Developed by [Fei Huang](https://www.feihuang.org), UNSW Sydney.
 
 ## Development notes
 
-This project was developed with support from AI coding assistants (Claude Code and Cursor). All analysis, content decisions, and conclusions are the author's own and her responsibility.
+This project was developed with support from AI coding assistants. All analysis, content decisions, and conclusions are the author's own and her responsibility.
 
 ## License
 
