@@ -512,6 +512,7 @@ window.Quarto = {
   <li><a href="#fairness-criteria-group-fairness-continued" id="toc-fairness-criteria-group-fairness-continued" class="nav-link" data-scroll-target="#fairness-criteria-group-fairness-continued">Fairness Criteria – Group Fairness (continued)</a></li>
   <li><a href="#activity-3-check-fairness-by-hand" id="toc-activity-3-check-fairness-by-hand" class="nav-link" data-scroll-target="#activity-3-check-fairness-by-hand">Activity 3: Check Fairness by Hand</a></li>
   <li><a href="#activity-3-check-fairness-by-hand-continued" id="toc-activity-3-check-fairness-by-hand-continued" class="nav-link" data-scroll-target="#activity-3-check-fairness-by-hand-continued">Activity 3: Check Fairness by Hand (continued)</a></li>
+  <li><a href="#activity-3-answers" id="toc-activity-3-answers" class="nav-link" data-scroll-target="#activity-3-answers">Activity 3: Answers</a></li>
   <li><a href="#regulations-fairness-criteria-and-models" id="toc-regulations-fairness-criteria-and-models" class="nav-link" data-scroll-target="#regulations-fairness-criteria-and-models">Regulations, Fairness Criteria, and Models</a></li>
   <li><a href="#questions-to-tackle" id="toc-questions-to-tackle" class="nav-link" data-scroll-target="#questions-to-tackle">Questions to Tackle</a></li>
   <li><a href="#activity-4-pricing-committee-role-play" id="toc-activity-4-pricing-committee-role-play" class="nav-link" data-scroll-target="#activity-4-pricing-committee-role-play">Activity 4: Pricing Committee Role-Play</a></li>
@@ -1005,6 +1006,27 @@ h^*(X_{NP}) := \int_{x_P} \mathbb{E}[Y \mid X_{NP}, x_P] d\mathbb{P}^*(x_P),
 <li>Within each risk band, are the premiums equal across groups? Does conditional demographic parity hold if risk band is a legitimate attribute?</li>
 <li>Which result would a regulator care about, and why?</li>
 </ol>
+</section>
+<section id="activity-3-answers" class="level3">
+<h3 class="anchored" data-anchor-id="activity-3-answers">Activity 3: Answers</h3>
+<ol type="1">
+<li><strong>Average premium.</strong> Group <span class="math inline">a</span> pays <span class="math inline">(80 \times 600 + 20 \times 1{,}200)/100 = \$720</span>. Group <span class="math inline">b</span> pays <span class="math inline">(40 \times 600 + 60 \times 1{,}200)/100 = \$960</span>. Demographic parity <strong>does not hold</strong> (ratio <span class="math inline">720/960 = 0.75</span>).</li>
+<li><strong>Within each risk band.</strong> The premium is $600 (Low) and $1,200 (High) for both groups. Conditional demographic parity <strong>holds</strong> if risk band is a legitimate attribute.</li>
+<li><strong>Regulator’s view.</strong> The gap comes entirely from the different mix of risk bands. It is acceptable if risk band is a legitimate attribute and not itself a proxy for the protected attribute. Otherwise the gap is evidence of disparate impact.</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled" title="Takeaway">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Takeaway
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The same pricing can fail one fairness criterion and satisfy another. The choice of criterion is a judgement about which attributes are legitimate.</p>
+</div>
+</div>
 </section>
 <section id="regulations-fairness-criteria-and-models" class="level3">
 <h3 class="anchored" data-anchor-id="regulations-fairness-criteria-and-models">Regulations, Fairness Criteria, and Models</h3>
