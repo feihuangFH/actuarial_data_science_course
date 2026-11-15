@@ -513,9 +513,8 @@ window.Quarto = {
   <li><a href="#activity-3-check-fairness-by-hand" id="toc-activity-3-check-fairness-by-hand" class="nav-link" data-scroll-target="#activity-3-check-fairness-by-hand">Activity 3: Check Fairness by Hand</a></li>
   <li><a href="#activity-3-check-fairness-by-hand-continued" id="toc-activity-3-check-fairness-by-hand-continued" class="nav-link" data-scroll-target="#activity-3-check-fairness-by-hand-continued">Activity 3: Check Fairness by Hand (continued)</a></li>
   <li><a href="#regulations-fairness-criteria-and-models" id="toc-regulations-fairness-criteria-and-models" class="nav-link" data-scroll-target="#regulations-fairness-criteria-and-models">Regulations, Fairness Criteria, and Models</a></li>
-  <li><a href="#activity-4-when-fairness-criteria-conflict" id="toc-activity-4-when-fairness-criteria-conflict" class="nav-link" data-scroll-target="#activity-4-when-fairness-criteria-conflict">Activity 4: When Fairness Criteria Conflict</a></li>
   <li><a href="#questions-to-tackle" id="toc-questions-to-tackle" class="nav-link" data-scroll-target="#questions-to-tackle">Questions to Tackle</a></li>
-  <li><a href="#activity-5-pricing-committee-role-play" id="toc-activity-5-pricing-committee-role-play" class="nav-link" data-scroll-target="#activity-5-pricing-committee-role-play">Activity 5: Pricing Committee Role-Play</a></li>
+  <li><a href="#activity-4-pricing-committee-role-play" id="toc-activity-4-pricing-committee-role-play" class="nav-link" data-scroll-target="#activity-4-pricing-committee-role-play">Activity 4: Pricing Committee Role-Play</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
@@ -1000,13 +999,11 @@ h^*(X_{NP}) := \int_{x_P} \mathbb{E}[Y \mid X_{NP}, x_P] d\mathbb{P}^*(x_P),
 </section>
 <section id="activity-3-check-fairness-by-hand-continued" class="level3 continued">
 <h3 class="continued anchored" data-anchor-id="activity-3-check-fairness-by-hand-continued">Activity 3: Check Fairness by Hand (continued)</h3>
-<p><strong>Calibration</strong> holds if, for the same premium, the average claim is equal across groups: <span class="math inline">\mathbb{E}[Y \mid \hat{Y}, X_P = a] = \mathbb{E}[Y \mid \hat{Y}, X_P = b]</span>. <strong>Loss ratio</strong> is the average claim divided by the premium.</p>
 <p>Work in pairs.</p>
 <ol type="1">
 <li>Calculate the average premium for each group. Does demographic parity hold?</li>
-<li>Calculate the loss ratio for each group and risk band. Does calibration hold?</li>
-<li>Lower the High-band premium for group <span class="math inline">b</span> until both groups have the same average premium. What premium is needed? What is the new loss ratio for that band?</li>
-<li>What does this tell you about satisfying both criteria at once?</li>
+<li>Within each risk band, are the premiums equal across groups? Does conditional demographic parity hold if risk band is a legitimate attribute?</li>
+<li>Which result would a regulator care about, and why?</li>
 </ol>
 </section>
 <section id="regulations-fairness-criteria-and-models" class="level3">
@@ -1017,21 +1014,6 @@ h^*(X_{NP}) := \int_{x_P} \mathbb{E}[Y \mid X_{NP}, x_P] d\mathbb{P}^*(x_P),
 <figcaption>Comparison between different regulations.</figcaption>
 </figure>
 </div>
-</section>
-<section id="activity-4-when-fairness-criteria-conflict" class="level3">
-<h3 class="anchored" data-anchor-id="activity-4-when-fairness-criteria-conflict">Activity 4: When Fairness Criteria Conflict</h3>
-<p><strong>Case: COMPAS recidivism scores (US criminal justice).</strong></p>
-<ul>
-<li>ProPublica (2016) found that Black defendants who did not reoffend were almost twice as likely as white defendants to be labelled high risk (about 45% vs 24%).</li>
-<li>The developer replied that the scores were well calibrated. A given score implied the same reoffending rate for both groups.</li>
-<li>Both claims were supported by the data <span class="citation" data-cites="corbett2017algorithmic">(<a href="#ref-corbett2017algorithmic" role="doc-biblioref">Corbett-Davies et al. 2017</a>)</span>.</li>
-</ul>
-<p>Discuss in groups of three.</p>
-<ul>
-<li>Which criterion would you prioritise, and why?</li>
-<li>Why can both not hold when the groups’ underlying rates differ? (Hint: Activity 3.)</li>
-<li>Where could the same tension arise in insurance pricing?</li>
-</ul>
 </section>
 <section id="questions-to-tackle" class="level3">
 <h3 class="anchored" data-anchor-id="questions-to-tackle">Questions to Tackle</h3>
@@ -1100,8 +1082,8 @@ h^*(X_{NP}) := \int_{x_P} \mathbb{E}[Y \mid X_{NP}, x_P] d\mathbb{P}^*(x_P),
 </div>
 </div>
 </section>
-<section id="activity-5-pricing-committee-role-play" class="level3">
-<h3 class="anchored" data-anchor-id="activity-5-pricing-committee-role-play">Activity 5: Pricing Committee Role-Play</h3>
+<section id="activity-4-pricing-committee-role-play" class="level3">
+<h3 class="anchored" data-anchor-id="activity-4-pricing-committee-role-play">Activity 4: Pricing Committee Role-Play</h3>
 <p><strong>Scenario.</strong> Your motor insurer can use a credit-based score as a rating factor. It improves prediction. It can also correlate with income and ethnicity. The pricing committee must decide to <strong>use it</strong>, <strong>restrict it</strong> or <strong>drop it</strong>.</p>
 <div class="columns">
 <div class="column" style="width:40%;">
